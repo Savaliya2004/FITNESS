@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Chat Room | FitX{% endblock %}
+
+{% block content %}
+<section style="padding: 100px 5% 50px; max-width: 900px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <a href="{% url 'chat:inbox' %}" style="color: var(--muted); text-decoration: none;"><i class="fas fa-arrow-left"></i> Back to Inbox</a>
+        {% if room.room_type == 'support' and room.ticket %}
+            <span class="badge" style="background: rgba(34,197,94,0.15); color: #22c55e; padding: 5px 12px; border-radius: 8px;">Status: {{ room.ticket.get_status_display }}</span>
+        {% endif %}
+    </div>
+
+    <!-- Chat Interface Container -->
+    <div class="glass-card" style="display: flex; flex-direction: column; height: 70vh; min-height: 500px; border: 1px solid var(--glassBorder); background: var(--glass); overflow: hidden; border-radius: 24px;">
+        
+        <!-- Header -->
+        <div style="padding: 20px; background: var(--glass); border-bottom: 1px solid var(--glassBorder); display: flex; align-items: center; gap: 15px;">
+            {% if room.room_type == 'support' %}
+                <div style="width: 45px; height: 45px; border-radius: 50%; background: rgba(34,197,94,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #22c55e;">
+                    <i class="fas fa-life-ring"></i>
+                </div>
+            {% else %}
+                <div style="width: 45px; height: 45px; border-radius: 50%; background: rgba(196,77,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--accent);">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+            {% endif %}
+            <div>
+                <h3 style="margin: 0; font-size: 1.2rem;">{{ room.name }}</h3>
+                <span style="font-size: 0.8rem; color: var(--muted);">{{ room.get_room_type_display }}</span>
+            </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div id="chat-messages" style="flex-grow: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
+            {% for msg in chat_messages %}
+                {% if msg.sender == request.user %}
+                    <!-- My Message (Right) -->
+                    <div style="align-self: flex-end; max-width: 75%;">
+                        <div style="background: var(--accent); color: white; padding: 12px 18px; border-radius: 18px 18px 0 18px; margin-bottom: 5px; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);">
+                            {{ msg.content|linebreaksbr }}
+                        </div>
+                        <div style="text-align: right; font-size: 0.75rem; color: rgba(255,255,255,0.4);">
+                            {{ msg.created_at|time:"g:i A" }}
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- Their Message (Left) -->
+                    <div style="align-self: flex-start; max-width: 75%;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+                            <span style="font-size: 0.8rem; font-weight: bold; color: var(--muted);">{{ msg.sender.username }}</span>
+                            {% if msg.sender.is_staff or msg.sender.is_superuser %}
+                                <span style="background: rgba(34,197,94,0.2); color: #22c55e; padding: 2px 6px; border-radius: 5px; font-size: 0.65rem;">Admin</span>
+                            {% endif %}
+                        </div>
+                        <div style="background: var(--card); color: var(--text); padding: 12px 18px; border-radius: 18px 18px 18px 0; border: 1px solid var(--glassBorder); box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                            {{ msg.content|linebreaksbr }}
+                        </div>
+                        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 5px;">
+                            {{ msg.created_at|time:"g:i A" }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% empty %}
+                <div style="margin: auto; text-align: center; color: var(--muted);">
+                    <i class="far fa-paper-plane" style="font-size: 3rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                    <p>Send a message to start the conversation.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Input Area -->
+        <div style="padding: 20px; background: var(--glass); border-top: 1px solid var(--glassBorder);">
+            <form action="{% url 'chat:send_message' room.id %}" method="post" style="display: flex; gap: 15px;">
+                {% csrf_token %}
+                <input type="text" name="content" placeholder="Type a message..." required autocomplete="off" style="flex-grow: 1; padding: 15px 20px; background: var(--bg2); border: 1px solid var(--glassBorder); border-radius: 25px; color: var(--text); outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--glassBorder)'">
+                
+                <button type="submit" style="background: var(--accent); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 15px rgba(255, 107, 53, 0.4)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+        
+    </div>
+</section>
+
+<script>
+    // Auto-scroll chat to bottom on load
+    document.addEventListener("DOMContentLoaded", function() {
+        const chatContainer = document.getElementById("chat-messages");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
+</script>
+{% endblock %}

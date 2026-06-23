@@ -1,0 +1,27 @@
+<div class="prod-card">
+    <div class="prod-img-box">
+        {% if p.featured %}<div class="badge-top badge-trending">Featured</div>{% endif %}
+        {% if p.discount_price %}<div class="badge-top badge-sale" style="left: auto; right: 15px;">Sale</div>{% endif %}
+        <img src="{% if p.image %}{{ p.image.url }}{% else %}https://images.unsplash.com/photo-1541534741688-6078c65b5a33?w=500&q=80{% endif %}" class="prod-img" alt="{{ p.name }}">
+    </div>
+    <div class="prod-info">
+        <div class="rating-stars">
+            {% for i in "12345" %}
+                <i class="fas fa-star" style="{% if forloop.counter <= p.rating %}color:#facc15;{% else %}color:#333;{% endif %}"></i>
+            {% endfor %}
+            <span style="color: #666; font-size: 0.75rem; margin-left: 5px;">({{ p.rating }})</span>
+        </div>
+        <h3 class="prod-name">{{ p.name }}</h3>
+        <div class="prod-price-flex">
+            {% if p.discount_price %}
+                <span class="current-price">₹{{ p.discount_price }}</span>
+                <span class="old-price">₹{{ p.price }}</span>
+            {% else %}
+                <span class="current-price">₹{{ p.price }}</span>
+            {% endif %}
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('{{ p.id }}', '{{ p.name }}')">
+            <i class="fas fa-plus"></i> Add to Cart
+        </button>
+    </div>
+</div>

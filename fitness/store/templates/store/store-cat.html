@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX Store | Category View{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'store/css/store.css' %}">
+<style>
+  .navbar { margin-bottom: 0 !important; }
+  .store-nav { top: 72px; }
+  [data-theme="light"] .store-nav { background: #fdfdfd; border-bottom: 1px solid #eee; }
+  [data-theme="light"] .nav-left, [data-theme="light"] .nav-links-inner a { color: #111; }
+</style>
+{% endblock %}
+
+{% block content %}
+  <!-- STORE NAVBAR (STICKY) -->
+  <nav class="store-nav" data-aos="fade-down">
+    <div class="nav-left">STORE</div>
+    <div class="nav-center">
+      <div class="nav-links-inner">
+        <a href="{% url 'store' %}">New Arrivals</a>
+        <a href="#">Men</a>
+        <a href="#">Women</a>
+        <a href="#">Footwear</a>
+        <a href="#">Gym Equipment</a>
+        <a href="#">Accessories</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <i class="fas fa-search"></i>
+      <a href="{% url 'cart' %}" style="color: inherit;"><i class="fas fa-shopping-cart"></i></a>
+    </div>
+  </nav>
+
+  <section class="section-title" data-aos="fade-up" style="margin-top: 40px; padding: 0 5%; font-size: 1.5rem; font-weight: 700;">
+    <i class="fas fa-th-large" style="color:var(--accent)"></i> Category View
+  </section>
+
+  <div class="prod-grid" id="main-grid" data-aos="fade-up" style="margin-top: 30px;"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true });
+    
+    function generateProducts(count) {
+      const items = ["FitX Pro Item", "Elite Training Gear", "Performance Wear", "Smart Accessory"];
+      const images = [
+        "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=500&q=80",
+        "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=500&q=80",
+        "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=80"
+      ];
+      let html = '';
+      for(let i=0; i<count; i++) {
+        let name = items[Math.floor(Math.random()*items.length)] + " " + (i+1);
+        let img = images[Math.floor(Math.random()*images.length)];
+        let mrp = Math.floor(Math.random()*4000)+1500;
+        let price = Math.floor(mrp * 0.9);
+        html += `
+          <div class="prod-card" onclick="location.href='#'">
+            <div class="prod-img-box">
+              <img src="${img}" class="prod-img" alt="${name}">
+            </div>
+            <div class="prod-info">
+              <div class="brand">FitX Elite</div>
+              <div class="name">${name}</div>
+              <div class="prices">
+                <div class="price">₹${price}</div>
+                <div class="mrp">₹${mrp}</div>
+              </div>
+              <button class="add-btn">Add to Cart</button>
+            </div>
+          </div>`;
+      }
+      return html;
+    }
+    document.getElementById('main-grid').innerHTML = generateProducts(12);
+</script>
+{% endblock %}

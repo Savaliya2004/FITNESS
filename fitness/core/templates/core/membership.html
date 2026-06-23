@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitX | Membership Plans</title>
+    <meta name="description" content="Choose the perfect FitX membership plan. Basic, Pro, and Premium options.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="membership.css">
+</head>
+<body>
+    <nav class="navbar glass" id="navbar">
+        <div class="nav-brand">
+            <a href="{% url 'home' %}" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                <i class="fas fa-fire" style="color: var(--primary);font-size:1.6rem;"></i>
+                <h1>Fit<span>X</span></h1>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">HOME</a>
+            <a href="{% url 'workouts' %}">WORKOUTS</a>
+            <a href="{% url 'trainers' %}">TRAINERS</a>
+            <a href="membership.html" class="active">MEMBERSHIP</a>
+            <a href="blog.html">BLOG</a>
+            <a href="contact.html">CONTACT</a>
+        </div>
+        <div class="nav-actions">
+            <a href="{% url 'login' %}" class="btn-outline-white">LOGIN</a>
+            <a href="dashboard.html" class="btn-primary-sm">DASHBOARD</a>
+        </div>
+        <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="{% url 'home' %}">HOME</a>
+        <a href="{% url 'workouts' %}">WORKOUTS</a>
+        <a href="{% url 'trainers' %}">TRAINERS</a>
+        <a href="membership.html" class="active">MEMBERSHIP</a>
+        <a href="blog.html">BLOG</a>
+        <a href="contact.html">CONTACT</a>
+    </div>
+
+    <section class="membership-hero">
+        <div class="hero-content">
+            <span class="tag-label">💎 PLANS</span>
+            <h1>Invest in Your <span class="text-gradient">Best Self</span></h1>
+            <p>Unlock unlimited access to workouts, expert trainers, and progress tracking. Cancel anytime.</p>
+            <div class="billing-toggle">
+                <span id="monthlyLabel" class="toggle-label active">Monthly</span>
+                <label class="switch" for="billingToggle">
+                    <input type="checkbox" id="billingToggle">
+                    <span class="slider-toggle"></span>
+                </label>
+                <span id="annualLabel" class="toggle-label">Annual <span class="save-badge">Save 30%</span></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-header plan-basic">
+                        <div class="plan-icon"><i class="fas fa-seedling"></i></div>
+                        <h3>Basic</h3>
+                        <p>Perfect for beginners starting their fitness journey</p>
+                    </div>
+                    <div class="plan-price">
+                        <span class="currency">₹</span>
+                        <span class="amount monthly-price">999</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li class="included"><i class="fas fa-check"></i> 20+ workout programs</li>
+                        <li class="included"><i class="fas fa-check"></i> Basic progress tracking</li>
+                        <li class="included"><i class="fas fa-check"></i> Community forums</li>
+                        <li class="included"><i class="fas fa-check"></i> BMI & calorie calculator</li>
+                        <li class="included"><i class="fas fa-check"></i> 2 live classes/week</li>
+                        <li class="excluded"><i class="fas fa-times"></i> Personal trainer sessions</li>
+                        <li class="excluded"><i class="fas fa-times"></i> Nutrition meal plans</li>
+                        <li class="excluded"><i class="fas fa-times"></i> Advanced analytics</li>
+                    </ul>
+                    <a href="#" class="btn-plan btn-basic" onclick="event.preventDefault(); openSubModal('Starter')">Get Started</a>
+                    <p class="plan-note">7-day free trial</p>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="plan-header plan-pro">
+                        <div class="plan-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Pro</h3>
+                        <p>For serious fitness enthusiasts who want results</p>
+                    </div>
+                    <div class="plan-price">
+                        <span class="currency">₹</span>
+                        <span class="amount monthly-price">2499</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li class="included"><i class="fas fa-check"></i> All 50+ programs</li>
+                        <li class="included"><i class="fas fa-check"></i> Advanced progress tracking</li>
+                        <li class="included"><i class="fas fa-check"></i> Community + Group challenges</li>
+                        <li class="included"><i class="fas fa-check"></i> Calorie & macro tracker</li>
+                        <li class="included"><i class="fas fa-check"></i> Unlimited live classes</li>
+                        <li class="included"><i class="fas fa-check"></i> 4 trainer sessions/month</li>
+                        <li class="included"><i class="fas fa-check"></i> Basic nutrition meal plans</li>
+                        <li class="excluded"><i class="fas fa-times"></i> 1-on-1 personal coaching</li>
+                    </ul>
+                    <a href="#" class="btn-plan btn-pro" onclick="event.preventDefault(); openSubModal('Pro')">Start Pro Trial</a>
+                    <p class="plan-note">14-day free trial</p>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="plan-header plan-premium">
+                        <div class="plan-icon"><i class="fas fa-crown"></i></div>
+                        <h3>Premium</h3>
+                        <p>Elite coaching for complete transformation</p>
+                    </div>
+                    <div class="plan-price">
+                        <span class="currency">₹</span>
+                        <span class="amount monthly-price">5999</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li class="included"><i class="fas fa-check"></i> Everything in Pro</li>
+                        <li class="included"><i class="fas fa-check"></i> Unlimited trainer sessions</li>
+                        <li class="included"><i class="fas fa-check"></i> 1-on-1 personal coaching</li>
+                        <li class="included"><i class="fas fa-check"></i> Custom workout programs</li>
+                        <li class="included"><i class="fas fa-check"></i> Personalized meal plans</li>
+                        <li class="included"><i class="fas fa-check"></i> Body composition analysis</li>
+                        <li class="included"><i class="fas fa-check"></i> Priority class booking</li>
+                        <li class="included"><i class="fas fa-check"></i> Dedicated success coach</li>
+                    </ul>
+                    <a href="#" class="btn-plan btn-premium" onclick="event.preventDefault(); openSubModal('Elite')">Go Premium</a>
+                    <p class="plan-note">30-day money-back guarantee</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison-section">
+        <div class="container">
+            <div class="section-header centered">
+                <h2>Full Plan <span class="text-gradient">Comparison</span></h2>
+            </div>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Basic</th>
+                            <th class="featured-col">Pro</th>
+                            <th>Premium</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Workout Programs</td><td>20+</td><td class="featured-col">50+</td><td>50+ Custom</td></tr>
+                        <tr><td>Live Classes/Week</td><td>2</td><td class="featured-col">Unlimited</td><td>Unlimited</td></tr>
+                        <tr><td>Trainer Sessions</td><td>—</td><td class="featured-col">4/month</td><td>Unlimited</td></tr>
+                        <tr><td>Progress Tracking</td><td>Basic</td><td class="featured-col">Advanced</td><td>Full Analytics</td></tr>
+                        <tr><td>Nutrition Plans</td><td><i class="fas fa-times red-x"></i></td><td class="featured-col">Basic</td><td>Personalized</td></tr>
+                        <tr><td>BMI Calculator</td><td><i class="fas fa-check green-check"></i></td><td class="featured-col"><i class="fas fa-check green-check"></i></td><td><i class="fas fa-check green-check"></i></td></tr>
+                        <tr><td>Community Access</td><td><i class="fas fa-check green-check"></i></td><td class="featured-col"><i class="fas fa-check green-check"></i></td><td><i class="fas fa-check green-check"></i></td></tr>
+                        <tr><td>Personal Coach</td><td><i class="fas fa-times red-x"></i></td><td class="featured-col"><i class="fas fa-times red-x"></i></td><td><i class="fas fa-check green-check"></i></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="member-testimonials">
+        <div class="container">
+            <div class="section-header centered">
+                <h2>What Our <span class="text-gradient">Members Say</span></h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p>"Switched to Pro 3 months ago. Lost 8kg and I actually look forward to workouts now. Worth every rupee."</p>
+                    <div class="testi-author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Meera">
+                        <div><strong>Meera K.</strong><span>Pro Member · 3 months</span></div>
+                    </div>
+                </div>
+                <div class="testi-card testi-featured">
+                    <div class="testi-stars">★★★★★</div>
+                    <p>"Premium changed my life. My coach redesigned my entire routine and I've gone from 28% to 18% body fat in 5 months."</p>
+                    <div class="testi-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Rahul">
+                        <div><strong>Rahul S.</strong><span>Premium Member · 5 months</span></div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p>"Started with Basic and I'm hooked. The workout variety is amazing and the community so supportive!"</p>
+                    <div class="testi-author">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Divya">
+                        <div><strong>Divya R.</strong><span>Basic Member · 1 month</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header centered"><h2>Frequently Asked <span class="text-gradient">Questions</span></h2></div>
+            <div class="faq-accordion">
+                <details class="faq-item" open>
+                    <summary>Can I cancel anytime? <i class="fas fa-chevron-down"></i></summary>
+                    <p>Yes! Cancel anytime with no fees. Access continues until end of billing period.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is there a free trial? <i class="fas fa-chevron-down"></i></summary>
+                    <p>Basic: 7-day trial. Pro: 14-day trial. Premium: 30-day money-back guarantee.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I switch plans? <i class="fas fa-chevron-down"></i></summary>
+                    <p>Yes! Upgrade immediately, downgrade at next billing cycle. No extra charges.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do I need gym equipment? <i class="fas fa-chevron-down"></i></summary>
+                    <p>No! We have bodyweight, home, and gym programs. Filter by equipment availability.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand-logo"><i class="fas fa-fire"></i><h2>FitX</h2></div>
+                    <p>Making fitness a daily habit. #BeBetterEveryDay</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="{% url 'workouts' %}">All Programs</a></li>
+                        <li><a href="{% url 'trainers' %}">Trainers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom-bar"><p>© 2026 FitX. All rights reserved.</p></div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        });
+        const toggle = document.getElementById('billingToggle');
+        const basePrices = [[999, 699], [2499, 1749], [5999, 4199]];
+        toggle.addEventListener('change', () => {
+            const idx = toggle.checked ? 1 : 0;
+            document.getElementById('monthlyLabel').classList.toggle('active', !toggle.checked);
+            document.getElementById('annualLabel').classList.toggle('active', toggle.checked);
+            document.querySelectorAll('.monthly-price').forEach((el, i) => {
+                el.textContent = basePrices[i][idx].toLocaleString('en-IN');
+            });
+        });
+
+        // Subscription Modal Logic
+        const plans = {
+          'Starter': { price: 999, desc: 'Perfect for beginners starting their journey', pop: false, feats: ['20+ workout programs', 'Basic progress tracking', 'Community forums', '2 live classes/week'] },
+          'Pro': { price: 2499, desc: 'For serious fitness enthusiasts who want results', pop: true, feats: ['All 50+ programs', 'Advanced progress tracking', 'Unlimited live classes', '4 trainer sessions/month', 'Basic nutrition meal plans'] },
+          'Elite': { price: 5999, desc: 'Elite coaching for complete transformation', pop: false, feats: ['Everything in Pro', 'Unlimited trainer sessions', '1-on-1 personal coaching', 'Custom workout programs', 'Personalized meal plans'] }
+        };
+
+        function openSubModal(planName) {
+          const plan = plans[planName];
+          document.getElementById('subModalName').innerText = planName + ' Plan';
+          document.getElementById('subModalPrice').innerText = plan.price;
+          document.getElementById('subModalTotal').innerText = plan.price;
+          document.getElementById('subModalDesc').innerText = plan.desc;
+          document.getElementById('subModalBadge').style.display = plan.pop ? 'block' : 'none';
+          
+          const fList = document.getElementById('subModalFeatures');
+          fList.innerHTML = '';
+          plan.feats.forEach(f => fList.innerHTML += `<li><i class="fas fa-check"></i> ${f}</li>`);
+          
+          document.querySelectorAll('.modal-comp-table tr').forEach(row => {
+            row.querySelectorAll('td, th').forEach(cell => cell.style.background = '');
+            const idx = planName === 'Starter' ? 1 : (planName === 'Pro' ? 2 : 3);
+            if(row.children[idx]) row.children[idx].style.background = 'rgba(106,92,255,0.15)';
+          });
+
+          document.getElementById('subModalSetup').style.display = 'block';
+          document.getElementById('subModalConfirm').style.display = 'none';
+          document.getElementById('subModal').classList.add('active');
+        }
+
+        function closeSubModal() { document.getElementById('subModal').classList.remove('active'); }
+
+        function confirmSub() {
+          document.getElementById('subModalSetup').style.display = 'none';
+          document.getElementById('subModalConfirm').style.display = 'block';
+          document.getElementById('confirmPlanName').innerText = document.getElementById('subModalName').innerText;
+          const date = new Date(); date.setMonth(date.getMonth() + 1);
+          document.getElementById('nextBillingDate').innerText = date.toLocaleDateString();
+        }
+
+        document.querySelectorAll('.payment-opt').forEach(opt => {
+          opt.addEventListener('click', function() {
+            document.querySelectorAll('.payment-opt').forEach(o => o.classList.remove('active'));
+            this.classList.add('active');
+            this.querySelector('input').checked = true;
+          });
+        });
+    </script>
+
+<!-- SUBSCRIPTION MODAL -->
+<div id="subModal" class="modal-overlay">
+  <div class="sub-modal-content">
+    <button class="modal-close" onclick="closeSubModal()"><i class="fas fa-times"></i></button>
+    <div id="subModalSetup">
+      <div class="modal-header-sec">
+        <div id="subModalBadge" class="plan-hot" style="position:relative;top:0;left:0;transform:none;margin-bottom:10px;display:none;width:fit-content;background:var(--accent);padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;">MOST POPULAR</div>
+        <h2 id="subModalName">Pro Plan</h2>
+        <div class="plan-price"><span style="font-size:1.2rem;">₹</span><span id="subModalPrice" style="font-size:1.8rem;font-weight:900;">2499</span><span style="font-size:0.8rem;font-weight:500;color:var(--muted);">/mo</span></div>
+        <p id="subModalDesc">For serious fitness enthusiasts who want results</p>
+      </div>
+
+      <div class="modal-body-sec">
+        <h3 class="modal-section-title" style="margin-top:0;">Included Features</h3>
+        <ul id="subModalFeatures" class="modal-features"></ul>
+
+        <h3 class="modal-section-title">Compare Plans</h3>
+        <table class="modal-comp-table">
+          <thead><tr><th>Program</th><th>Starter</th><th>Pro</th><th>Elite</th></tr></thead>
+          <tbody>
+            <tr id="compRow1"><td>Live Sessions</td><td>2/wk</td><td>Unlimited</td><td>Unlimited</td></tr>
+            <tr id="compRow2"><td>Nutrition</td><td><i class="fas fa-times" style="color:#ef4444;"></i></td><td>Basic</td><td>Custom</td></tr>
+            <tr id="compRow3"><td>1-on-1 Coach</td><td><i class="fas fa-times" style="color:#ef4444;"></i></td><td><i class="fas fa-times" style="color:#ef4444;"></i></td><td><i class="fas fa-check" style="color:#00e676;"></i></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="modal-section-title">Payment Method</h3>
+        <div class="payment-grid" id="paymentGrid">
+          <label class="payment-opt active"><input type="radio" name="paymethod" value="card" checked><i class="far fa-credit-card" style="font-size:1.5rem;margin-bottom:5px;"></i> Card</label>
+          <label class="payment-opt"><input type="radio" name="paymethod" value="upi"><i class="fas fa-qrcode" style="font-size:1.5rem;margin-bottom:5px;"></i> UPI</label>
+          <label class="payment-opt"><input type="radio" name="paymethod" value="gpay"><i class="fab fa-google-pay" style="font-size:1.5rem;margin-bottom:5px;"></i> GPay</label>
+        </div>
+
+        <div class="payment-summary">
+          <span>Total Billed Today:</span> <span style="color:var(--accent);">₹<span id="subModalTotal">2499</span>.00</span>
+        </div>
+        <button class="btn-primary" onclick="confirmSub()" style="width:100%;margin-top:15px;padding:12px;font-size:0.95rem;background:var(--accent);border:none;border-radius:10px;color:#fff;cursor:pointer;"><i class="fas fa-lock" style="margin-right:8px;"></i> Subscribe Now</button>
+      </div>
+    </div>
+    <div id="subModalConfirm" style="display:none; text-align:center; padding: 60px 40px;">
+       <i class="fas fa-check-circle" style="font-size:5rem;color:#00e676;margin-bottom:20px;"></i>
+       <h2 style="font-size:1.8rem;margin-bottom:10px;">Your plan has been activated successfully.</h2>
+       <p style="color:var(--muted);font-size:1.1rem;">Plan: <strong id="confirmPlanName" style="color:#fff;">Pro</strong></p>
+       <p style="color:var(--muted);font-size:1.1rem;margin-top:5px;">Next billing date: <strong style="color:#fff;"><span id="nextBillingDate"></span></strong></p>
+       <a href="dashboard.html" class="btn-primary" style="display:inline-block;margin-top:30px;padding:12px 30px;background:var(--accent);text-decoration:none;color:#fff;border-radius:10px;">Go to Dashboard</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

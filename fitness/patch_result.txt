@@ -1,0 +1,2 @@
+SUCCESS: views.py updated. New size: 25991 chars
+Replaced chars 13062-16775

@@ -1,0 +1,1120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Ultimate Admin</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'core/css/admin.css' %}">
+</head>
+
+<body>
+    <!-- Background overlay elements for extra depth -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <div class="layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass" data-aos="fade-right" data-aos-duration="1000">
+            <div class="brand">
+                <div class="logo-icon glow-pulse">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h1>Fit<span class="text-gradient">Quest</span></h1>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-target="dashboard">
+                    <i class="fas fa-cube"></i> <span>Dashboard</span>
+                </button>
+                <button class="nav-btn" data-target="users">
+                    <i class="fas fa-users"></i> <span>Users</span>
+                </button>
+                <button class="nav-btn" data-target="workouts">
+                    <i class="fas fa-robot"></i> <span>AI Workouts</span>
+                </button>
+                <button class="nav-btn" data-target="exercises">
+                    <i class="fas fa-video"></i> <span>Exercises</span>
+                </button>
+                <button class="nav-btn" data-target="diet">
+                    <i class="fas fa-utensils"></i> <span>Nutrition</span>
+                </button>
+                <button class="nav-btn" data-target="gamification">
+                    <i class="fas fa-trophy"></i> <span>Gamification</span>
+                </button>
+                <button class="nav-btn" data-target="community">
+                    <i class="fas fa-users-rays"></i> <span>Community</span>
+                </button>
+                <button class="nav-btn" data-target="analytics">
+                    <i class="fas fa-chart-pie"></i> <span>Analytics</span>
+                </button>
+                <button class="nav-btn" data-target="smartlab">
+                    <i class="fas fa-brain"></i> <span>Smart Lab</span>
+                </button>
+                <button class="nav-btn" data-target="settings">
+                    <i class="fas fa-cog"></i> <span>Settings</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="{% url 'login' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> <span>Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="topbar glass" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200">
+                <div class="search-box glass">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search anything...">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn glass hover-glow"><i class="fas fa-bell"></i><span
+                            class="badge">3</span></button>
+                    <div class="profile-menu glass hover-glow">
+                        <img src="https://ui-avatars.com/api/?name=Admin+X&background=ff3e6c&color=fff" alt="Admin">
+                        <div class="profile-info">
+                            <span class="name">Admin Elite</span>
+                            <span class="role">Superuser</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-container">
+
+                <!-- View: Dashboard -->
+                <section id="dashboard" class="view-section active">
+                    <div class="welcome-banner glass" data-aos="fade-down">
+                        <div class="banner-content">
+                            <h2>Welcome back, <span class="text-gradient">Admin Elite</span>!</h2>
+                            <p>Here's what's happening with cult.fit today.</p>
+                            <div class="banner-actions">
+                                <button class="btn-gradient small"><i class="fas fa-magic"></i> Generate Report</button>
+                                <button class="btn-outline small"><i class="fas fa-plus"></i> New Campaign</button>
+                            </div>
+                        </div>
+                        <div class="banner-image">
+                            <!-- Hero graphic or 3D block goes here -->
+                            <i class="fas fa-chart-line" style="font-size: 80px; color: rgba(255,255,255,0.1);"></i>
+                        </div>
+                    </div>
+
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Overview <span class="text-gradient">Metrics</span></h2>
+                        <p>Real-time pulse of your fitness empire.</p>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card glass tilt" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="stat-icon var-cyan"><i class="fas fa-users"></i></div>
+                            <div class="stat-details">
+                                <h3>Total Members</h3>
+                                <div class="stat-value"><span class="counter" data-target="24592">0</span></div>
+                                <div class="stat-trend positive"><i class="fas fa-arrow-up"></i> 12.5%</div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass tilt" data-aos="zoom-in" data-aos-delay="200">
+                            <div class="stat-icon var-purple"><i class="fas fa-dumbbell"></i></div>
+                            <div class="stat-details">
+                                <h3>Active Sessions</h3>
+                                <div class="stat-value"><span class="counter" data-target="1843">0</span></div>
+                                <div class="stat-trend positive"><i class="fas fa-arrow-up"></i> 8.2%</div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass tilt" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="stat-icon var-orange"><i class="fas fa-fire-alt"></i></div>
+                            <div class="stat-details">
+                                <h3>Calories Burned</h3>
+                                <div class="stat-value"><span class="counter" data-target="850">0</span>M</div>
+                                <div class="stat-trend positive"><i class="fas fa-arrow-up"></i> 24.1%</div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass tilt" data-aos="zoom-in" data-aos-delay="400">
+                            <div class="stat-icon var-green"><i class="fas fa-wallet"></i></div>
+                            <div class="stat-details">
+                                <h3>Revenue (MRR)</h3>
+                                <div class="stat-value">$<span class="counter" data-target="142">0</span>k</div>
+                                <div class="stat-trend positive"><i class="fas fa-arrow-up"></i> 15.3%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts & Activity -->
+                    <div class="dashboard-grid">
+                        <div class="chart-container glass" data-aos="fade-right" data-aos-delay="500">
+                            <div class="section-title">
+                                <h3>User Growth Metrics</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-outline small active">7D</button>
+                                    <button class="btn-outline small">1M</button>
+                                    <button class="btn-outline small">1Y</button>
+                                </div>
+                            </div>
+                            <div style="position: relative; height:320px; width:100%">
+                                <canvas id="growthChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="activity-container glass" data-aos="fade-left" data-aos-delay="600">
+                            <div class="section-title">
+                                <h3>Live Feed</h3>
+                            </div>
+                            <div class="activity-feed">
+                                <div class="feed-item">
+                                    <div class="feed-icon var-cyan"><i class="fas fa-user-plus"></i></div>
+                                    <div class="feed-content">
+                                        <p><strong>Sarah L.</strong> joined Elite Plan</p>
+                                        <span>2 mins ago</span>
+                                    </div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon var-purple"><i class="fas fa-trophy"></i></div>
+                                    <div class="feed-content">
+                                        <p><strong>Mike D.</strong> unlocked 'Iron Man' logic</p>
+                                        <span>15 mins ago</span>
+                                    </div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon var-orange"><i class="fas fa-store"></i></div>
+                                    <div class="feed-content">
+                                        <p><strong>Anna K.</strong> purchased Premium Whey</p>
+                                        <span>1 hour ago</span>
+                                    </div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon var-green"><i class="fas fa-check-circle"></i></div>
+                                    <div class="feed-content">
+                                        <p>System backup completed successfully</p>
+                                        <span>3 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Users -->
+                <section id="users" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Manage <span class="text-gradient">Members</span></h2>
+                        <div class="banner-actions">
+                            <button class="btn-outline small"><i class="fas fa-filter"></i> Filters</button>
+                            <button class="btn-gradient hover-glow"><i class="fas fa-plus"></i> Add User</button>
+                        </div>
+                    </div>
+
+                    <!-- User Sub-Stats -->
+                    <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 25px;">
+                        <div class="stat-card glass tilt" data-aos="zoom-in" data-aos-delay="100"
+                            style="padding: 15px 20px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <h3 style="color:var(--text-dim); font-size: 13px;">New This Week</h3>
+                                    <div class="stat-value" style="font-size: 24px; color:var(--cyan);">+142</div>
+                                </div>
+                                <div class="stat-icon var-cyan"
+                                    style="width: 40px; height: 40px; font-size: 16px; margin: 0;"><i
+                                        class="fas fa-user-plus"></i></div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass tilt" data-aos="zoom-in" data-aos-delay="200"
+                            style="padding: 15px 20px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <h3 style="color:var(--text-dim); font-size: 13px;">Active Now</h3>
+                                    <div class="stat-value" style="font-size: 24px; color:var(--green);">890</div>
+                                </div>
+                                <div class="stat-icon var-green"
+                                    style="width: 40px; height: 40px; font-size: 16px; margin: 0;"><i
+                                        class="fas fa-fire"></i></div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass tilt" data-aos="zoom-in" data-aos-delay="300"
+                            style="padding: 15px 20px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <h3 style="color:var(--text-dim); font-size: 13px;">Churn Rate</h3>
+                                    <div class="stat-value" style="font-size: 24px; color:var(--red);">2.4%</div>
+                                </div>
+                                <div class="stat-icon var-purple"
+                                    style="width: 40px; height: 40px; font-size: 16px; margin: 0;"><i
+                                        class="fas fa-user-minus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="glass"
+                        style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 15px; margin-bottom: 20px;"
+                        data-aos="fade-up" data-aos-delay="400">
+                        <div class="search-box" style="width: 400px; background: rgba(0,0,0,0.3);">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by name, email, or ID...">
+                        </div>
+                        <div style="display: flex; gap: 15px;">
+                            <select
+                                style="background: rgba(0,0,0,0.3); border: 1px solid var(--color-border); padding: 10px 15px; border-radius: 10px; color: #fff; font-family: Inter; outline: none; cursor: pointer;">
+                                <option value="all">Plan: All</option>
+                                <option value="elite">Plan: Elite</option>
+                                <option value="pro">Plan: Pro</option>
+                                <option value="basic">Plan: Basic</option>
+                            </select>
+                            <select
+                                style="background: rgba(0,0,0,0.3); border: 1px solid var(--color-border); padding: 10px 15px; border-radius: 10px; color: #fff; font-family: Inter; outline: none; cursor: pointer;">
+                                <option value="active">Status: Active</option>
+                                <option value="inactive">Status: Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="glass table-container" data-aos="fade-up" data-aos-delay="500">
+                        <table class="wow-table">
+                            <thead>
+                                <tr>
+                                    <th>Member Profile</th>
+                                    <th>Status</th>
+                                    <th>Plan & LTV</th>
+                                    <th>Goal Progress</th>
+                                    <th>Last Seen</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <div style="position: relative;">
+                                                <img src="https://ui-avatars.com/api/?name=Alex+M&background=ff3e6c&color=fff"
+                                                    alt="user">
+                                                <div
+                                                    style="position: absolute; bottom:-2px; right:-2px; width:12px; height:12px; background:var(--green); border-radius:50%; border:2px solid var(--color-bg);">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4>Alex Mercer</h4>
+                                                <span>alex@cult.fit</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge-status active">Online</span></td>
+                                    <td>
+                                        <div style="font-weight: 600; color: var(--cyan);">Elite Plan</div>
+                                        <div style="font-size: 12px; color: var(--color-text-secondary);">$1,240 LTV
+                                        </div>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px;">
+                                            <span>Weight Loss</span><span>85%</span>
+                                        </div>
+                                        <div
+                                            style="background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; overflow: hidden;">
+                                            <div
+                                                style="width: 85%; height: 100%; background: var(--gradient-primary); box-shadow: 0 0 10px var(--cyan);">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="color: var(--color-text-secondary); font-size: 13px;">Right now</td>
+                                    <td>
+                                        <button class="action-btn edit" title="Edit User"><i
+                                                class="fas fa-pen"></i></button>
+                                        <button class="action-btn edit" title="View Metrics"><i
+                                                class="fas fa-chart-bar"></i></button>
+                                        <button class="action-btn delete" title="Suspend"><i
+                                                class="fas fa-ban"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <div style="position: relative;">
+                                                <img src="https://ui-avatars.com/api/?name=Emma+W&background=a78bfa&color=fff"
+                                                    alt="user">
+                                                <div
+                                                    style="position: absolute; bottom:-2px; right:-2px; width:12px; height:12px; background:var(--red); border-radius:50%; border:2px solid var(--color-bg);">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4>Emma Watson</h4>
+                                                <span>emma@example.com</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge-status inactive"
+                                            style="color: var(--red); background: rgba(248,113,113,0.15); border-color: rgba(248,113,113,0.3);">Offline</span>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight: 600; color: var(--purple);">Pro Plan</div>
+                                        <div style="font-size: 12px; color: var(--color-text-secondary);">$450 LTV</div>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px;">
+                                            <span>Muscle Gain</span><span>32%</span>
+                                        </div>
+                                        <div
+                                            style="background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; overflow: hidden;">
+                                            <div
+                                                style="width: 32%; height: 100%; background: var(--purple); box-shadow: 0 0 10px var(--purple);">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="color: var(--color-text-secondary); font-size: 13px;">2 days ago</td>
+                                    <td>
+                                        <button class="action-btn edit"><i class="fas fa-pen"></i></button>
+                                        <button class="action-btn edit"><i class="fas fa-chart-bar"></i></button>
+                                        <button class="action-btn delete"><i class="fas fa-ban"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <div style="position: relative;">
+                                                <img src="https://ui-avatars.com/api/?name=David+C&background=fb923c&color=fff"
+                                                    alt="user">
+                                                <div
+                                                    style="position: absolute; bottom:-2px; right:-2px; width:12px; height:12px; background:var(--color-text-secondary); border-radius:50%; border:2px solid var(--color-bg);">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4>David Chen</h4>
+                                                <span>david.c@demo.net</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge-status inactive">Away</span></td>
+                                    <td>
+                                        <div style="font-weight: 600; color: #fff;">Basic Plan</div>
+                                        <div style="font-size: 12px; color: var(--color-text-secondary);">$120 LTV</div>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px;">
+                                            <span>Flexibility</span><span>60%</span>
+                                        </div>
+                                        <div
+                                            style="background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; overflow: hidden;">
+                                            <div
+                                                style="width: 60%; height: 100%; background: var(--orange); box-shadow: 0 0 10px var(--orange);">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="color: var(--color-text-secondary); font-size: 13px;">4 hours ago</td>
+                                    <td>
+                                        <button class="action-btn edit"><i class="fas fa-pen"></i></button>
+                                        <button class="action-btn edit"><i class="fas fa-chart-bar"></i></button>
+                                        <button class="action-btn delete"><i class="fas fa-ban"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Pagination -->
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 20px 15px 5px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 10px;">
+                            <span style="color: var(--color-text-secondary); font-size: 13px;">Showing 1-3 of
+                                24,592</span>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="action-btn edit"
+                                    style="width: auto; padding: 0 15px; background: rgba(0,0,0,0.3); color: var(--color-text-secondary);">Previous</button>
+                                <button class="action-btn edit"
+                                    style="width: 35px; background: var(--gradient-primary); box-shadow: 0 0 10px rgba(0,242,254,0.3);">1</button>
+                                <button class="action-btn edit"
+                                    style="width: 35px; background: rgba(0,0,0,0.3);">2</button>
+                                <button class="action-btn edit"
+                                    style="width: 35px; background: rgba(0,0,0,0.3);">3</button>
+                                <span
+                                    style="color: var(--color-text-secondary); display:flex; align-items:flex-end;">...</span>
+                                <button class="action-btn edit"
+                                    style="width: auto; padding: 0 15px; background: rgba(0,0,0,0.3);">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: AI Workouts & Progression Engine -->
+                <section id="workouts" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>AI <span class="text-gradient">Logic Engine</span></h2>
+                        <p>Manage the algorithm that matches workouts to age, weight, height, and goals.</p>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="glass" data-aos="fade-right" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px; font-weight: 600;"><i class="fas fa-cogs"
+                                    style="color:var(--cyan); margin-right: 10px;"></i> Algorithm Tiers</h3>
+
+                            <div class="feed-item" style="margin-bottom: 15px;">
+                                <div class="feed-icon var-green"><i class="fas fa-seedling"></i></div>
+                                <div class="feed-content">
+                                    <p><strong>Beginner Logic</strong></p>
+                                    <span>Assigns simple exercises, heavy instruction.</span>
+                                </div>
+                                <button class="btn-outline small">Edit Rules</button>
+                            </div>
+                            <div class="feed-item" style="margin-bottom: 15px;">
+                                <div class="feed-icon var-orange"><i class="fas fa-walking"></i></div>
+                                <div class="feed-content">
+                                    <p><strong>Intermediate Logic</p>
+                                    <span>Assigns medium intensity, progressive overload.</span>
+                                </div>
+                                <button class="btn-outline small">Edit Rules</button>
+                            </div>
+                            <div class="feed-item">
+                                <div class="feed-icon var-red"
+                                    style="color:var(--red); background:rgba(248,113,113,0.1);"><i
+                                        class="fas fa-dumbbell"></i></div>
+                                <div class="feed-content">
+                                    <p><strong>Advanced Logic</strong></p>
+                                    <span>Assigns heavy workouts, low rest periods.</span>
+                                </div>
+                                <button class="btn-outline small">Edit Rules</button>
+                            </div>
+                        </div>
+
+                        <!-- User Detail Mockup / Progress Chart -->
+                        <div class="glass" data-aos="fade-left" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px; font-weight: 600;">Sample User Progression <span
+                                    style="font-size: 12px; color:var(--text-dim);">(Weight Loss Goal)</span></h3>
+                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                <div
+                                    style="background: rgba(0,242,254,0.1); padding: 10px; border-radius: 10px; flex: 1; text-align: center;">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--cyan);">185<span
+                                            style="font-size:12px;">lbs</span></div>
+                                    <div style="font-size: 11px; color: var(--text-dim);">Start Weight</div>
+                                </div>
+                                <div
+                                    style="background: rgba(74,222,128,0.1); padding: 10px; border-radius: 10px; flex: 1; text-align: center;">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--green);">172<span
+                                            style="font-size:12px;">lbs</span></div>
+                                    <div style="font-size: 11px; color: var(--text-dim);">Current</div>
+                                </div>
+                                <div
+                                    style="background: rgba(167,139,250,0.1); padding: 10px; border-radius: 10px; flex: 1; text-align: center;">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--purple);">14<span
+                                            style="font-size:12px;">days</span></div>
+                                    <div style="font-size: 11px; color: var(--text-dim);">Streak</div>
+                                </div>
+                            </div>
+                            <div
+                                style="position: relative; height: 150px; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                                <p style="text-align: center; color: var(--text-dim); font-size: 13px;">[Animated Weight
+                                    Progress Chart Rendered Here]</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Exercise Library -->
+                <section id="exercises" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Exercise <span class="text-gradient">Library</span></h2>
+                        <button class="btn-gradient hover-glow"><i class="fas fa-upload"></i> Upload Video Demo</button>
+                    </div>
+
+                    <div class="workout-grid">
+                        <div class="glass tilt" data-aos="zoom-in" data-aos-delay="100" style="padding: 15px;">
+                            <div
+                                style="height: 150px; background: #000; border-radius: 10px; position: relative; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fas fa-play-circle"
+                                    style="font-size: 40px; color: var(--cyan); box-shadow: 0 0 20px var(--cyan); border-radius: 50%;"></i>
+                                <span
+                                    style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); padding: 3px 8px; border-radius: 5px; font-size: 11px;">0:15
+                                    Demo</span>
+                            </div>
+                            <h3 style="font-size: 18px; margin-bottom: 5px;">Perfect Push-Up</h3>
+                            <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 10px;">Highlights: <span
+                                    style="color: var(--orange);">Chest, Triceps, Shoulders</span></p>
+                            <button class="btn-outline small" style="width: 100%;">Edit Instructions</button>
+                        </div>
+                        <div class="glass tilt" data-aos="zoom-in" data-aos-delay="200" style="padding: 15px;">
+                            <div
+                                style="height: 150px; background: #000; border-radius: 10px; position: relative; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fas fa-play-circle"
+                                    style="font-size: 40px; color: var(--purple); box-shadow: 0 0 20px var(--purple); border-radius: 50%;"></i>
+                            </div>
+                            <h3 style="font-size: 18px; margin-bottom: 5px;">Plank form</h3>
+                            <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 10px;">Highlights: <span
+                                    style="color: var(--orange);">Core, Lower Back</span></p>
+                            <button class="btn-outline small" style="width: 100%;">Edit Instructions</button>
+                        </div>
+                        <div class="glass tilt" data-aos="zoom-in" data-aos-delay="300" style="padding: 15px;">
+                            <div
+                                style="height: 150px; background: #000; border-radius: 10px; position: relative; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fas fa-play-circle"
+                                    style="font-size: 40px; color: var(--green); box-shadow: 0 0 20px var(--green); border-radius: 50%;"></i>
+                            </div>
+                            <h3 style="font-size: 18px; margin-bottom: 5px;">Goblet Squat</h3>
+                            <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 10px;">Highlights: <span
+                                    style="color: var(--orange);">Quads, Glutes</span></p>
+                            <button class="btn-outline small" style="width: 100%;">Edit Instructions</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Diet Plans -->
+                <section id="diet" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Nutrition <span class="text-gradient">Engine</span></h2>
+                        <button class="btn-gradient hover-glow"><i class="fas fa-plus"></i> New Diet Generator</button>
+                    </div>
+                    <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 25px;">
+                        <div class="glass" style="padding: 15px; text-align: center;"><i class="fas fa-calculator"
+                                style="font-size: 24px; color: var(--cyan); margin-bottom:10px;"></i>
+                            <h4>Calorie Calculator</h4>
+                        </div>
+                        <div class="glass" style="padding: 15px; text-align: center;"><i class="fas fa-utensils"
+                                style="font-size: 24px; color: var(--orange); margin-bottom:10px;"></i>
+                            <h4>Meal Suggestions</h4>
+                        </div>
+                        <div class="glass" style="padding: 15px; text-align: center;"><i class="fas fa-drumstick-bite"
+                                style="font-size: 24px; color: var(--red); margin-bottom:10px;"></i>
+                            <h4>Protein Tracker</h4>
+                        </div>
+                        <div class="glass" style="padding: 15px; text-align: center;"><i class="fas fa-tint"
+                                style="font-size: 24px; color: var(--cyan); margin-bottom:10px;"></i>
+                            <h4>Water Reminders</h4>
+                        </div>
+                    </div>
+                    <div class="workout-grid">
+                        <div class="workout-card glass tilt" data-aos="fade-up" data-aos-delay="100">
+                            <div class="workout-image"
+                                style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=500&q=80'); background-size: cover;">
+                                <span class="difficulty easy">Weight Loss</span>
+                            </div>
+                            <div class="workout-info">
+                                <h3>Ketogenic Core</h3>
+                                <p>High Fat • Low Carb • 4 Weeks</p>
+                                <button class="btn-outline">Edit Macros</button>
+                            </div>
+                        </div>
+                        <div class="workout-card glass tilt" data-aos="fade-up" data-aos-delay="200">
+                            <div class="workout-image"
+                                style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80'); background-size: cover;">
+                                <span class="difficulty medium">Muscle Gain</span>
+                            </div>
+                            <div class="workout-info">
+                                <h3>Protein Power</h3>
+                                <p>High Protein • Surplus • 8 Weeks</p>
+                                <button class="btn-outline">Edit Macros</button>
+                            </div>
+                        </div>
+                        <div class="workout-card glass tilt" data-aos="fade-up" data-aos-delay="300">
+                            <div class="workout-image"
+                                style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80'); background-size: cover;">
+                                <span class="difficulty hard">Maintenance</span>
+                            </div>
+                            <div class="workout-info">
+                                <h3>Balanced Vegan</h3>
+                                <p>Plant-based • Macro Balanced • Ongoing</p>
+                                <button class="btn-outline">Edit Macros</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Gamification -->
+                <section id="gamification" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Gamification & <span class="text-gradient">Motivation</span></h2>
+                        <button class="btn-gradient hover-glow"><i class="fas fa-plus"></i> Add Challenge</button>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="glass" data-aos="zoom-in" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px;"><i class="fas fa-medal"
+                                    style="color: gold; margin-right: 10px;"></i> Global Leaderboard</h3>
+                            <table class="wow-table">
+                                <tr>
+                                    <td>1. <img src="https://ui-avatars.com/api/?name=Sam+X"
+                                            style="width:25px; border-radius:50%; vertical-align:middle; margin-left:10px;">
+                                        Sam X.</td>
+                                    <td style="color:var(--cyan); font-weight:bold;">12,500 pts</td>
+                                </tr>
+                                <tr>
+                                    <td>2. <img src="https://ui-avatars.com/api/?name=Emma+W"
+                                            style="width:25px; border-radius:50%; vertical-align:middle; margin-left:10px;">
+                                        Emma W.</td>
+                                    <td style="color:var(--cyan); font-weight:bold;">11,200 pts</td>
+                                </tr>
+                                <tr>
+                                    <td>3. <img src="https://ui-avatars.com/api/?name=Alex+M"
+                                            style="width:25px; border-radius:50%; vertical-align:middle; margin-left:10px;">
+                                        Alex M.</td>
+                                    <td style="color:var(--cyan); font-weight:bold;">10,800 pts</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="glass" data-aos="fade-left" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px;"><i class="fas fa-certificate"
+                                    style="color:var(--orange); margin-right: 10px;"></i> Achievements Setup</h3>
+                            <div class="feed-item" style="background: rgba(0,0,0,0.4);">
+                                <div class="feed-icon"
+                                    style="background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff;"><i
+                                        class="fas fa-fire"></i></div>
+                                <div class="feed-content">
+                                    <p><strong>7-Day Streak Badge</strong></p>
+                                    <span>Reward: 500 points</span>
+                                </div>
+                            </div>
+                            <div class="feed-item" style="background: rgba(0,0,0,0.4); margin-top: 10px;">
+                                <div class="feed-icon"
+                                    style="background: linear-gradient(135deg, #ff3e6c, #4facfe); color: #fff;"><i
+                                        class="fas fa-burn"></i></div>
+                                <div class="feed-content">
+                                    <p><strong>10k Calories Burned</strong></p>
+                                    <span>Reward: 1,500 points & Blue Aura</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Community -->
+                <section id="community" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Supercharge <span class="text-gradient">Community</span></h2>
+                        <button class="btn-gradient hover-glow"><i class="fas fa-users-cog"></i> Manage Groups</button>
+                    </div>
+                    <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="glass" data-aos="fade-right" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px; font-weight:600;"><i class="fas fa-comments"
+                                    style="color:var(--cyan); margin-right:8px;"></i> Live Social Feed</h3>
+                            <div
+                                style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--purple);">
+                                <p style="font-size: 14px; margin-bottom: 10px;"><strong>Alex M.</strong> just completed
+                                    <span style="color: var(--cyan);">Spartan Core</span>!
+                                </p>
+                                <div style="display: flex; gap: 15px; font-size: 12px; color: var(--text-dim);">
+                                    <span><i class="fas fa-heart" style="color: var(--red);"></i> 24 Likes</span>
+                                    <span><i class="fas fa-comment"></i> 5 Comments</span>
+                                    <span style="color: var(--orange);">🔥 Challenge Sent!</span>
+                                </div>
+                            </div>
+                            <div
+                                style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--green);">
+                                <p style="font-size: 14px; margin-bottom: 10px;"><strong>Emma W.</strong> formed the
+                                    group <span style="color: var(--green);">"Morning Riser Yogis"</span></p>
+                                <div style="display: flex; gap: 15px; font-size: 12px; color: var(--text-dim);">
+                                    <span><i class="fas fa-users"></i> 14 members joined</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass" data-aos="fade-left" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px; font-weight:600;"><i class="fas fa-share-alt"
+                                    style="color:var(--purple); margin-right:8px;"></i> Engagement Tools</h3>
+                            <button class="btn-outline" style="width: 100%; margin-bottom: 15px; text-align: left;"><i
+                                    class="fas fa-bullhorn" style="width:25px;"></i> Broadcast Challenge to All</button>
+                            <button class="btn-outline" style="width: 100%; margin-bottom: 15px; text-align: left;"><i
+                                    class="fas fa-comments" style="width:25px;"></i> Moderate Comments</button>
+                            <button class="btn-outline" style="width: 100%; margin-bottom: 15px; text-align: left;"><i
+                                    class="fas fa-handshake" style="width:25px;"></i> View PvP Challenges</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Analytics -->
+                <section id="analytics" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Deep <span class="text-gradient">Analytics</span></h2>
+                        <div class="banner-actions">
+                            <button class="btn-outline small active">Weekly</button>
+                            <button class="btn-outline small">Monthly</button>
+                            <button class="btn-gradient small"><i class="fas fa-download"></i> Export CSV</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="chart-container glass" data-aos="fade-right" data-aos-delay="200">
+                            <div class="section-title">
+                                <h3>Revenue vs Expenses</h3>
+                            </div>
+                            <div style="position: relative; height:320px; width:100%">
+                                <canvas id="financeChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="activity-container glass" data-aos="fade-left" data-aos-delay="300">
+                            <div class="section-title">
+                                <h3>Top Performing Plans</h3>
+                            </div>
+                            <div class="activity-feed">
+                                <div class="feed-item">
+                                    <div class="feed-icon var-cyan"><i class="fas fa-fire"></i></div>
+                                    <div class="feed-content" style="width: 100%;">
+                                        <div style="display:flex; justify-content:space-between; margin-bottom: 5px;">
+                                            <p><strong>Spartan Core (Workout)</strong></p>
+                                            <span style="color:var(--cyan); font-weight:bold;">45%</span>
+                                        </div>
+                                        <div
+                                            style="background:rgba(255,255,255,0.1); height:8px; border-radius:4px; overflow:hidden;">
+                                            <div style="width:45%; height:100%; background:var(--cyan);"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon var-purple"><i class="fas fa-utensils"></i></div>
+                                    <div class="feed-content" style="width: 100%;">
+                                        <div style="display:flex; justify-content:space-between; margin-bottom: 5px;">
+                                            <p><strong>Protein Power (Diet)</strong></p>
+                                            <span style="color:var(--purple); font-weight:bold;">32%</span>
+                                        </div>
+                                        <div
+                                            style="background:rgba(255,255,255,0.1); height:8px; border-radius:4px; overflow:hidden;">
+                                            <div style="width:32%; height:100%; background:var(--purple);"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon var-orange"><i class="fas fa-users"></i></div>
+                                    <div class="feed-content" style="width: 100%;">
+                                        <div style="display:flex; justify-content:space-between; margin-bottom: 5px;">
+                                            <p><strong>1-on-1 Coaching</strong></p>
+                                            <span style="color:var(--orange); font-weight:bold;">18%</span>
+                                        </div>
+                                        <div
+                                            style="background:rgba(255,255,255,0.1); height:8px; border-radius:4px; overflow:hidden;">
+                                            <div style="width:18%; height:100%; background:var(--orange);"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Smart Lab -->
+                <section id="smartlab" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Smart <span class="text-gradient">AI Lab</span></h2>
+                        <button class="btn-gradient hover-glow"><i class="fas fa-fire"></i> Enable All Modules</button>
+                    </div>
+
+                    <!-- AI Feature Cards -->
+                    <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 25px;">
+                        <div class="stat-card glass tilt"
+                            style="padding: 20px; text-align: center; border-color: rgba(167, 139, 250, 0.3);"
+                            data-aos="zoom-in" data-aos-delay="100">
+                            <i class="fas fa-smile-beam"
+                                style="font-size: 35px; color: var(--purple); margin-bottom:15px; box-shadow: 0 0 20px rgba(167,139,250,0.5); border-radius: 50%;"></i>
+                            <h4 style="margin-bottom: 8px; font-size: 16px;">Mood-Based Training</h4>
+                            <p style="font-size: 13px; color: var(--text-dim);">Dynamically adjust user workout
+                                intensities based on daily emotion check-ins.</p>
+                        </div>
+                        <div class="stat-card glass tilt"
+                            style="padding: 20px; text-align: center; border-color: rgba(0, 242, 254, 0.3);"
+                            data-aos="zoom-in" data-aos-delay="200">
+                            <i class="fas fa-camera"
+                                style="font-size: 35px; color: var(--cyan); margin-bottom:15px; box-shadow: 0 0 20px rgba(0,242,254,0.5); border-radius: 50%;"></i>
+                            <h4 style="margin-bottom: 8px; font-size: 16px;">Posture Detection</h4>
+                            <p style="font-size: 13px; color: var(--text-dim);">Live camera vision API to correct user
+                                form (Squats, Deadlifts) in real-time.</p>
+                        </div>
+                        <div class="stat-card glass tilt"
+                            style="padding: 20px; text-align: center; border-color: rgba(251, 146, 60, 0.3);"
+                            data-aos="zoom-in" data-aos-delay="300">
+                            <i class="fas fa-clock"
+                                style="font-size: 35px; color: var(--orange); margin-bottom:15px; box-shadow: 0 0 20px rgba(251,146,60,0.5); border-radius: 50%;"></i>
+                            <h4 style="margin-bottom: 8px; font-size: 16px;">Smart Reminders</h4>
+                            <p style="font-size: 13px; color: var(--text-dim);">AI-scheduled push notifications for
+                                workouts, water, and sleep routines.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- Auto Plan Generator -->
+                        <div class="glass" data-aos="fade-right" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px; font-weight: 600;"><i class="fas fa-magic"
+                                    style="color:var(--cyan); margin-right: 10px;"></i> Auto-Plan Generator</h3>
+                            <div
+                                style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 12px; border: 1px solid var(--color-border); text-align: center;">
+                                <i class="fas fa-cogs glow-pulse"
+                                    style="font-size: 40px; color: var(--cyan); margin-bottom: 15px;"></i>
+                                <p style="font-size: 15px; margin-bottom: 20px; color: var(--text-secondary);">One-click
+                                    generation of 12-week customized plans. The algorithm analyzes user onboarding data
+                                    and spits out daily routines instantly.</p>
+                                <button class="btn-gradient" style="width: 100%;"><i class="fas fa-rocket"></i> Run
+                                    Generator Engine</button>
+                            </div>
+                        </div>
+
+                        <!-- Body Transformation Comparison -->
+                        <div class="glass" data-aos="fade-left" style="padding: 25px;">
+                            <h3 style="margin-bottom: 20px; font-weight: 600;"><i class="fas fa-user-check"
+                                    style="color:var(--green); margin-right: 10px;"></i> Transformation Vault</h3>
+                            <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 15px;">Review the
+                                highest-voted before & after photos submitted by users.</p>
+                            <div style="display: flex; gap: 15px;">
+                                <div style="flex: 1; position: relative;">
+                                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=300&q=80"
+                                        style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; filter: grayscale(40%);">
+                                    <span
+                                        style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 5px; font-size: 12px; font-weight: bold;">Day
+                                        1</span>
+                                </div>
+                                <div style="flex: 1; position: relative;">
+                                    <div
+                                        style="position: absolute; top: 0; bottom: 0; left: -10px; width: 5px; background: linear-gradient(to bottom, transparent, var(--cyan), transparent); z-index: 10;">
+                                    </div>
+                                    <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=300&q=80"
+                                        style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; border-left: 2px solid var(--cyan);">
+                                    <span
+                                        style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; color: var(--cyan);">Day
+                                        90</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button class="btn-outline small" style="flex: 1;"><i class="fas fa-star"
+                                        style="color: gold;"></i> Feature</button>
+                                <button class="btn-outline small" style="flex: 1;"><i class="fas fa-images"></i>
+                                    Vault</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Settings (Placeholder) -->
+                <section id="settings" class="view-section">
+                    <div class="view-header" data-aos="fade-up">
+                        <h2>Platform <span class="text-gradient">Settings</span></h2>
+                    </div>
+                    <div class="glass" style="padding: 40px; border-radius: 20px;" data-aos="fade-up">
+                        <form style="display: flex; flex-direction: column; gap: 20px; max-width: 500px;">
+                            <div class="form-group">
+                                <label style="display:block; margin-bottom:8px; color:var(--text-dim);">Studio
+                                    Name</label>
+                                <input type="text" value="cult.fit Premium"
+                                    style="width:100%; padding:15px; border-radius:10px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white; font-family:Inter; outline:none;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display:block; margin-bottom:8px; color:var(--text-dim);">Contact
+                                    Email</label>
+                                <input type="email" value="admin@cult.fit"
+                                    style="width:100%; padding:15px; border-radius:10px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white; font-family:Inter; outline:none;">
+                            </div>
+                            <button class="btn-gradient" style="margin-top: 10px;" type="button">Save Changes</button>
+                        </form>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+    <script>
+        // 1. Initialize Animate On Scroll
+        AOS.init({
+            once: true,
+            offset: 50,
+        });
+
+        // 2. Navigation Tab System (The "Open by click" fix)
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const viewSections = document.querySelectorAll('.view-section');
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active from all nav buttons
+                navBtns.forEach(b => b.classList.remove('active'));
+                // Add active to clicked nav button
+                btn.classList.add('active');
+
+                const targetId = btn.getAttribute('data-target');
+
+                // Hide all sections
+                viewSections.forEach(sec => {
+                    sec.classList.remove('active');
+                    sec.style.display = 'none'; // Ensure hide
+                });
+
+                // Show target section with a small delay for animation restart
+                const targetSec = document.getElementById(targetId);
+                targetSec.style.display = 'block';
+                setTimeout(() => {
+                    targetSec.classList.add('active');
+                    // Reset AOS animations for the newly visible section
+                    AOS.refreshHard();
+                }, 50);
+            });
+        });
+
+        // Ensure only dashboard is visible initially
+        viewSections.forEach(sec => {
+            if (sec.id !== 'dashboard') sec.style.display = 'none';
+        });
+
+        // 3. Initialize VanillaTilt for 3D wow effect
+        VanillaTilt.init(document.querySelectorAll(".tilt"), {
+            max: 15,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
+            scale: 1.05
+        });
+
+        // 4. Animated Counters logic
+        const initCounters = () => {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                counter.innerText = '0'; // reset
+
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    const inc = target / 40; // Adjust speed
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 25);
+                    } else {
+                        counter.innerText = target.toLocaleString();
+                    }
+                };
+
+                // Use Intersection Observer so it counts up when seen
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        updateCount();
+                        observer.unobserve(counter);
+                    }
+                });
+                observer.observe(counter);
+            });
+        };
+        initCounters();
+
+        // Re-run counters on nav click if going back to dashboard
+        navBtns[0].addEventListener('click', () => {
+            setTimeout(initCounters, 200);
+        });
+
+
+        // 5. Chart.js Implementation for Dashboard
+        const ctx = document.getElementById('growthChart').getContext('2d');
+
+        // Create Gradient for chart
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(0, 242, 254, 0.5)');
+        gradient.addColorStop(1, 'rgba(0, 242, 254, 0.0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'New Members',
+                    data: [120, 190, 300, 250, 400, 450, 600],
+                    borderColor: '#ff3e6c',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ff3e6c',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#ff3e6c',
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    fill: true,
+                    tension: 0.4 // Smooth curves
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#a0a0a0' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#a0a0a0' }
+                    }
+                },
+                animation: {
+                    y: {
+                        duration: 2000,
+                        easing: 'easeOutElastic'
+                    }
+                }
+            }
+        });
+
+        // 6. Secondary Chart for Analytics Tab
+        const ctx2 = document.getElementById('financeChart').getContext('2d');
+        const gradGreen = ctx2.createLinearGradient(0, 0, 0, 400);
+        gradGreen.addColorStop(0, 'rgba(74, 222, 128, 0.5)');
+        gradGreen.addColorStop(1, 'rgba(74, 222, 128, 0.0)');
+
+        const gradRed = ctx2.createLinearGradient(0, 0, 0, 400);
+        gradRed.addColorStop(0, 'rgba(248, 113, 113, 0.5)');
+        gradRed.addColorStop(1, 'rgba(248, 113, 113, 0.0)');
+
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [15000, 18000, 12000, 24000],
+                    backgroundColor: gradGreen,
+                    borderColor: '#4ade80',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }, {
+                    label: 'Expenses',
+                    data: [8000, 9000, 7500, 11000],
+                    backgroundColor: gradRed,
+                    borderColor: '#f87171',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#fff' } }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#a0a0a0' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#a0a0a0' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,323 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Fitness Training | FitX — Elevate Your Performance{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="{% static 'workout/css/fitness.css' %}">
+<style>
+    .hidden { display: none !important; }
+    /* Hero overlap fixes since we are using base layout */
+    .fitness-hero { margin-top: -72px; padding-top: 150px; }
+    [data-theme="light"] .fitness-nav { background: rgba(255,255,255,0.9); border-bottom-color: #eee; }
+    [data-theme="light"] .sub-btn { color: #555; }
+    [data-theme="light"] .sub-btn.active { color: #fff; }
+</style>
+{% endblock %}
+
+{% block content %}
+<main>
+    <!-- 1. HERO SECTION -->
+    <section class="fitness-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content" data-aos="zoom-out">
+            <span class="badge">ELEVATE YOUR GAME</span>
+            <h1>The Science of <span class="text-accent">Human Performance</span></h1>
+            <p>Master your physique with our laboratory-tested workout protocols. From hypertrophy to metabolic conditioning - choose your path.</p>
+            <div class="hero-stats">
+                <div class="stat"><span class="num">500+</span><label>EXERCISES</label></div>
+                <div class="stat"><span class="num">120+</span><label>PROGRAMS</label></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. WORKOUT CATEGORIES NAV -->
+    <div class="fitness-nav">
+        <div class="nav-container" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button class="sub-btn active" onclick="switchMainTab('strength', this)">Strength Training</button>
+            <button class="sub-btn" onclick="switchMainTab('cardio', this)">Cardio</button>
+            <button class="sub-btn" onclick="switchMainTab('hiit', this)">HIIT</button>
+            <button class="sub-btn" onclick="switchMainTab('yoga', this)">Yoga</button>
+            <button class="sub-btn" onclick="switchMainTab('home', this)">Home Workout</button>
+            <button class="sub-btn" onclick="switchMainTab('flexibility', this)">Flexibility & Mobility</button>
+        </div>
+    </div>
+
+    <!-- 3. STRENGTH TAB -->
+    <div id="strength" class="tab-content active">
+        <div class="c-header">
+            <div class="sub">Iron Paradise</div>
+            <h2>Sculpt. Build. Dominate.</h2>
+            <p>Our progressive overload systems are designed to maximize hypertrophy and raw strength.</p>
+        </div>
+        <div class="inner-tabs">
+            <button class="i-btn active" onclick="renderExercises('strength', 'beginner', this)">Beginner</button>
+            <button class="i-btn" onclick="renderExercises('strength', 'intermediate', this)">Intermediate</button>
+            <button class="i-btn" onclick="renderExercises('strength', 'advanced', this)">Pro / Advanced</button>
+        </div>
+        <div class="ex-grid" id="strengthGrid"></div>
+    </div>
+
+    <!-- 4. YOGA TAB -->
+    <div id="yoga" class="tab-content">
+        <div class="c-header">
+            <div class="sub">Inner Peace</div>
+            <h2>Flexibility & Focus</h2>
+            <p>Restore your body and mind with advanced Vinyasa and Hatha flows.</p>
+        </div>
+        <div class="ex-grid" id="yogaGrid"></div>
+    </div>
+
+    <!-- 5. HIIT TAB -->
+    <div id="hiit" class="tab-content">
+        <div class="c-header">
+            <div class="sub">Metabolic Blast</div>
+            <h2>Maximum Calorie Torch</h2>
+            <p>High-intensity intervals designed to boost your VO2 max and shred body fat.</p>
+        </div>
+        <div class="inner-tabs">
+            <button class="i-btn active" onclick="renderExercises('hiit', 'core', this)">Core HIIT</button>
+            <button class="i-btn" onclick="renderExercises('hiit', 'fullbody', this)">Full Body</button>
+        </div>
+        <div class="ex-grid" id="hiitGrid"></div>
+    </div>
+
+    <!-- 6. HOME TAB -->
+    <div id="home" class="tab-content">
+        <div class="c-header">
+            <div class="sub">At Home</div>
+            <h2>Zero Equipment Grind</h2>
+            <p>Professional workout routines you can perform anywhere, anytime.</p>
+        </div>
+        <div class="inner-tabs">
+            <button class="i-btn active" onclick="renderExercises('home', 'basics', this)">Bodyweight Basics</button>
+            <button class="i-btn" onclick="renderExercises('home', 'cardio', this)">Cardio Blast</button>
+        </div>
+        <div class="ex-grid" id="homeGrid"></div>
+    </div>
+
+    <!-- 7. HIIT TAB -->
+    <div id="hiit" class="tab-content">
+        <div class="c-header">
+            <div class="sub">Metabolic Blast</div>
+            <h2>Maximum Calorie Torch</h2>
+            <p>High-intensity intervals designed to shred fat and boost metabolism.</p>
+        </div>
+        <div class="inner-tabs" style="display: flex; justify-content: center; gap: 12px;">
+            <button class="i-btn active" onclick="renderExercises('hiit', 'core', this)">Core HIIT</button>
+            <button class="i-btn" onclick="renderExercises('hiit', 'fullbody', this)">Full Body</button>
+        </div>
+        <div class="ex-grid" id="hiitGrid"></div>
+    </div>
+
+    <!-- 8. CARDIO TAB -->
+    <div id="cardio" class="tab-content">
+        <div class="c-header">
+            <div class="sub">Endurance</div>
+            <h2>Heart & Stamina</h2>
+            <p>Improve your aerobic capacity with targeted cardio protocols.</p>
+        </div>
+        <div class="inner-tabs" style="display: flex; justify-content: center; gap: 12px;">
+            <button class="i-btn active" onclick="renderExercises('cardio', 'all', this)">All Levels</button>
+            <button class="i-btn" onclick="renderExercises('cardio', 'hiit', this)">Light HIIT</button>
+        </div>
+        <div class="ex-grid" id="cardioGrid"></div>
+    </div>
+
+    <!-- 9. FLEXIBILITY TAB -->
+    <div id="flexibility" class="tab-content">
+        <div class="c-header">
+            <div class="sub">Supple & Strong</div>
+            <h2>Mobility & Range</h2>
+            <p>Improve joint health and flexibility with guided movement flows.</p>
+        </div>
+        <div class="inner-tabs" style="display: flex; justify-content: center; gap: 12px;">
+            <button class="i-btn active" onclick="renderExercises('flexibility', 'all', this)">All Flows</button>
+            <button class="i-btn" onclick="renderExercises('flexibility', 'mobility', this)">Joint Mobility</button>
+        </div>
+        <div class="ex-grid" id="flexibilityGrid"></div>
+    </div>
+</main>
+
+<!-- EXERCISE DETAIL PAGE (DYNAMIC OVERLAY) -->
+<div id="exerciseDetailPage" class="ex-page">
+    <button class="ex-page-close" onclick="closeExerciseDetail()">
+        <i class="fas fa-arrow-left"></i> Back to Category
+    </button>
+    <div class="ex-page-container">
+        <div class="ex-main-content">
+            <div class="ex-video-wrap" id="detailVideo">
+                <iframe src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="ex-theory-card" style="margin-top: 40px; background: transparent; border: none; padding: 0;">
+                <h2 class="ex-section-title">Technique & Form</h2>
+                <div id="detailTheory"></div>
+                <h2 class="ex-section-title">Core Benefits</h2>
+                <ul class="ex-list benefits" id="detailBenefits"></ul>
+                <h2 class="ex-section-title">Common Mistakes</h2>
+                <ul class="ex-list mistakes" id="detailMistakes"></ul>
+            </div>
+        </div>
+        <div class="ex-sidebar">
+            <div class="ex-theory-card">
+                <h1 id="detailTitle">Exercise Name</h1>
+                <div class="ex-meta">
+                    <div class="ex-meta-item">
+                        <div class="ex-meta-label">Difficulty</div>
+                        <div class="ex-meta-val" id="detailDifficulty">Intermediate</div>
+                    </div>
+                    <div class="ex-meta-item">
+                        <div class="ex-meta-label">Burn</div>
+                        <div class="ex-meta-val" id="detailBurn">120 kcal</div>
+                    </div>
+                </div>
+                <div class="ex-meta">
+                    <div class="ex-meta-item" style="flex:1">
+                        <div class="ex-meta-label">Sets/Reps</div>
+                        <div class="ex-meta-val" id="detailReps">4 Sets • 12 Reps</div>
+                    </div>
+                </div>
+                <div style="margin-top: 25px; color: #888; font-size: 0.9rem; line-height: 1.6;" id="detailSummary">
+                    Detailed summary of the movement and focus points.
+                </div>
+                <div class="ex-nav-buttons" style="margin-top: 40px; border: none; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+                    <button id="sidebarAddRoutine" class="btn-next-ex" style="width: 100%; justify-content: center; background: var(--gradient); border: none; color: #fff; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; transition: all 0.2s;">
+                        <i class="fas fa-plus-circle"></i> Add to Routine
+                    </button>
+                    <button class="btn-next-ex" id="nextExBtn" style="width: 100%; justify-content: center;">
+                        Next Exercise <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    const workoutData = {{ workout_data_json|safe }};
+    let currentCat = '';
+    let currentType = '';
+    let currentExId = '';
+
+    function switchMainTab(id, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        const activeTab = document.getElementById(id);
+        if(activeTab) activeTab.classList.add('active');
+        document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+        
+        const defaults = {
+            'strength': ['strength', 'beginner'],
+            'yoga': ['yoga', 'all'],
+            'hiit': ['hiit', 'core'],
+            'home': ['home', 'basics'],
+            'flexibility': ['flexibility', 'all'],
+            'cardio': ['cardio', 'all']
+        };
+        
+        if(defaults[id]) {
+            const [cat, type] = defaults[id];
+            renderExercises(cat, type, document.querySelector(`#${id} .i-btn`));
+        }
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        AOS.refresh();
+    }
+
+    function renderExercises(cat, type, btn) {
+        if(btn) {
+            btn.parentElement.querySelectorAll('.i-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        const gridId = `${cat}Grid`;
+        const data = (workoutData[cat] && workoutData[cat][type]) ? workoutData[cat][type] : [];
+        let html = '';
+        if(!data || data.length === 0) {
+            html = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888;">No exercises found in this category yet.</div>';
+        } else {
+            data.forEach((ex, index) => {
+                html += `
+                <div class="ex-box" data-aos="fade-up" data-aos-delay="${index * 50}">
+                    <div class="ex-img-wrap" onclick="openExerciseDetail('${cat}', '${type}', '${ex.id}')" style="cursor:pointer;"><img src="${ex.img}" alt="${ex.name}"></div>
+                    <div class="ex-content">
+                        <div class="ex-name">${ex.name}</div>
+                        <div class="ex-short-desc">${ex.steps[0] ? ex.steps[0].substring(0, 60) + '...' : ''}</div>
+                        <div class="ex-footer">
+                            <div class="ex-level">${ex.difficulty}</div>
+                            <div style="font-size:0.72rem;color:#aaa;">🔥 ${ex.burn}</div>
+                        </div>
+                        <div class="ex-action-btns" style="display:flex;gap:8px;margin-top:12px;">
+                            <button class="btn-view-detail" onclick="openExerciseDetail('${cat}', '${type}', '${ex.id}')" style="flex:1;padding:8px 0;border-radius:8px;background:rgba(196,77,255,0.15);border:1px solid rgba(196,77,255,0.4);color:var(--accent);font-size:0.72rem;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s;">
+                                <i class="fas fa-eye" style="margin-right:4px;"></i>View Details
+                            </button>
+                            <button class="btn-add-routine" onclick="addToRoutine('${ex.id}', '${ex.name}', '${ex.burn}')" style="flex:1;padding:8px 0;border-radius:8px;background:var(--gradient);border:none;color:#fff;font-size:0.72rem;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s;">
+                                <i class="fas fa-plus" style="margin-right:4px;"></i>Add to Routine
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+        const grid = document.getElementById(gridId);
+        if(grid) grid.innerHTML = html;
+        AOS.refresh();
+    }
+
+    function addToRoutine(id, name, burn) {
+        window.location.href = `/training/routine/add/${id}/`;
+    }
+
+    function openExerciseDetail(cat, type, id) {
+        currentCat = cat;
+        currentType = type;
+        currentExId = id;
+
+        const data = (workoutData[cat] && workoutData[cat][type]) ? workoutData[cat][type] : [];
+        const exercise = (data || []).find(e => e.id === id);
+        if(!exercise) return;
+        
+        document.getElementById('detailTitle').innerText = exercise.name;
+        document.getElementById('detailVideo').querySelector('iframe').src = (exercise.video || "").replace('watch?v=', 'embed/') + "?autoplay=1&mute=1";
+        document.getElementById('detailDifficulty').innerText = exercise.difficulty;
+        document.getElementById('detailBurn').innerText = exercise.burn;
+        document.getElementById('detailReps').innerText = exercise.reps;
+        document.getElementById('detailTheory').innerHTML = exercise.steps.map((s, i) => `<div class="ex-step"><span>${i+1}</span> ${s}</div>`).join('');
+        document.getElementById('detailBenefits').innerHTML = exercise.benefits.map(b => `<li><i class="fas fa-check-circle"></i> ${b}</li>`).join('');
+        document.getElementById('detailMistakes').innerHTML = exercise.mistakes.map(m => `<li><i class="fas fa-times-circle"></i> ${m}</li>`).join('');
+        
+        const addBtn = document.getElementById('sidebarAddRoutine');
+        if(addBtn) {
+            addBtn.onclick = () => addToRoutine(exercise.id, exercise.name, exercise.burn);
+        }
+        
+        const nextExBtn = document.getElementById('nextExBtn');
+        if(nextExBtn) {
+            const idx = data.findIndex(e => e.id === id);
+            if(idx !== -1 && idx < data.length - 1) {
+                const nextEx = data[idx+1];
+                nextExBtn.style.display = 'flex';
+                nextExBtn.onclick = () => openExerciseDetail(cat, type, nextEx.id);
+            } else {
+                nextExBtn.style.display = 'none';
+            }
+        }
+
+        document.getElementById('exerciseDetailPage').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeExerciseDetail() {
+        document.getElementById('exerciseDetailPage').classList.remove('active');
+        document.getElementById('detailVideo').querySelector('iframe').src = "";
+        document.body.style.overflow = 'auto';
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        AOS.init({ duration: 800, once: true });
+        switchMainTab('strength', document.querySelector('.sub-btn'));
+    });
+</script>
+{% endblock %}

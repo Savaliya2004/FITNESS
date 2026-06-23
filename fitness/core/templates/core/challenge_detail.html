@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}{{ challenge.title }} | FitX{% endblock %}
+
+{% block content %}
+<section style="padding: 100px 5% 50px; max-width: 1000px; margin: 0 auto;">
+    <a href="{% url 'challenges_list' %}" style="color: var(--muted); text-decoration: none; margin-bottom: 20px; display: inline-block;"><i class="fas fa-arrow-left"></i> Back to Challenges</a>
+    
+    <div class="glass-card" style="padding: 30px; margin-bottom: 30px;">
+        {% if enrollment %}
+            <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="color: #22c55e; display: block; font-size: 1.1rem;">You are enrolled!</strong>
+                    <span style="font-size: 0.9rem; color: #ccc;">Status: <span style="text-transform: capitalize;">{{ enrollment.status }}</span></span>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: white;">{{ enrollment.days_completed }} / {{ challenge.duration_days }} Tasks</div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <h1 style="font-size: 2.2rem; margin-top: 0; margin-bottom: 10px;">{{ challenge.title }}</h1>
+                <div style="margin-bottom: 20px;">
+                    <span class="badge" style="background: rgba(255,107,53,0.15); color: #ff6b35; padding: 5px 10px; border-radius: 8px; font-size: 0.8rem; margin-right: 10px;">{{ challenge.get_difficulty_display }}</span>
+                    <span style="color: #f7c948; font-weight: bold;"><i class="fas fa-star"></i> {{ challenge.reward_xp }} XP Reward</span>
+                </div>
+                <p style="color: #ccc; line-height: 1.6;">{{ challenge.description|linebreaksbr }}</p>
+                {% if challenge.rules %}
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;">Rules</h4>
+                    <p style="color: #ccc; font-size: 0.9rem;">{{ challenge.rules|linebreaksbr }}</p>
+                {% endif %}
+            </div>
+            
+            <div style="width: 300px;">
+                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="margin-top: 0; margin-bottom: 15px;">Challenge Details</h4>
+                    <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                        <span style="color: var(--muted);">Start Date:</span>
+                        <span>{{ challenge.start_date|date:"M d, Y" }}</span>
+                    </div>
+                    <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                        <span style="color: var(--muted);">End Date:</span>
+                        <span>{{ challenge.end_date|date:"M d, Y" }}</span>
+                    </div>
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between;">
+                        <span style="color: var(--muted);">Participants:</span>
+                        <span>{{ challenge.current_participants }}</span>
+                    </div>
+                    
+                    {% if not enrollment %}
+                        {% if challenge.is_joinable %}
+                            <form action="{% url 'join_challenge' challenge.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">Join Challenge</button>
+                            </form>
+                        {% else %}
+                            <button class="btn-primary" style="width: 100%; padding: 12px; opacity: 0.5; background: #666; cursor: not-allowed;" disabled>Registration Closed</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tasks Section -->
+    <h3 style="margin-bottom: 20px;">Daily Tasks ({{ tasks.count }})</h3>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+        {% for task in tasks %}
+            {% with progress=progress_map|dictsort:task.id|default:None %}
+                <!-- Workaround since dictionary lookup by ID isn't native, progress_map has task.id as keys but django templates can't look it up easily, let's use a custom loop -->
+            {% endwith %}
+            
+            <div class="glass-card" style="padding: 20px; border-left: 4px solid {% if request.user.is_authenticated and task.id in progress_map and progress_map.task.id.is_completed %}#22c55e{% else %}var(--accent){% endif %};">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <div style="color: var(--accent); font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;">Day {{ task.day_number }}</div>
+                        <h4 style="margin: 0 0 5px 0;">{{ task.title }}</h4>
+                        <p style="margin: 0; color: var(--muted); font-size: 0.9rem;">{{ task.description }}</p>
+                        <div style="margin-top: 8px; font-size: 0.85rem; color: #ccc;">
+                            <i class="fas fa-bullseye" style="color: var(--accent);"></i> Target: <strong>{{ task.target_value }} {{ task.target_unit }}</strong>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        {% if enrollment %}
+                            {% if task.progress and task.progress.is_completed %}
+                                <div style="background: rgba(34,197,94,0.15); color: #22c55e; padding: 8px 15px; border-radius: 8px; font-weight: bold;">
+                                    <i class="fas fa-check-circle"></i> Completed
+                                </div>
+                            {% else %}
+                                <form action="{% url 'log_challenge_task' task.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-primary" style="padding: 8px 15px; border-radius: 8px; font-size: 0.85rem;">Mark Complete</button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <div style="color: var(--muted); font-size: 0.85rem;"><i class="fas fa-lock"></i> Join to unlock</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p style="color: var(--muted);">No tasks have been defined for this challenge yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

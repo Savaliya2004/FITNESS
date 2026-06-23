@@ -1,0 +1,1 @@
+'ed">{{ ex.muscle_group|default:"—" }}</td>\n              </tr>\n              {% empty %}\n              <tr><td'

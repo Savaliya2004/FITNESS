@@ -1,0 +1,380 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Membership Plans | FitX{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'store/css/store.css' %}">
+<style>
+    body { background: #0a0a0f !important; }
+    .membership-hero {
+        padding: 120px 5% 60px;
+        text-align: center;
+    }
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 5% 80px;
+    }
+    .plan-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 40px 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .plan-card.featured {
+        border-color: var(--accent, #ff6b35);
+        background: rgba(255, 107, 53, 0.05);
+        box-shadow: 0 0 40px rgba(255, 107, 53, 0.15);
+        transform: scale(1.03);
+    }
+    .plan-card:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-6px);
+    }
+    .plan-card.featured:hover { transform: scale(1.03) translateY(-6px); }
+    .plan-badge {
+        position: absolute; top: 16px; right: 16px;
+        background: linear-gradient(135deg, #ff6b35, #f7c948);
+        color: #000; font-size: 0.7rem; font-weight: 800;
+        padding: 4px 12px; border-radius: 20px; letter-spacing: 1px;
+    }
+    .plan-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+    .plan-name {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .plan-price {
+        font-size: 3rem;
+        font-weight: 900;
+        margin-bottom: 5px;
+        background: linear-gradient(135deg, #ff6b35, #f7c948);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .plan-period { color: #666; font-size: 0.9rem; margin-bottom: 30px; }
+    .plan-features { list-style: none; padding: 0; margin: 0 0 30px; text-align: left; }
+    .plan-features li {
+        padding: 8px 0;
+        color: #ccc;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+        font-size: 0.9rem;
+    }
+    .plan-features li::before {
+        content: '✓ ';
+        color: #22c55e;
+        font-weight: bold;
+    }
+    .buy-btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+    .buy-btn.primary {
+        background: linear-gradient(135deg, #ff6b35, #f7c948);
+        color: #000;
+    }
+    .buy-btn.secondary {
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.15);
+    }
+    .buy-btn.primary:hover { filter: brightness(1.15); transform: translateY(-2px); }
+    .buy-btn.secondary:hover { background: rgba(255,255,255,0.14); }
+    .buy-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    .current-badge {
+        display: inline-block;
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    /* Payment History */
+    .payment-history { max-width: 900px; margin: 0 auto; padding: 0 5% 80px; }
+    .payment-history h2 { margin-bottom: 20px; }
+    .payment-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255,255,255,0.02);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    .payment-table th {
+        background: rgba(255,255,255,0.05);
+        padding: 14px 16px;
+        text-align: left;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #888;
+    }
+    .payment-table td {
+        padding: 14px 16px;
+        border-top: 1px solid rgba(255,255,255,0.04);
+        font-size: 0.9rem;
+        color: #ccc;
+    }
+    .status-pill {
+        display: inline-block;
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    .status-success { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+    .status-created { background: rgba(250, 204, 21, 0.15); color: #facc15; }
+    .status-failed  { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<div style="position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 400px;">
+    {% for message in messages %}
+    <div style="background: {% if message.tags == 'error' %}rgba(239,68,68,0.9){% else %}rgba(34,197,94,0.9){% endif %}; color: #fff; padding: 14px 20px; border-radius: 12px; margin-bottom: 10px; font-weight: 600; backdrop-filter: blur(10px);">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="membership-hero">
+    <h1 style="font-family: 'Poppins', sans-serif; font-size: 3rem; font-weight: 900; margin-bottom: 16px;">
+        CHOOSE YOUR <span style="background: linear-gradient(135deg, #ff6b35, #f7c948); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">PLAN</span>
+    </h1>
+    <p style="color: #888; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Unlock premium features, personalized training, and nutrition guidance. Cancel anytime.
+    </p>
+    {% if current_membership != 'free' %}
+    <div style="margin-top: 20px;">
+        <span class="current-badge">✓ Active: {{ current_membership|title }} Member</span>
+    </div>
+    {% endif %}
+</div>
+
+<div class="plans-grid">
+    <!-- Free Plan -->
+    <div class="plan-card">
+        <div class="plan-icon">🏃</div>
+        <div class="plan-name">Free</div>
+        <div class="plan-price">₹0</div>
+        <div class="plan-period">Forever</div>
+        <ul class="plan-features">
+            <li>Access to basic workouts</li>
+            <li>Progress tracking</li>
+            <li>Community forum access</li>
+            <li>3 diet plans / month</li>
+        </ul>
+        {% if current_membership == 'free' %}
+            <button class="buy-btn secondary" disabled>Current Plan</button>
+        {% else %}
+            <button class="buy-btn secondary" disabled>Free Tier</button>
+        {% endif %}
+    </div>
+
+    <!-- Dynamic Plans from DB -->
+    {% for plan in plans %}
+    <div class="plan-card {% if plan.plan_type == 'premium' %}featured{% endif %}">
+        {% if plan.plan_type == 'premium' %}<span class="plan-badge">POPULAR</span>{% endif %}
+        {% if plan.plan_type == 'premium' %}
+            <div class="plan-icon">⚡</div>
+        {% else %}
+            <div class="plan-icon">👑</div>
+        {% endif %}
+        <div class="plan-name">{{ plan.name }}</div>
+        <div class="plan-price">₹{{ plan.price }}</div>
+        <div class="plan-period">per month</div>
+        <ul class="plan-features">
+            {% for feature in plan.features.splitlines %}
+            {% if feature %}<li>{{ feature }}</li>{% endif %}
+            {% endfor %}
+        </ul>
+
+        {% if current_membership == plan.plan_type %}
+            <button class="buy-btn primary" disabled>Current Plan ✓</button>
+        {% else %}
+            <button class="buy-btn {% if plan.plan_type == 'premium' %}primary{% else %}secondary{% endif %}"
+                    onclick="startPayment('{{ plan.plan_type }}', '{{ plan.price }}')"
+                    id="buy-btn-{{ plan.plan_type }}">
+                Buy {{ plan.name }} — ₹{{ plan.price }}/mo
+            </button>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <!-- Elite fallback if not in DB -->
+    {% if not plans %}
+    <div class="plan-card featured">
+        <span class="plan-badge">POPULAR</span>
+        <div class="plan-icon">⚡</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">₹999</div>
+        <div class="plan-period">per month</div>
+        <ul class="plan-features">
+            <li>Unlimited Workouts</li>
+            <li>Personalized Diet Plan</li>
+            <li>Progress Tracking</li>
+            <li>Chat Support</li>
+        </ul>
+        <button class="buy-btn primary" onclick="startPayment('premium', '999')">Buy Premium</button>
+    </div>
+    <div class="plan-card">
+        <div class="plan-icon">👑</div>
+        <div class="plan-name">Elite</div>
+        <div class="plan-price">₹1999</div>
+        <div class="plan-period">per month</div>
+        <ul class="plan-features">
+            <li>Everything in Premium</li>
+            <li>Personal Trainer</li>
+            <li>Nutrition Consultation</li>
+            <li>Priority Support</li>
+        </ul>
+        <button class="buy-btn secondary" onclick="startPayment('elite', '1999')">Buy Elite</button>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Payment History -->
+{% if payments %}
+<div class="payment-history">
+    <h2 style="font-weight: 800; font-size: 1.5rem;">Your Payment History</h2>
+    <table class="payment-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Plan</th>
+                <th>Amount</th>
+                <th>Payment ID</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td style="text-transform: capitalize; font-weight: 600;">{{ payment.plan }}</td>
+                <td style="font-weight: 700; color: #22c55e;">₹{{ payment.amount }}</td>
+                <td style="font-size: 0.8rem; color: #888;">{{ payment.razorpay_payment_id|default:"—" }}</td>
+                <td><span class="status-pill status-{{ payment.status }}">{{ payment.status }}</span></td>
+                <td>{{ payment.created_at|date:"d M Y, H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- Hidden form to submit payment success to backend -->
+<form id="payment-form" method="POST" action="{% url 'payment_success' %}" style="display:none;">
+    {% csrf_token %}
+    <input type="hidden" id="rzp_order_id" name="razorpay_order_id">
+    <input type="hidden" id="rzp_payment_id" name="razorpay_payment_id">
+    <input type="hidden" id="rzp_signature" name="razorpay_signature">
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const RAZORPAY_KEY = "{{ razorpay_key }}";
+const CSRF_TOKEN = "{{ csrf_token }}";
+
+function startPayment(plan, displayPrice) {
+    const btn = document.getElementById('buy-btn-' + plan);
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Creating order...';
+    }
+
+    // Step 1: Create Razorpay order on server
+    fetch("{% url 'create_razorpay_order' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': CSRF_TOKEN
+        },
+        body: 'plan=' + plan
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Error creating order: ' + data.error);
+            if (btn) { btn.disabled = false; btn.textContent = 'Buy ' + plan; }
+            return;
+        }
+
+        // Step 2: Open Razorpay checkout
+        const options = {
+            key: data.key,
+            amount: data.amount,
+            currency: data.currency,
+            name: 'FitX Fitness',
+            description: plan.charAt(0).toUpperCase() + plan.slice(1) + ' Membership',
+            order_id: data.order_id,
+            prefill: {
+                name: data.name,
+                email: data.email
+            },
+            theme: { color: '#ff6b35' },
+            handler: function(response) {
+                // Step 3: On success, submit to backend for verification
+                document.getElementById('rzp_order_id').value   = response.razorpay_order_id;
+                document.getElementById('rzp_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('rzp_signature').value  = response.razorpay_signature;
+                document.getElementById('payment-form').submit();
+            },
+            modal: {
+                ondismiss: function() {
+                    if (btn) { btn.disabled = false; btn.textContent = 'Buy ' + plan; }
+                }
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function(response) {
+            alert('Payment failed: ' + response.error.description);
+            if (btn) { btn.disabled = false; btn.textContent = 'Buy ' + plan; }
+        });
+        rzp.open();
+    })
+    .catch(err => {
+        alert('Network error: ' + err);
+        if (btn) { btn.disabled = false; btn.textContent = 'Buy ' + plan; }
+    });
+}
+</script>
+{% endblock %}

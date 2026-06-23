@@ -1,0 +1,90 @@
+.coaches-hero { padding: 100px 5% 50px; text-align: center; }
+    .coaches-hero h1 { font-family:'Poppins'; font-size:3.5rem; font-weight:800; margin-bottom:15px; }
+
+
+
+    .coach-card {
+      background: rgba(20,15,35,0.6); backdrop-filter: blur(10px); border: 1px solid var(--glassBorder);
+      border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.3s;
+
+}
+    .coach-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 15px 30px rgba(196,77,255,0.15); }
+    .coach-card:hover .coach-img { filter: grayscale(0%); }
+    .coach-info { padding: 20px; }
+    .coach-name { font-family:'Poppins'; font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .coach-exp { font-size: 0.8rem; color: var(--muted); }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center; z-index: 2000;
+      opacity: 0; visibility: hidden; transition: 0.4s; padding: 20px;
+
+}
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content {
+      background: #110f1a; border: 1px solid var(--accent); padding: 50px; border-radius: 20px;
+      text-align: center;
+
+}
+    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+    .modal-close:hover { color: #fff; }
+
+    #m-name { font-family:'Poppins'; font-size:2.2rem; font-weight:800; margin-bottom:5px; }
+    
+    .medals { display:flex; justify-content:center; gap: 10px; margin-bottom:30px; flex-wrap:wrap; }
+
+    #m-charge { font-size: 2.5rem; font-family:'Poppins'; font-weight: 800; color: #fff; margin-bottom: 5px; }
+    #m-duration { font-size: 1rem; color: var(--accent); font-weight: 600; }
+
+/* FITX RESPONSIVE UTILITIES - 4-2-1 COLUMN SYSTEM */
+@media (min-width: 1200px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 25px !important;
+
+  }
+    .diet-plan-grid, .challenge-grid, .charts-wrap {
+        grid-template-columns: repeat(2, 1fr) !important;
+
+
+}
+}
+@media (max-width: 1199px) and (min-width: 768px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+
+  }
+    .page-hero, .hero-section {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 60px 5% !important;
+
+  }
+    .hero-content { margin-bottom: 30px !important; }
+
+    .navbar {
+        padding: 0 15px !important;
+
+  }
+    .nav-links {
+        display: none !important;
+
+  }
+    .hamburger, .menu-toggle {
+        display: block !important;
+
+  }
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+
+  }
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    /* .btn forced width removed for alignment */
+    .sidebar { width: 100% !important; z-index: 2000 !important; }
+}

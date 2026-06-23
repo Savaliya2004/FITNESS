@@ -1,0 +1,126 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Complete Purchase | FitX{% endblock %}
+
+{% block content %}
+<section class="checkout-sec" style="padding: 140px 5% 80px; min-height: 80vh; background: #090b10;">
+  <div style="max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+    <h2 style="font-size: 2rem; color: #fff; margin-bottom: 20px;">Complete Your Purchase</h2>
+    <div style="margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <h3 style="font-size: 1.5rem; color: #8364ff; margin-bottom: 10px;">{{ plan.name|title }} Package</h3>
+      <div style="font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 15px;">₹{{ plan.price|floatformat:0 }} <span style="font-size:1rem; color:#aaa; font-weight:500;">/package</span></div>
+      
+      <div style="color: #ddd; margin-top:20px;">
+        {% for feature in plan.features.splitlines %}
+          {% if feature %}
+            <div style="margin-bottom: 12px; display:flex; align-items:flex-start; gap:10px;">
+                <i class="fas fa-check" style="color: #f742b7; margin-top: 4px;"></i>
+                <span>{{ feature }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Razorpay Payment Button -->
+    <button id="rzp-button" class="btn-primary" style="width: 100%; padding: 16px; font-size: 1.1rem; border-radius: 999px; background: linear-gradient(135deg, #8364ff, #f742b7); border: none; cursor: pointer; color: #fff; font-weight:700; text-transform:uppercase; letter-spacing:1px; transition: 0.3s; box-shadow: 0 4px 15px rgba(131,100,255,0.4);">
+      Proceed to Payment (₹{{ plan.price|floatformat:0 }})
+    </button>
+  </div>
+</section>
+
+<!-- Invisible Form for Signature Verification -->
+<form id="payment-form" method="POST" action="{% url 'payment_success' %}" style="display:none;">
+    {% csrf_token %}
+    <input type="hidden" id="hzp_order_id" name="razorpay_order_id">
+    <input type="hidden" id="hzp_payment_id" name="razorpay_payment_id">
+    <input type="hidden" id="hzp_signature" name="razorpay_signature">
+</form>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById('rzp-button').onclick = function(e){
+    e.preventDefault();
+    const btn = this;
+    const originalText = btn.innerText;
+    btn.disabled = true;
+    btn.innerText = 'Creating Order...';
+    btn.style.opacity = '0.7';
+
+    // Step 1: Create Order on Backend
+    fetch('{% url "create_razorpay_order" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: 'plan_id={{ plan.id }}'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.error) {
+            alert(data.error);
+            btn.disabled = false;
+            btn.innerText = originalText;
+            btn.style.opacity = '1';
+            return;
+        }
+        
+        if(data.is_mock) {
+            // Bypass Razorpay modal if keys are dummy
+            document.getElementById('hzp_order_id').value = data.order_id;
+            document.getElementById('hzp_payment_id').value = 'mock_payment_' + Math.floor(Math.random()*1000);
+            document.getElementById('hzp_signature').value = 'mock_signature_bypass';
+            document.getElementById('payment-form').submit();
+            return;
+        }
+
+        // Step 2: Initialize Razorpay Checkout
+        var options = {
+            "key": data.key,
+            "amount": data.amount,
+            "currency": data.currency,
+            "name": "FitX Fitness",
+            "description": data.plan_name + " Membership",
+            "order_id": data.order_id,
+            "handler": function (response){
+                // Step 3: Handle Success & verify
+                document.getElementById('hzp_order_id').value = response.razorpay_order_id;
+                document.getElementById('hzp_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('hzp_signature').value = response.razorpay_signature;
+                document.getElementById('payment-form').submit();
+            },
+            "prefill": {
+                "name": data.name,
+                "email": data.email
+            },
+            "theme": {
+                "color": "#8364ff" // FitX Primary Color
+            },
+            "modal": {
+                "ondismiss": function(){
+                    btn.disabled = false;
+                    btn.innerText = originalText;
+                    btn.style.opacity = '1';
+                }
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response){
+            alert("Payment failed: " + response.error.description);
+            btn.disabled = false;
+            btn.innerText = originalText;
+            btn.style.opacity = '1';
+        });
+        rzp1.open();
+    })
+    .catch(err => {
+        alert("Error connecting to payment gateway");
+        btn.disabled = false;
+        btn.innerText = originalText;
+        btn.style.opacity = '1';
+    });
+}
+</script>
+{% endblock %}

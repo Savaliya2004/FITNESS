@@ -1,0 +1,292 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Sports Academies | FitX — Level Up Your Game{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'workout/css/sport.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <!-- HERO SECTION -->
+  <section class="sport-hero" data-aos="fade-up">
+    <h1>Professional <span class="text-accent">Academies</span></h1>
+    <p>Premium sports disciplines with world-class facilities and expert coaching. Selected your sport and start your journey today.</p>
+
+    <!-- SPORTS GRID (SQUARE CARDS) -->
+    <div class="sport-grid">
+      <!-- Swimming -->
+      <div class="sport-card" onclick="openPlanModal('Swimming')">
+        <img src="https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=600&q=80" alt="Swimming">
+        <div class="sport-card-content">
+            <i class="fas fa-swimmer sport-icon"></i>
+            <div class="sport-title">Swimming</div>
+        </div>
+      </div>
+      <!-- Cycling -->
+      <div class="sport-card" onclick="openPlanModal('Cycling')">
+        <img src="https://images.unsplash.com/photo-1541625602330-2277a1cd13a1?w=600&q=80" alt="Cycling">
+        <div class="sport-card-content">
+            <i class="fas fa-bicycle sport-icon"></i>
+            <div class="sport-title">Cycling</div>
+        </div>
+      </div>
+      <!-- Running -->
+      <div class="sport-card" onclick="openPlanModal('Running')">
+        <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&q=80" alt="Running">
+        <div class="sport-card-content">
+            <i class="fas fa-running sport-icon"></i>
+            <div class="sport-title">Running</div>
+        </div>
+      </div>
+      <!-- Calisthenics -->
+      <div class="sport-card" onclick="openPlanModal('Calisthenics')">
+        <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80" alt="Calisthenics">
+        <div class="sport-card-content">
+            <i class="fas fa-dumbbell sport-icon"></i>
+            <div class="sport-title">Calisthenics</div>
+        </div>
+      </div>
+      <!-- Cricket -->
+      <div class="sport-card" onclick="openPlanModal('Cricket')">
+        <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&q=80" alt="Cricket">
+        <div class="sport-card-content">
+            <i class="fas fa-baseball-bat-ball sport-icon"></i>
+            <div class="sport-title">Cricket</div>
+        </div>
+      </div>
+      <!-- Badminton -->
+      <div class="sport-card" onclick="openPlanModal('Badminton')">
+        <img src="https://images.unsplash.com/photo-1558365849-6ebd8b0454b7?w=600&q=80" alt="Badminton">
+        <div class="sport-card-content">
+            <i class="fas fa-shuttlecock sport-icon"></i>
+            <div class="sport-title">Badminton</div>
+        </div>
+      </div>
+      <!-- Chess -->
+      <div class="sport-card" onclick="openPlanModal('Chess')">
+        <img src="https://images.unsplash.com/photo-1586161348184-7759b7ca4fb2?w=600&q=80" alt="Chess">
+        <div class="sport-card-content">
+            <i class="fas fa-chess-queen sport-icon"></i>
+            <div class="sport-title">Chess</div>
+        </div>
+      </div>
+      <!-- Shot Put -->
+      <div class="sport-card" onclick="openPlanModal('Shot Put')">
+        <img src="https://images.unsplash.com/photo-1546483875-5f013b924276?w=600&q=80" alt="Shot Put">
+        <div class="sport-card-content">
+            <i class="fas fa-bullseye sport-icon"></i>
+            <div class="sport-title">Shot Put</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAN MODAL -->
+  <div class="modal-overlay" id="planModal">
+    <div class="modal-content">
+      <i class="fas fa-times modal-close" onclick="closeModal('planModal')"></i>
+      <h2 id="planSportName" style="font-family:'Poppins'; font-size:2.5rem; font-weight:800; color:#fff;">Sport Name</h2>
+      <p style="color:var(--muted); margin-top:5px; font-size:1.1rem;">Choose your commitment level.</p>
+
+      <div class="plan-grid">
+        <!-- 1 Month -->
+        <div class="plan-card">
+          <div class="plan-time">1 Month</div>
+          <div class="plan-price">₹2,499</div>
+          <p class="plan-desc">Kickstart your training with full academy access.</p>
+          <button class="btn-primary" onclick="initiateSubscription('1 Month', 2499)">Select Plan</button>
+        </div>
+        <!-- 6 Month -->
+        <div class="plan-card popular">
+          <div class="popular-badge">Best Value</div>
+          <div class="plan-time">6 Months</div>
+          <div class="plan-price">₹11,999</div>
+          <p class="plan-desc">Long-term progress with 20% savings and 5 expert sessions.</p>
+          <button class="btn-primary" onclick="initiateSubscription('6 Months', 11999)">Select Plan</button>
+        </div>
+        <!-- 12 Month -->
+        <div class="plan-card">
+          <div class="plan-time">12 Months</div>
+          <div class="plan-price">₹21,999</div>
+          <p class="plan-desc">Master the sport with 35% savings + personal mentor.</p>
+          <button class="btn-primary" onclick="initiateSubscription('12 Months', 21999)">Select Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content" style="max-width: 450px;">
+      <i class="fas fa-times modal-close" onclick="closeModal('authModal')"></i>
+      <i class="fas fa-lock text-accent" style="font-size: 2.5rem; margin-bottom: 20px;"></i>
+      <h2 style="font-family:'Poppins'; font-size:1.8rem; font-weight:800; color:#fff;">Login Required</h2>
+      <p style="color:var(--muted); margin-top:5px;">Please log in to continue with your subscription.</p>
+      
+      <form class="auth-form" onsubmit="handleAuthSim(event)">
+          <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="email@example.com" value="user@fitx.com" required>
+          </div>
+          <div class="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="••••••••" value="password123" required>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; padding:15px; font-size:1rem; margin-top:10px;">Login & Continue</button>
+      </form>
+      <p style="margin-top:20px; color:var(--muted); font-size:0.85rem;">Don't have an account? <a href="#" class="text-accent">Sign Up</a></p>
+    </div>
+  </div>
+
+  <!-- PAYMENT MODAL -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-content payment-modal">
+      <i class="fas fa-times modal-close" onclick="closeModal('paymentModal')"></i>
+      <h2 style="font-family:'Poppins'; font-size:1.8rem; font-weight:800; color:#fff;">Secure Payment</h2>
+      <p style="color:var(--muted); margin-top:5px;">Follow the steps to activate your plan.</p>
+
+      <div class="payment-details">
+          <div class="detail-item">
+              <span>Selected Sport</span>
+              <span id="paySport">Badminton</span>
+          </div>
+          <div class="detail-item">
+              <span>Plan Duration</span>
+              <span id="payPlan">6 Months</span>
+          </div>
+          <div class="detail-item" style="border-top:1px dashed var(--glassBorder); padding-top:10px; margin-top:10px;">
+              <span>Total Amount</span>
+              <span class="text-accent" id="payPrice" style="font-size: 1.2rem;">₹11,999</span>
+          </div>
+      </div>
+
+      <h4 style="color:#fff; font-size:1rem; margin-bottom:15px;">Payment Method</h4>
+      <div class="payment-methods">
+          <div class="method-card active" onclick="selectMethod(this)">
+              <i class="fas fa-credit-card"></i>
+              <div style="font-size:0.75rem; color:#fff;">Card</div>
+          </div>
+          <div class="method-card" onclick="selectMethod(this)">
+              <i class="fas fa-mobile-alt"></i>
+              <div style="font-size:0.75rem; color:#fff;">UPI</div>
+          </div>
+          <div class="method-card" onclick="selectMethod(this)">
+              <i class="university"></i>
+              <i class="fas fa-university"></i>
+              <div style="font-size:0.75rem; color:#fff;">Net Banking</div>
+          </div>
+      </div>
+
+      <div class="payment-actions">
+          <button class="btn-ghost" onclick="closeModal('paymentModal')" style="padding:15px;">Cancel</button>
+          <button class="btn-primary" onclick="confirmPayment()" style="padding:15px;">Pay Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="success-anim">
+          <i class="fas fa-check-circle"></i>
+      </div>
+      <h2 style="font-family:'Poppins'; font-size:2rem; font-weight:800; color:#fff;">Payment Successful!</h2>
+      <p style="color:var(--muted); margin:15px 0 25px;">Your subscription is now activated. Let's start the grind!</p>
+      
+      <div style="display:flex; flex-direction:column; gap:10px;">
+          <a href="{% url 'dashboard' %}" class="btn-primary" style="padding:15px;">Go to Dashboard</a>
+          <button class="btn-ghost" onclick="location.reload()" style="padding:15px;">Back to Sports</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-sec" data-aos="fade-up">
+    <h2 style="text-align:center; font-family:'Poppins'; margin-bottom:40px; font-size: 2.5rem; font-weight: 800;">Academy <span class="text-accent">FAQ</span></h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I switch sports mid-plan? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Yes, you can swap sports once every quarterly within the 6 and 12-month membership plans.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Are equipment rentals available? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Standard professional equipment is available for rent at all our centers, though we recommend personal gear for consistency.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Do you have age-specific batches? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Absolutely. We offer Junior (6-15), Elite (Pro), and Master (Corporate) batches across all disciplines.</div>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    // Session Simulation
+    let isLoggedIn = {% if user.is_authenticated %}true{% else %}false{% endif %};
+    let currentSelection = { sport: '', plan: '', price: 0 };
+
+    // Modal Handlers
+    function openPlanModal(sport) {
+        currentSelection.sport = sport;
+        document.getElementById('planSportName').innerText = sport + ' Academy';
+        document.getElementById('planModal').classList.add('active');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+
+    function initiateSubscription(plan, price) {
+        currentSelection.plan = plan;
+        currentSelection.price = price;
+        
+        closeModal('planModal');
+
+        if (!isLoggedIn) {
+            document.getElementById('authModal').classList.add('active');
+        } else {
+            showPaymentModal();
+        }
+    }
+
+    function handleAuthSim(e) {
+        e.preventDefault();
+        isLoggedIn = true;
+        localStorage.setItem('isLoggedIn', 'true');
+        closeModal('authModal');
+        
+        // Visual Update
+        document.getElementById('authButtons')?.classList.add('hidden');
+        document.getElementById('userAccount')?.classList.remove('hidden');
+        
+        // Continue to payment
+        showPaymentModal();
+    }
+
+    function showPaymentModal() {
+        document.getElementById('paySport').innerText = currentSelection.sport;
+        document.getElementById('payPlan').innerText = currentSelection.plan;
+        document.getElementById('payPrice').innerText = '₹' + currentSelection.price.toLocaleString();
+        document.getElementById('paymentModal').classList.add('active');
+    }
+
+    function selectMethod(el) {
+        document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function confirmPayment() {
+        closeModal('paymentModal');
+        document.getElementById('successModal').classList.add('active');
+    }
+
+    function toggleFaq(el) {
+        const a = el.querySelector('.faq-a');
+        const i = el.querySelector('i');
+        if(a.style.display === 'block') { a.style.display = 'none'; i.style.transform='rotate(0)'; }
+        else { a.style.display = 'block'; i.style.transform='rotate(180deg)'; }
+    }
+  </script>
+{% endblock %}

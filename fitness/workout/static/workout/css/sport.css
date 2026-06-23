@@ -1,0 +1,189 @@
+/* =========================================
+   SPORT.CSS - Sport Academies Page
+   ========================================= */
+:root {
+    --primary: #c44dff;
+    --accent: #c44dff;
+    --glassBorder: rgba(255, 255, 255, 0.09);
+    --muted: #8888aa;
+    --bg: #0a0a0f;
+    --bg2: #100e1a;
+    --success: #22c55e;
+}
+
+[data-theme="light"] {
+    --bg: #f8f9fa;
+    --bg2: #ffffff;
+    --muted: #555577;
+    --glassBorder: rgba(0, 0, 0, 0.08);
+}
+body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+
+/* Page Layout */
+body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+.sport-hero h1 { font-family:'Poppins'; font-size:4rem; font-weight:900; margin-bottom:20px; letter-spacing: -1px; }
+.sport-hero p { color:var(--muted); font-size:1.2rem; max-width:700px; margin: 0 auto 60px; line-height: 1.7; }
+
+/* SPORTS GRID - Square Cards */
+.sport-grid { 
+    display: grid; 
+    gap: 30px; 
+    max-width: 1300px; 
+    margin: 0 auto; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+
+}
+.sport-card {
+    background: var(--card); 
+    border: 1px solid var(--glassBorder);
+    border-radius: 20px; 
+    aspect-ratio: 1/1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; 
+    cursor: pointer; 
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+
+}
+.sport-card img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+    transition: 0.5s;
+
+}
+.sport-card:hover img { opacity: 0.5; transform: scale(1.1); }
+.sport-card-content { position: relative; z-index: 2; }
+.sport-card:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+.sport-icon { font-size: 3.5rem; color: var(--accent); margin-bottom: 20px; transition: 0.4s; display: block;}
+.sport-card:hover .sport-icon { transform: scale(1.15) rotate(5deg); text-shadow: 0 0 20px var(--accent); }
+.sport-title { font-family:'Poppins'; font-size: 1.6rem; font-weight: 700; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+
+/* MODALS */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center; z-index: 2000;
+    opacity: 0; visibility: hidden; transition: 0.4s ease;
+
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content {
+    background: #110f1a; border: 1px solid var(--glassBorder); padding: 50px; border-radius: 30px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+.modal-close:hover { color: var(--accent); transform: rotate(90deg); }
+
+/* PLAN CARDS */
+.plan-grid { display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr); margin-top: 40px; }
+.plan-card { 
+    background: rgba(255,255,255,0.03); 
+    border: 1px solid var(--glassBorder); 
+    border-radius: 20px; 
+    padding: 30px 20px; 
+    transition: 0.4s; 
+    position: relative;
+    cursor: default;
+
+}
+.plan-card:hover { border-color: var(--accent); background: rgba(196,77,255,0.05); }
+.plan-card.popular { border: 2px solid var(--accent); background: rgba(196,77,255,0.08); }
+.popular-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%); 
+    background: var(--accent); color: #fff; font-size: 0.7rem; 
+    font-weight: 800; padding: 5px 15px; border-radius: 50px; 
+    text-transform: uppercase;
+
+}
+.plan-time { font-family:'Poppins'; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 5px; }
+.plan-price { font-size: 2rem; font-weight: 900; font-family:'Poppins'; margin-bottom: 20px; color: #fff; }
+.plan-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
+
+/* PAYMENT UI */
+.payment-modal { max-width: 500px; text-align: left; }
+.payment-details { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; margin: 20px 0; border: 1px dashed var(--glassBorder); }
+.detail-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+.detail-item span:first-child { color: var(--muted); }
+.detail-item span:last-child { color: #fff; font-weight: 600; }
+.payment-methods { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+.method-card { 
+    background: rgba(255,255,255,0.03); border: 1px solid var(--glassBorder); 
+    border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s;
+
+}
+.method-card i { font-size: 1.5rem; margin-bottom: 8px; color: var(--muted); }
+.method-card.active { border-color: var(--accent); background: rgba(196,77,255,0.1); }
+.method-card.active i { color: var(--accent); }
+.payment-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+
+/* AUTH MODAL */
+.auth-form { margin-top: 25px; text-align: left; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 0.9rem; }
+.form-group input { 
+    width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--glassBorder); 
+    background: rgba(0,0,0,0.2); color: #fff; font-family: inherit; outline: none; transition: 0.3s;
+
+}
+.form-group input:focus { border-color: var(--accent); }
+
+/* SUCCESS UI */
+
+/* UTILS */
+.text-accent { color: var(--accent); }
+.hidden { display: none; }
+
+@media(max-width: 900px) { .plan-grid { grid-template-columns: 1fr; }
+
+    .diet-plan-grid, .challenge-grid, .charts-wrap {
+        grid-template-columns: repeat(2, 1fr) !important;
+
+
+}
+}
+@media (max-width: 1199px) and (min-width: 768px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+
+  }
+    .page-hero, .hero-section {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 60px 5% !important;
+
+  }
+    .hero-content { margin-bottom: 30px !important; }
+
+    .navbar {
+        padding: 0 15px !important;
+
+  }
+    .nav-links {
+        display: none !important;
+
+  }
+    .hamburger, .menu-toggle {
+        display: block !important;
+
+  }
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+
+  }
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    /* .btn forced width removed for alignment */
+    .sidebar { width: 100% !important; z-index: 2000 !important; }
+}

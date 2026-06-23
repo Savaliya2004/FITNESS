@@ -1,0 +1,243 @@
+/* =========================================
+   WORKOUTS.CSS - Workout Programs Page
+   ========================================= */
+:root {
+    --primary: #c44dff;
+    --primary-dark: #a333e8;
+    --bg-dark: var(--bg);
+    --card-bg: var(--card);
+    --card-hover: var(--accentDim);
+    --text-primary: var(--text);
+    --text-muted: var(--muted);
+    --border: var(--glassBorder);
+    --glass: var(--glass);
+    --gradient-text: var(--gradient);
+    --radius: 16px;
+    --shadow: 0 25px 50px rgba(0,0,0,0.1);
+    --nav-bg: rgba(10,10,15,0.85);
+    --prog-overlay: linear-gradient(to top, rgba(10,10,15,0.95) 0%, transparent 60%);
+}
+
+[data-theme="dark"] {
+    --shadow: 0 25px 50px rgba(0,0,0,0.5);
+    --prog-overlay: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 60%);
+}
+
+[data-theme="light"] {
+    --bg-dark: #f8f9fa;
+    --card-bg: #ffffff;
+    --card-hover: rgba(196, 77, 255, 0.05);
+    --text-primary: #1a1a2e;
+    --text-muted: #555577;
+    --border: rgba(0, 0, 0, 0.08);
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --prog-overlay: linear-gradient(to top, rgba(255,255,255,0.95) 0%, transparent 60%);
+}
+/* Page Layout */
+body {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+/* PAGE HERO */
+.page-hero {
+    min-height: 50vh; padding: 120px 5% 60px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+    background: radial-gradient(ellipse at 70% 50%, rgba(196,77,255,0.12) 0%, transparent 60%);
+
+}
+.page-hero .hero-content { animation: fadeInLeft 0.8s ease; }
+.tag-label {
+    display: inline-block; padding: 6px 16px; border-radius: 50px;
+    background: rgba(196,77,255,0.15); border: 1px solid rgba(196,77,255,0.3);
+    color: var(--primary); font-size: 0.78rem; font-weight: 700; letter-spacing: 2px;
+    margin-bottom: 20px;
+
+}
+.page-hero h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 16px; }
+.page-hero p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.7; }
+.text-gradient { background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.page-hero .hero-image { position: relative; animation: fadeInRight 0.8s ease; }
+.page-hero .hero-image img { width: 100%; height: 420px; object-fit: cover; border-radius: var(--radius); }
+.float-badge {
+    position: absolute; bottom: 24px; left: -20px;
+    background: var(--primary); color: white; padding: 10px 20px;
+    border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 8px 30px rgba(196,77,255,0.4);
+    animation: pulse-badge 2s ease-in-out infinite;
+
+}
+@keyframes pulse-badge { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+
+/* FILTER SECTION */
+.filter-section { padding: 30px 5%; }
+.container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+.filter-bar { display: flex; gap: 10px; flex-wrap: wrap; }
+.filter-btn {
+    padding: 10px 22px; border-radius: 50px; border: 1.5px solid var(--border);
+    background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.25s;
+
+}
+.filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+.filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+/* PROGRAMS SECTION */
+.programs-section { padding: 20px 5% 80px; }
+.programs-section .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 28px; }
+.program-card {
+    display: flex;
+    flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    display: flex; flex-direction: column; background: var(--card-bg);
+    border-radius: var(--radius); border: 1px solid var(--border);
+    overflow: hidden; transition: all 0.35s; cursor: pointer;
+
+}
+.program-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: rgba(196,77,255,0.2); }
+.program-image-wrap { position: relative; height: 220px; overflow: hidden; }
+.program-image-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.program-card:hover .program-image-wrap img { transform: scale(1.08); }
+.program-overlay {
+    position: absolute; inset: 0;
+    background: var(--prog-overlay);
+
+}
+.prog-badge {
+    position: absolute; top: 14px; left: 14px;
+    padding: 5px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+
+}
+.badge-orange { background: rgba(196,77,255,0.85); color: white; }
+.badge-purple { background: rgba(139,92,246,0.85); color: white; }
+.badge-red { background: rgba(239,68,68,0.85); color: white; }
+.badge-blue { background: rgba(59,130,246,0.85); color: white; }
+.badge-green { background: rgba(16,185,129,0.85); color: white; }
+.prog-rating i { margin-right: 4px; }
+.program-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.program-meta { display: flex; gap: 14px; flex-wrap: wrap; }
+.program-meta span { display: flex; align-items: center; gap: 5px; font-size: 0.82rem; color: var(--text-muted); }
+.program-meta i { color: var(--primary); }
+.difficulty { border-radius: 50px; padding: 3px 10px; font-size: 0.75rem !important; font-weight: 600; }
+.difficulty.hard { background: rgba(239,68,68,0.15); color: #ef4444; }
+.difficulty.medium { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.difficulty.easy { background: rgba(16,185,129,0.15); color: #10b981; }
+.program-body h3 { font-size: 1.25rem; font-weight: 800; color: var(--text-primary); }
+.program-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+.trainer-info img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+.trainer-name { display: block; font-size: 0.88rem; font-weight: 700; color: var(--text-primary); }
+.trainer-role { display: block; font-size: 0.75rem; color: var(--text-muted); }
+.program-footer { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: auto; padding-top: 15px; border-top: 1px solid var(--glassBorder); }
+.prog-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-enroll {
+    padding: 9px 20px; background: var(--primary); color: white;
+    border-radius: 8px; text-decoration: none; font-size: 0.82rem;
+    font-weight: 700; transition: all 0.2s; white-space: nowrap;
+
+}
+.btn-enroll:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,77,255,0.3); }
+
+/* CTA BANNER */
+.cta-banner .container { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.cta-content h2 { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+.cta-content p { color: var(--text-muted); font-size: 1rem; margin-bottom: 24px; }
+.btn-primary-lg {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 32px; background: var(--primary); color: white;
+    border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700;
+    transition: all 0.25s; box-shadow: 0 8px 30px rgba(196,77,255,0.3);
+
+}
+.btn-primary-lg:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(196,77,255,0.4); }
+.cta-stats { display: flex; gap: 50px; }
+.stat-item { text-align: center; }
+.stat-num { display: block; font-size: 2.2rem; font-weight: 900; color: var(--primary); }
+.stat-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+
+
+
+.footer-brand .brand-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.footer-brand .brand-logo i { color: var(--primary); font-size: 1.4rem; }
+.footer-brand .brand-logo h2 { font-size: 1.3rem; font-weight: 800; color: var(--text-primary); }
+.footer-brand p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; margin-bottom: 20px; }
+.social-links { display: flex; gap: 12px; }
+.social-links a {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--glass); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; color: var(--text-muted);
+    font-size: 0.85rem; text-decoration: none; transition: all 0.2s;
+
+}
+.social-links a:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
+.footer-links h4 { font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; color: var(--text-primary); text-transform: uppercase; margin-bottom: 16px; }
+.footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.footer-links ul li a:hover { color: var(--primary); }
+.footer-bottom-bar { border-top: 1px solid var(--border); padding-top: 24px; text-align: center; color: var(--text-muted); font-size: 0.82rem; }
+
+/* ANIMATIONS */
+
+/* RESPONSIVE */
+
+    .page-hero .hero-image { max-height: 300px; }
+    .page-hero .hero-image img { height: 300px; }
+
+    .cta-banner .container { flex-direction: column; text-align: center; }
+    .cta-stats { justify-content: center; }
+
+
+/* FITX RESPONSIVE UTILITIES - 4-2-1 COLUMN SYSTEM */
+@media (min-width: 1200px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 25px !important;
+
+  }
+    .diet-plan-grid, .challenge-grid, .charts-wrap {
+        grid-template-columns: repeat(2, 1fr) !important;
+
+
+}
+}
+@media (max-width: 1199px) and (min-width: 768px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+
+  }
+    .page-hero, .hero-section {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 60px 5% !important;
+
+  }
+    .hero-content { margin-bottom: 30px !important; }
+
+    .navbar {
+        padding: 0 15px !important;
+
+  }
+    .nav-links {
+        display: none !important;
+
+  }
+    .hamburger, .menu-toggle {
+        display: block !important;
+
+  }
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+
+  }
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    /* .btn forced width removed for alignment */
+    .sidebar { width: 100% !important; z-index: 2000 !important; }
+}

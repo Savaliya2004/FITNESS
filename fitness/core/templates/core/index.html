@@ -1,0 +1,521 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX — Transform Your Body. Train Smarter.{% endblock %}
+
+{% block content %}
+<section id="hero">
+  <video id="hero-video" autoplay loop muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.6;">
+    <source src="https://videos.pexels.com/video-files/3206019/3206019-uhd_2560_1440_25fps.mp4" type="video/mp4">
+  </video>
+  <div class="hero-glow"></div>
+  <span class="float-icon" style="top:18%;right:12%;animation-delay:0s;">🏋️</span>
+  <span class="float-icon" style="top:30%;right:25%;animation-delay:-1.5s;">❤️</span>
+  <span class="float-icon" style="top:60%;right:8%;animation-delay:-2.5s;">🥤</span>
+  <span class="float-icon" style="top:72%;right:35%;animation-delay:-.8s;">👟</span>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span>AI-Powered Platform</div>
+    <h1 class="hero-title">Transform Your Body.<br><span class="line2">Train Smarter.</span></h1>
+    <p class="hero-sub">AI-powered fitness platform with expert trainers, personalized workouts, and immersive 3D technology to help you reach your peak.</p>
+    <div class="hero-ctas">
+      <a href="{% url 'workouts' %}" class="btn-primary" style="font-size:.88rem;padding:13px 32px;"><i class="fas fa-play" style="margin-right:8px;font-size:.75rem;"></i>Start Training</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num" id="cnt-members">0K+</div><div class="stat-label">Active Members</div></div>
+      <div><div class="stat-num" id="cnt-trainers">0+</div><div class="stat-label">Expert Trainers</div></div>
+      <div><div class="stat-num" id="cnt-programs">0+</div><div class="stat-label">Programs</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="scroll-gallery">
+  <div class="gallery-label reveal">
+    <p class="section-tag">Experience FitX</p>
+    <h2 class="section-title">Real People. <span class="text-accent">Real Results.</span></h2>
+    <p class="section-sub">Thousands of athletes transforming their lives — one rep at a time.</p>
+  </div>
+  <div class="diag-gallery-wrap">
+    <div class="diag-row" data-start-x="-35" data-start-y="25" data-end-x="35" data-end-y="-25">
+      <div class="diag-strip">
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Gym workout" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80" alt="Strength training" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80" alt="Cardio" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1599058945522-28d584b6f4ff?w=600&q=80" alt="Boxing" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&q=80" alt="Weight lifting" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80" alt="Push ups" loading="lazy"><div class="img-glow"></div></div>
+      </div>
+    </div>
+    <div class="diag-row" data-start-x="40" data-start-y="25" data-end-x="-30" data-end-y="-25">
+      <div class="diag-strip">
+        <div class="diag-img-card tall"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80" alt="Yoga" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80" alt="Pilates" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card tall"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Athlete" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=600&q=80" alt="Dance" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card tall"><img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=600&q=80" alt="Group class" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&q=80" alt="Running" loading="lazy"><div class="img-glow"></div></div>
+      </div>
+    </div>
+    <div class="diag-row" data-start-x="-45" data-start-y="-25" data-end-x="35" data-end-y="25">
+      <div class="diag-strip">
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1510771463146-e89e6e86560e?w=600&q=80" alt="Marathon" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card wide"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=800&q=80" alt="Crossfit" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600&q=80" alt="Outdoor" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card wide"><img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&q=80" alt="Gym" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1550345332-09e3ac987658?w=600&q=80" alt="Cable" loading="lazy"><div class="img-glow"></div></div>
+      </div>
+    </div>
+    <div class="diag-row" data-start-x="50" data-start-y="-25" data-end-x="-35" data-end-y="25">
+      <div class="diag-strip">
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80" alt="Dumbbell" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?w=600&q=80" alt="Equipment" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1485727749690-d091e8284ef3?w=600&q=80" alt="Sprint" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1597452485677-d661670d9640?w=600&q=80" alt="Yoga flow" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=600&q=80" alt="Plank" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80" alt="Athlete" loading="lazy"><div class="img-glow"></div></div>
+      </div>
+    </div>
+    <div class="diag-row" data-start-x="-30" data-start-y="30" data-end-x="40" data-end-y="-30">
+      <div class="diag-strip">
+        <div class="diag-img-card wide"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80" alt="Gym hero" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1533681904393-9ab6eee7e408?w=600&q=80" alt="Boxing" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card wide"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" alt="Weights" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1517963879433-6ad2a04fec31?w=600&q=80" alt="Outdoors" loading="lazy"><div class="img-glow"></div></div>
+      </div>
+    </div>
+    <div class="diag-row" data-start-x="45" data-start-y="30" data-end-x="-35" data-end-y="-30">
+      <div class="diag-strip">
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80" alt="Yoga" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card tall"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Athlete" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=600&q=80" alt="Dance" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card tall"><img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=600&q=80" alt="Group" loading="lazy"><div class="img-glow"></div></div>
+        <div class="diag-img-card"><img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&q=80" alt="Running" loading="lazy"><div class="img-glow"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="categories">
+  <div class="categories-header reveal">
+    <div class="section-tag">What We Offer</div>
+    <h2 class="section-title">Choose Your <span class="text-accent">Training Style</span></h2>
+    <p class="section-sub" style="margin:0 auto;">From high-intensity strength to mindful yoga — every discipline engineered to push your limits.</p>
+  </div>
+  <div class="categories-grid">
+    <div class="cat-card reveal" data-tilt onclick="location.href='{% url 'workouts' %}';"><div class="cat-glow"></div><span class="cat-icon">🏋️</span><h3 class="cat-name">Strength Training</h3><p class="cat-desc">Build lean muscle with progressive overload and AI-adapted resistance programs.</p><i class="fas fa-arrow-right cat-arrow"></i></div>
+    <div class="cat-card reveal" data-tilt style="transition-delay:.08s" onclick="location.href='{% url 'workouts' %}';"><div class="cat-glow"></div><span class="cat-icon">🧘</span><h3 class="cat-name">Yoga</h3><p class="cat-desc">Flexibility, mindfulness, and breath — guided by certified instructors daily.</p><i class="fas fa-arrow-right cat-arrow"></i></div>
+    <div class="cat-card reveal" data-tilt style="transition-delay:.16s" onclick="location.href='{% url 'workouts' %}';"><div class="cat-glow"></div><span class="cat-icon">🏃</span><h3 class="cat-name">Cardio</h3><p class="cat-desc">Burn fat, boost endurance, and improve heart health with varied cardio formats.</p><i class="fas fa-arrow-right cat-arrow"></i></div>
+    <div class="cat-card reveal" data-tilt style="transition-delay:.24s" onclick="location.href='{% url 'workouts' %}';"><div class="cat-glow"></div><span class="cat-icon">⚡</span><h3 class="cat-name">HIIT</h3><p class="cat-desc">Maximum calorie burn in minimum time — high-octane intervals for rapid results.</p><i class="fas fa-arrow-right cat-arrow"></i></div>
+  </div>
+</section>
+
+<section id="programs">
+  <div class="programs-header reveal">
+    <div class="section-tag">Programs</div>
+    <h2 class="section-title">Handcrafted <span class="text-accent">Workout Plans</span></h2>
+    <p class="section-sub">Every program designed by elite coaches and optimised by our AI engine for your body type.</p>
+  </div>
+  <div class="programs-grid">
+    {% for prog in programs %}
+    <div class="prog-card reveal" style="transition-delay:{{ forloop.counter0|add:forloop.counter0 }}s">
+      <img src="{% if prog.image %}{{ prog.image.url }}{% else %}https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80{% endif %}" alt="{{ prog.title }}" class="prog-img" loading="lazy">
+      <div class="prog-overlay"></div>
+      <div class="prog-info">
+        <div class="prog-badges">
+          <span class="prog-badge badge-fire">🔥 {{ prog.get_category_display }}</span>
+          <span class="prog-badge badge-dur"><i class="far fa-clock" style="margin-right:4px;"></i>{{ prog.duration_weeks }} Weeks</span>
+        </div>
+        <div class="prog-name">{{ prog.title }}</div>
+        <div class="prog-diff">{{ prog.get_difficulty_display }}</div>
+        <a href="{% url 'workouts' %}" class="btn-prog">View Details <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    {% empty %}
+    <p style="color: var(--muted); padding: 40px; grid-column: 1/-1; text-align: center;">No programs available yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="trainers">
+  <div class="trainers-header reveal">
+    <div><div class="section-tag">Expert Coaches</div><h2 class="section-title">Meet Your <span class="text-accent">Trainers</span></h2></div>
+    <div class="trainer-nav"><button class="t-nav-btn" id="tPrev"><i class="fas fa-arrow-left"></i></button><button class="t-nav-btn" id="tNext"><i class="fas fa-arrow-right"></i></button></div>
+  </div>
+  <div class="trainers-scroll-wrap">
+    <div class="trainers-track" id="trainersTrack">
+      {% for trainer in trainers %}
+      <div class="trainer-card">
+        <div class="trainer-img-wrap">
+          <img src="{% if trainer.image %}{{ trainer.image.url }}{% else %}https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80{% endif %}" alt="{{ trainer.name }}" class="trainer-img" loading="lazy">
+          <div class="trainer-overlay"></div>
+          <span class="trainer-spec">{{ trainer.specialty }}</span>
+          <div class="trainer-rating"><i class="fas fa-star"></i> {{ trainer.rating }}</div>
+        </div>
+        <div class="trainer-body">
+          <div class="trainer-name">{{ trainer.name }}</div>
+          <p class="trainer-bio">{{ trainer.bio }}</p>
+        </div>
+      </div>
+      {% empty %}
+        <p style="color: var(--muted); padding: 40px;">No trainers available in the database.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="membership-plans" class="membership-sec reveal">
+  <style>
+    .membership-sec { 
+      padding: 80px 5%; 
+      background: linear-gradient(to right, rgba(9, 11, 16, 0.95), rgba(9, 11, 16, 0.8)), url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1920&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+    }
+    .membership-head { text-align: left; margin-bottom: 50px; }
+    .membership-head h2 { font-size: 2.8rem; margin-bottom: 12px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .membership-head p { color: #aaa; font-size: 1rem; max-width: 600px; margin: 0; line-height: 1.5; }
+    
+    .membership-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .membership-card { 
+      background: rgba(255,255,255,0.03); 
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px; 
+      padding: 40px 30px; 
+      display: flex; 
+      flex-direction: column; 
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .membership-card.featured {
+      border-color: #8364ff;
+      box-shadow: 0 0 30px rgba(131,100,255,0.15);
+      transform: scale(1.02);
+    }
+    
+    .plan-title { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .plan-subtitle { font-size: 0.9rem; color: #888; margin-bottom: 25px; }
+    
+    .plan-price-wrap { display: flex; align-items: flex-end; gap: 6px; margin-bottom: 8px; }
+    .plan-price { font-size: 3.5rem; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1; }
+    .plan-period { color: #aaa; font-size: 0.9rem; font-weight: 500; margin-bottom: 6px; }
+    
+    .plan-save { color: #aaa; font-size: 0.85rem; margin-bottom: 25px; min-height: 16px; }
+    
+    .plan-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.08); margin: 0 0 25px 0; }
+    
+    .plan-item { color: #ddd; margin-bottom: 16px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 12px; line-height: 1.4; }
+    .plan-item::before { content: ''; display: inline-block; width: 6px; height: 6px; background: #8364ff; border-radius: 50%; opacity: 0.9; flex-shrink: 0; margin-top: 6px; }
+    .membership-card.featured .plan-item::before { background: #f742b7; }
+    
+    .plan-cta { 
+      width: 100%; 
+      padding: 14px; 
+      border-radius: 999px; 
+      border: 1px solid rgba(255,255,255,0.18);
+      font-weight: 700; 
+      cursor: pointer; 
+      transition: .3s; 
+      margin-top: auto; 
+      background: rgba(255,255,255,0.1); 
+      color: #fff; 
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .plan-cta:hover { background: rgba(255,255,255,0.15); }
+    .membership-card.featured .plan-cta { background: linear-gradient(135deg,#8364ff,#f742b7); border: none; }
+    .membership-card.featured .plan-cta:hover { opacity: 0.9; box-shadow: 0 5px 15px rgba(131,100,255,0.3); }
+    .plan-cta:disabled { opacity:.6; cursor:not-allowed; }
+    
+    .current-badge { display:inline-block; background:rgba(34,197,94,0.16); color:#22c55e; font-weight:700; font-size: 0.8rem; border-radius:12px; padding:6px 14px; margin-bottom:12px; border:1px solid rgba(34,197,94,0.3); text-transform:uppercase; letter-spacing:1px; }
+    
+    @media (max-width: 900px) {
+      .membership-grid { grid-template-columns: 1fr; }
+      .membership-sec { padding: 60px 20px; }
+      .membership-card.featured { transform: scale(1); }
+    }
+  </style>
+
+  <div class="membership-head">
+    <h2>Sport Gym Membership</h2>
+    <p>14 days unlimited free trial. No contract or credit card required.</p>
+  </div>
+
+  <div class="membership-grid">
+    {% for plan in plans %}
+    <div class="membership-card {% if plan.plan_type == 'premium' %}featured{% endif %}">
+      <div class="plan-title">{{ plan.name|title }} Package</div>
+      <div class="plan-subtitle">Membership</div>
+      
+      <div class="plan-price-wrap">
+        <span class="plan-price">₹{{ plan.price|floatformat:0 }}</span>
+        <span class="plan-period">/package</span>
+      </div>
+      <div class="plan-save">Save {% if plan.plan_type == 'premium' %}₹150{% elif plan.plan_type == 'elite' %}₹500{% else %}₹0{% endif %}</div>
+      
+      <hr class="plan-divider">
+      
+      {% for feature in plan.features.splitlines %}
+        {% if feature %}
+          <div class="plan-item">{{ feature }}</div>
+        {% endif %}
+      {% endfor %}
+
+      {% if user.is_authenticated and current_membership == plan.plan_type %}
+        <div style="margin-top:auto; display:flex; flex-direction:column; align-items:center; width:100%; border-top:1px solid rgba(255,255,255,0.05); padding-top:20px;">
+          <div class="current-badge">Current Plan</div>
+          <button class="plan-cta" style="margin-top:0;" disabled>Active</button>
+        </div>
+      {% else %}
+        <a href="{% url 'buy_membership' plan.id %}" class="plan-cta">Choose Plan</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Payment form removed, now uses membership page -->
+
+<section id="progress-dash">
+  <div class="dash-grid">
+    <div class="dash-text reveal"><div class="section-tag">Your Progress</div><h2 class="section-title">Track Every <span class="text-accent">Milestone</span></h2><p class="section-sub">Real-time dashboards, animated charts, and AI insight summaries — so you always know your next move.</p><a href="{% url 'dashboard' %}" class="btn-primary" style="margin-top:32px;display:inline-block;text-decoration:none;">See My Dashboard</a></div>
+    <div class="dash-cards reveal" style="transition-delay:.12s">
+      <div class="metric-card"><div class="metric-icon">🔥</div><div class="metric-val" data-count="8420">0</div><div class="metric-label">Calories Burned</div><div class="progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" data-width="84"></div></div></div></div>
+      <div class="metric-card"><div class="metric-icon">⚡</div><div class="metric-val" data-count="23">0</div><div class="metric-label">Day Streak</div><div class="progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" data-width="66"></div></div></div></div>
+      <div class="metric-card"><div class="metric-icon">💪</div><div class="metric-val" data-count="47">0</div><div class="metric-label">Workouts Done</div><div class="progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" data-width="78"></div></div></div></div>
+      <div class="metric-card"><div class="metric-icon">🏆</div><div class="metric-val" data-count="12">0</div><div class="metric-label">Badges Earned</div><div class="progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" data-width="50"></div></div></div></div>
+      <div class="chart-wrap"><div class="chart-title">Weekly Activity (kcal)</div><div class="bar-chart"><div class="bar" style="height:40%"><span class="bar-label">Mon</span></div><div class="bar active" style="height:75%"><span class="bar-label">Tue</span></div><div class="bar" style="height:55%"><span class="bar-label">Wed</span></div><div class="bar active" style="height:90%"><span class="bar-label">Thu</span></div><div class="bar" style="height:65%"><span class="bar-label">Fri</span></div><div class="bar" style="height:30%"><span class="bar-label">Sat</span></div><div class="bar active" style="height:85%"><span class="bar-label">Sun</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="testi-header reveal">
+    <div class="section-tag">Success Stories</div>
+    <h2 class="section-title">What Our <span class="text-accent">Community Says</span></h2>
+    <p class="section-sub" style="margin-bottom:20px;">Real transformations from real members across the FitX platform.</p>
+  </div>
+  <div class="testi-track-wrap"><div class="testi-track" id="testiTrack">
+    {% if testimonials %}
+      {% for testi in testimonials %}
+      <div class="testi-card">
+        <div class="testi-stars">
+          {% for i in "12345" %}
+            <i class="fas fa-star" style="{% if forloop.counter <= testi.rating %}color:#facc15;{% else %}color:#333;{% endif %}"></i>
+          {% endfor %}
+        </div>
+        <p class="testi-text">"{{ testi.content }}"</p>
+        <div class="testi-author">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="{{ testi.user.username }}" class="testi-avatar">
+          <div>
+            <div class="testi-name">{{ testi.user.username }}</div>
+            <div class="testi-role">Verified Member</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      {% for testi in dummy_testimonials %}
+      <div class="testi-card">
+        <div class="testi-stars">
+          {% for i in "12345" %}
+            {% if forloop.counter <= testi.rating %}
+              <i class="fas fa-star" style="color:#facc15;"></i>
+            {% else %}
+              <i class="fas fa-star" style="color:#333;"></i>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <p class="testi-text">"{{ testi.text }}"</p>
+        <div class="testi-author">
+          <img src="{{ testi.avatar }}" alt="{{ testi.name }}" class="testi-avatar">
+          <div>
+            <div class="testi-name">{{ testi.name }}</div>
+            <div class="testi-role">{{ testi.role }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div></div>
+  <div style="text-align: center; margin-top: 40px;" class="reveal">
+    <a href="{% url 'community' %}" class="btn-primary" style="display:inline-block; text-decoration:none; padding: 12px 32px;">See Community</a>
+  </div>
+</section>
+
+<section id="success-stories-promo" style="padding: 60px 5%; background: var(--glass); border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+  <div class="reveal">
+    <div class="section-tag" style="justify-content: center;">Transformations</div>
+    <h2 class="section-title">Real People. <span class="text-accent">Real Results.</span></h2>
+    <p class="section-sub" style="margin: 0 auto 30px; max-width: 600px;">Check out the incredible journeys of FitX members who have pushed their limits and transformed their lives.</p>
+    <a href="{% url 'success_stories' %}" class="btn-primary" style="display:inline-block; text-decoration:none; padding: 14px 36px; font-weight: bold;">See All Success Stories</a>
+  </div>
+</section>
+
+<section id="faq" class="faq-sec reveal">
+  <div class="section-tag" style="display:block;text-align:center;">Questions?</div>
+  <h2 class="section-title" style="text-align:center;">Frequently Asked <span class="text-accent">Questions</span></h2>
+  <p class="section-sub" style="margin-bottom: 48px;">Everything you need to know about FitX.</p>
+  <div class="faq-modern-list">
+    {% for faq in faqs %}
+    <div class="faq-modern-item" onclick="toggleFaqModern(this)">
+        <div class="faq-modern-q">
+          <span>{{ faq.question }}</span>
+          <div class="faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="faq-modern-a">{{ faq.answer }}</div>
+    </div>
+    {% empty %}
+    <p style="text-align: center; color: var(--muted);">No FAQs available yet. Contact us if you have questions!</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="app-promo">
+  <div class="app-grid">
+    <div class="app-mockup-wrap reveal"><img src="{% static 'core/img/app_mockup.png' %}" alt="FitX Mobile App" class="app-mockup" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=300&q=80'"></div>
+    <div class="reveal" style="transition-delay:.1s">
+      <div class="section-tag">Mobile App</div>
+      <h2 class="section-title">Train Anywhere.<br><span class="text-accent">Anytime.</span></h2>
+      <p class="section-sub">The FitX app brings your entire program, trainer messages, nutrition log, and live workouts right to your pocket.</p>
+      <div class="app-dl-btns">
+        <a class="btn-store" href="#"><i class="fab fa-apple"></i><div class="store-text"><span>Download on the</span><strong>App Store</strong></div></a>
+        <a class="btn-store" href="#"><i class="fab fa-google-play"></i><div class="store-text"><span>Get it on</span><strong>Google Play</strong></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIPTION MODAL -->
+<div id="subModal" class="modal-overlay">
+  <div class="sub-modal-content">
+    <button class="modal-close" onclick="closeSubModal()"><i class="fas fa-times"></i></button>
+    
+    <div id="subModalSetup">
+      <div class="modal-header-sec">
+        <div id="subModalBadge" class="plan-hot" style="position:relative;top:0;left:0;transform:none;margin-bottom:10px;display:none;width:fit-content;">MOST POPULAR</div>
+        <h2 id="subModalName">Pro Plan</h2>
+        <div class="plan-price"><span style="font-size:1.2rem;">$</span><span id="subModalPrice" style="font-size:1.8rem;font-weight:900;">49</span><span style="font-size:0.8rem;font-weight:500;color:var(--muted);">/mo</span></div>
+        <p id="subModalDesc">For serious fitness enthusiasts who want results</p>
+      </div>
+
+      <div class="modal-body-sec">
+        <h3 class="modal-section-title" style="margin-top:0;">Included Features</h3>
+        <ul id="subModalFeatures" class="modal-features"></ul>
+
+        <h3 class="modal-section-title">Compare Plans</h3>
+        <table class="modal-comp-table">
+          <thead><tr><th>Program</th><th>Starter</th><th>Pro</th><th>Elite</th></tr></thead>
+          <tbody>
+            <tr id="compRow1"><td>Live Sessions</td><td><i class="fas fa-times" style="color:#ef4444;"></i></td><td>3/mo</td><td>Unlimited</td></tr>
+            <tr id="compRow2"><td>Nutrition</td><td><i class="fas fa-times" style="color:#ef4444;"></i></td><td>Basic</td><td>Custom</td></tr>
+            <tr id="compRow3"><td>1-on-1 Coach</td><td><i class="fas fa-times" style="color:#ef4444;"></i></td><td><i class="fas fa-times" style="color:#ef4444;"></i></td><td><i class="fas fa-check" style="color:#00e676;"></i></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="modal-section-title">Payment Method</h3>
+        <div class="payment-grid" id="paymentGrid">
+          <label class="payment-opt active"><input type="radio" name="paymethod" value="card" checked><i class="far fa-credit-card" style="font-size:1.5rem;margin-bottom:5px;"></i> Card</label>
+          <label class="payment-opt"><input type="radio" name="paymethod" value="upi"><i class="fas fa-qrcode" style="font-size:1.5rem;margin-bottom:5px;"></i> UPI</label>
+          <label class="payment-opt"><input type="radio" name="paymethod" value="gpay"><i class="fab fa-google-pay" style="font-size:1.5rem;margin-bottom:5px;"></i> GPay</label>
+          <label class="payment-opt"><input type="radio" name="paymethod" value="paytm"><i class="fas fa-wallet" style="font-size:1.5rem;margin-bottom:5px;"></i> Paytm</label>
+        </div>
+
+        <div class="payment-summary">
+          <span>Total Billed Today:</span> <span style="color:var(--accent);">$<span id="subModalTotal">49</span>.00</span>
+        </div>
+        <button class="btn-primary" onclick="confirmSub()" style="width:100%;margin-top:15px;padding:12px;font-size:0.95rem;display:flex;justify-content:center;align-items:center;"><i class="fas fa-lock" style="margin-right:8px;"></i> Subscribe Now</button>
+      </div>
+    </div>
+
+    <div id="subModalConfirm" style="display:none; text-align:center; padding: 60px 40px;">
+       <i class="fas fa-check-circle" style="font-size:5rem;color:#00e676;margin-bottom:20px;"></i>
+       <h2 style="font-size:1.8rem;margin-bottom:10px;">Your plan has been activated successfully.</h2>
+       <p style="color:var(--muted);font-size:1.1rem;">Plan: <strong id="confirmPlanName" style="color:#fff;">Pro</strong></p>
+       <p style="color:var(--muted);font-size:1.1rem;margin-top:5px;">Next billing date: <strong style="color:#fff;"><span id="nextBillingDate"></span></strong></p>
+       <a href="{% url 'dashboard' %}" class="btn-primary" style="display:inline-block;margin-top:30px;padding:12px 30px;text-decoration:none;">Go to Dashboard</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+function countUp(el,target,suffix=''){let c=0;const s=target/60;const t=setInterval(()=>{c=Math.min(c+s,target);el.textContent=Math.floor(c)+suffix;if(c>=target)clearInterval(t)},25)}
+setTimeout(()=>{countUp(document.getElementById('cnt-members'),200,'K+');countUp(document.getElementById('cnt-trainers'),80,'+');countUp(document.getElementById('cnt-programs'),150,'+')},800);
+const revealEls=document.querySelectorAll('.reveal');const revealObs=new IntersectionObserver((e)=>{e.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}})},{threshold:.12});revealEls.forEach(el=>revealObs.observe(el));
+const dashObs=new IntersectionObserver((e)=>{e.forEach(e=>{if(!e.isIntersecting)return;e.target.querySelectorAll('.progress-bar-fill').forEach(b=>{setTimeout(()=>b.style.width=b.dataset.width+'%',200)});e.target.querySelectorAll('.metric-val[data-count]').forEach(el=>{const t=+el.dataset.count;let c=0;const s=t/60;const i=setInterval(()=>{c=Math.min(c+s,t);el.textContent=Math.floor(c).toLocaleString();if(c>=t)clearInterval(i)},20)});dashObs.unobserve(e.target)})},{threshold:.2});
+const ds=document.getElementById('progress-dash');if(ds)dashObs.observe(ds);
+document.querySelectorAll('[data-tilt]').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(800px) rotateY(${x*14}deg) rotateX(${-y*14}deg) scale(1.03)`});card.addEventListener('mouseleave',()=>{card.style.transform='perspective(800px) rotateY(0) rotateX(0) scale(1)';card.style.transition='transform .5s cubic-bezier(.4,0,.2,1)'})});
+(function(){const t=document.getElementById('trainersTrack');const cW=280+24;let i=0;const mI=()=>t.children.length-Math.floor(t.parentElement.offsetWidth/cW);document.getElementById('tNext').addEventListener('click',()=>{i=Math.min(i+1,mI());t.style.transform=`translateX(-${i*cW}px)`});document.getElementById('tPrev').addEventListener('click',()=>{i=Math.max(i-1,0);t.style.transform=`translateX(-${i*cW}px)`})})();
+(function(){const t=document.getElementById('testiTrack');if(!t)return;const items=Array.from(t.children);items.forEach(i=>t.appendChild(i.cloneNode(true)));let p=0,paused=false;t.addEventListener('mouseenter',()=>paused=true);t.addEventListener('mouseleave',()=>paused=false);t.style.transition='none';const w=items.length*(380+24);function step(){if(!paused){p-=1;if(Math.abs(p)>=w)p=0;t.style.transform=`translateX(${p}px)`}requestAnimationFrame(step)}requestAnimationFrame(step)})();
+gsap.registerPlugin(ScrollTrigger);document.querySelectorAll('.diag-row').forEach(row=>{const sX=Number(row.dataset.startX)||0,sY=Number(row.dataset.startY)||0,eX=Number(row.dataset.endX)||0,eY=Number(row.dataset.endY)||0;const strip=row.querySelector('.diag-strip');gsap.fromTo(strip,{x:sX+'vw',y:sY+'vh'},{x:eX+'vw',y:eY+'vh',ease:'none',scrollTrigger:{trigger:'#scroll-gallery',start:'top bottom',end:'bottom top',scrub:1.5}})});
+function toggleFaq(el){const a=el.querySelector('.faq-a');const i=el.querySelector('i');if(a.style.display==='block'){a.style.display='none';i.style.transform='rotate(0)'}else{a.style.display='block';i.style.transform='rotate(180deg)'}}
+function toggleFaqModern(el){const isOpen=el.classList.contains('open');document.querySelectorAll('.faq-modern-item.open').forEach(item=>{item.classList.remove('open');const a=item.querySelector('.faq-modern-a');if(a){a.style.maxHeight='0';a.style.opacity='0';}const icon=item.querySelector('.faq-icon i');if(icon){icon.className='fas fa-plus';}});if(!isOpen){el.classList.add('open');const ans=el.querySelector('.faq-modern-a');if(ans){ans.style.maxHeight=ans.scrollHeight+'px';ans.style.opacity='1';}const icon=el.querySelector('.faq-icon i');if(icon){icon.className='fas fa-minus';}}}
+
+// Subscription Modal Logic
+const plans = {
+  'Starter': { price: 19, desc: 'Perfect for beginners starting their journey', pop: false, feats: ['5 Workout Programs', 'Community Access', 'Progress Tracking'] },
+  'Pro': { price: 49, desc: 'For serious fitness enthusiasts who want results', pop: true, feats: ['Unlimited Programs', '3 Live Sessions/mo', 'Nutrition Plans', 'AI Recommendations', 'Progress Tracking'] },
+  'Elite': { price: 99, desc: 'Elite coaching for complete transformation', pop: false, feats: ['Everything in Pro', 'Unlimited Live Sessions', '1-on-1 Personal Coach', 'Custom Meal Planning', 'Priority Support', 'Body Composition Analysis'] }
+};
+
+function openSubModal(planName) {
+  const plan = plans[planName];
+  document.getElementById('subModalName').innerText = planName + ' Plan';
+  document.getElementById('subModalPrice').innerText = plan.price;
+  document.getElementById('subModalTotal').innerText = plan.price;
+  document.getElementById('subModalDesc').innerText = plan.desc;
+  document.getElementById('subModalBadge').style.display = plan.pop ? 'block' : 'none';
+  
+  const fList = document.getElementById('subModalFeatures');
+  fList.innerHTML = '';
+  plan.feats.forEach(f => fList.innerHTML += `<li><i class="fas fa-check"></i> ${f}</li>`);
+  
+  // Highlight comparison column
+  document.querySelectorAll('.modal-comp-table tr').forEach(row => {
+    row.querySelectorAll('td, th').forEach(cell => cell.style.background = '');
+    const idx = planName === 'Starter' ? 1 : (planName === 'Pro' ? 2 : 3);
+    if(row.children[idx]) row.children[idx].style.background = 'rgba(106,92,255,0.15)';
+  });
+
+  document.getElementById('subModalSetup').style.display = 'block';
+  document.getElementById('subModalConfirm').style.display = 'none';
+  document.getElementById('subModal').classList.add('active');
+}
+
+function closeSubModal() { document.getElementById('subModal').classList.remove('active'); }
+
+function confirmSub() {
+  document.getElementById('subModalSetup').style.display = 'none';
+  document.getElementById('subModalConfirm').style.display = 'block';
+  document.getElementById('confirmPlanName').innerText = document.getElementById('subModalName').innerText;
+  
+  const date = new Date();
+  date.setMonth(date.getMonth() + 1);
+  document.getElementById('nextBillingDate').innerText = date.toLocaleDateString();
+}
+
+document.querySelectorAll('.payment-opt').forEach(opt => {
+  opt.addEventListener('click', function() {
+    document.querySelectorAll('.payment-opt').forEach(o => o.classList.remove('active'));
+    this.classList.add('active');
+    this.querySelector('input').checked = true;
+  });
+});
+
+// Razorpay flow moved to membership page
+
+</script>
+{% endblock %}

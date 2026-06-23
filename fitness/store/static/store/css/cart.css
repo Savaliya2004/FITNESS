@@ -1,0 +1,14 @@
+
+      .empty-cart { text-align: center; padding: 100px 5%; }
+      .empty-cart i { font-size: 5rem; color: #333; margin-bottom: 20px; }
+      #couponMsg { color: #22c55e; font-size: 0.85rem; margin-top: 10px; font-weight: 600; display: none; }
+  
+
+
+
+
+[data-theme="light"] .card, [data-theme="light"] .prod-card, [data-theme="light"] .program-card, [data-theme="light"] .trainer-card, [data-theme="light"] .faq-item { background: #fff; border-color: #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+
+
+

@@ -1,0 +1,318 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Your Shopping Cart | FitX Store{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'store/css/store.css' %}">
+<style>
+    .empty-cart { text-align: center; padding: 120px 5%; min-height: 60vh; }
+    .empty-cart i { font-size: 5rem; color: var(--muted); margin-bottom: 20px; display: block; opacity: 0.3; }
+    #couponMsg { color: #22c55e; font-size: 0.85rem; margin-top: 10px; font-weight: 600; display: none; }
+    
+    /* Theme Reactive Styles */
+    body { background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+    .cart-header { padding: 120px 5% 40px; text-align: center; }
+    .cart-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 40px; padding: 0 5% 100px; max-width: 1400px; margin: 0 auto; }
+    
+    .cart-list { display: flex; flex-direction: column; gap: 20px; }
+    .cart-item { 
+        background: var(--card); 
+        border: 1px solid var(--glassBorder); 
+        border-radius: 24px; 
+        padding: 25px; 
+        display: flex; 
+        align-items: center; 
+        gap: 25px; 
+        position: relative; 
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"] .cart-item { box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .cart-item:hover { transform: translateY(-3px); border-color: var(--accent); }
+    
+    .c-item-img { width: 130px; height: 130px; border-radius: 16px; object-fit: cover; border: 1px solid var(--glassBorder); }
+    .c-item-info { flex: 1; }
+    .c-item-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+    .c-item-price { color: var(--accent); font-weight: 950; font-size: 1.2rem; margin-bottom: 15px; }
+    
+    .qty-control { display: flex; align-items: center; gap: 15px; background: var(--bg2); width: fit-content; padding: 8px 18px; border-radius: 12px; border: 1px solid var(--glassBorder); }
+    .qty-btn { background: none; border: none; color: var(--text); cursor: pointer; font-size: 1.2rem; font-weight: 800; transition: 0.2s; padding: 0 10px; }
+    .qty-btn:hover { color: var(--accent); transform: scale(1.2); }
+    
+    .remove-item { position: absolute; top: 25px; right: 25px; background: none; border: none; color: var(--muted); cursor: pointer; transition: 0.3s; font-size: 1.2rem; }
+    .remove-item:hover { color: #ef4444; transform: rotate(15deg); }
+    
+    .cart-summary { 
+        background: var(--card); 
+        border: 1px solid var(--glassBorder); 
+        border-radius: 30px; 
+        padding: 40px; 
+        height: fit-content; 
+        position: sticky; 
+        top: 120px; 
+        backdrop-filter: blur(30px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"] .cart-summary { background: rgba(255,255,255,0.02); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+    
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 22px; color: var(--muted); font-size: 1rem; font-weight: 600; }
+    .summary-total { border-top: 1px solid var(--glassBorder); padding-top: 25px; margin-top: 25px; color: var(--text); font-weight: 950; font-size: 2.2rem; }
+    
+    .coupon-input { flex: 1; background: var(--bg2); border: 1px solid var(--glassBorder); padding: 14px 20px; border-radius: 12px; color: var(--text); outline: none; transition: 0.3s; }
+    .coupon-input:focus { border-color: var(--accent); }
+    .btn-apply { background: var(--glassBorder); border: none; color: #fff; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .btn-apply:hover { background: var(--accent); }
+
+    @media (max-width: 992px) {
+        .cart-container { grid-template-columns: 1fr; }
+        .c-item-img { width: 80px; height: 80px; }
+        .c-item-name { font-size: 1rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="display:none;">{% csrf_token %}</div>
+<div class="cart-header" data-aos="fade-down">
+    <h1 style="font-family: 'Poppins'; font-weight: 950; font-size: 4rem; color: var(--text); letter-spacing: -2px;">YOUR <span style="background: var(--gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">CART</span></h1>
+    <p style="color: var(--muted); font-size: 1.1rem;">Review items before proceeding to checkout.</p>
+</div>
+
+{% if items %}
+<div id="cartPageContent">
+    <div class="cart-container">
+        <div class="cart-list" id="cartItemsList" data-aos="fade-right">
+            {% for item in items %}
+            <div class="cart-item" id="item-{{ item.product.id }}">
+                <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}https://images.unsplash.com/photo-1541534741688-6078c65b5a33?w=500&q=80{% endif %}" class="c-item-img">
+                <div class="c-item-info">
+                    <div class="c-item-name">{{ item.product.name }}</div>
+                    <div class="c-item-price">
+                        <span class="c-item-price-val" data-original="{% if item.product.discount_price %}{{ item.product.discount_price }}{% else %}{{ item.product.price }}{% endif %}">
+                            {% if item.product.discount_price %}
+                                ₹{{ item.product.discount_price }} <span style="font-size: 0.8rem; text-decoration: line-through; color: #666; margin-left: 10px;">₹{{ item.product.price }}</span>
+                            {% else %}
+                                ₹{{ item.product.price }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateServerQty('{{ item.product.id }}', 'decrement')">-</button>
+                        <span id="qty-{{ item.product.id }}" style="font-weight: 700; width: 25px; text-align: center;">{{ item.quantity }}</span>
+                        <button class="qty-btn" onclick="updateServerQty('{{ item.product.id }}', 'increment')">+</button>
+                    </div>
+                </div>
+                <button class="remove-item" onclick="removeFromServer('{{ item.product.id }}')" title="Remove Item"><i class="fas fa-trash"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="cart-summary" id="cartSummarySticky" data-aos="fade-left">
+            <h2 style="font-family: 'Poppins'; font-weight: 800; margin-bottom: 25px; font-size: 1.8rem;">Summary</h2>
+            <div class="summary-row"><span>Subtotal</span><span id="subtotal" style="color: var(--text); font-weight: 700;">₹{{ total }}</span></div>
+            <div class="summary-row"><span>GST (18%)</span><span id="tax" style="color: var(--text); font-weight: 700;">₹{{ tax }}</span></div>
+            <div class="summary-row" id="discountRow" style="{% if applied_coupon %}display: flex;{% else %}display: none;{% endif %} justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 10px; background: rgba(34, 197, 94, 0.05); border-radius: 8px;">
+                <span style="color: #22c55e; font-weight: 700;"><i class="fas fa-check-circle"></i> Coupon ({{ applied_coupon|upper }})</span>
+                <span id="discountVal" style="color: #22c55e; font-weight: 800;">-₹{{ discount_amount }}</span>
+            </div>
+            
+            <div id="savingsMsg" style="{% if discount_amount > 0 %}display: block;{% else %}display: none;{% endif %} text-align: center; color: #9333ea; font-weight: 800; font-size: 0.85rem; margin-bottom: 15px; background: #f3e8ff; padding: 12px; border-radius: 10px; animation: pulse 2s infinite;">
+                <i class="fas fa-gift"></i> YOU SAVED ₹<span id="savingsVal">{{ discount_amount }}</span> ON THIS ORDER!
+            </div>
+
+            <div class="summary-total" style="display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <span style="font-size: 1.2rem; color: var(--muted); font-weight: 700;">Final Total</span>
+                <span id="finalTotal" style="font-size: 2.8rem; font-weight: 950; color: var(--text);">₹{{ total_with_tax }}</span>
+            </div>
+            
+            <a href="{% url 'coupons_list' %}" class="btn-apply" id="couponHubBtn" style="display: block; text-align: center; width: 100%; padding: 18px; margin-top: 25px; background: rgba(147, 51, 234, 0.1); border: 2px dashed rgba(147, 51, 234, 0.4); color: #9333ea; border-radius: 15px; font-weight: 800; transition: 0.3s; cursor: pointer; text-decoration: none;">
+                <i class="fas fa-ticket-alt" style="margin-right: 10px;"></i> Browse Coupon Rewards
+            </a>
+            
+            <div id="couponInputContainer" style="margin-top: 15px; display: none;">
+                <input type="hidden" id="couponInput" value="{{ applied_coupon }}">
+            </div>
+            
+            <button class="btn-primary" style="width: 100%; margin-top: 20px; padding: 18px; border-radius: 12px; font-size: 1.1rem;" onclick="location.href='{% url 'checkout' %}'">
+                Proceed to Checkout <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+            </button>
+            
+            <a href="{% url 'store' %}" style="display: block; text-align: center; margin-top: 20px; color: var(--muted); text-decoration: none; font-size: 0.95rem; font-weight: 600;">
+                <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i> Continue Shopping
+            </a>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div id="emptyCartView" class="empty-cart">
+    <i class="fas fa-shopping-basket" style="color: var(--accent); opacity: 0.2;"></i>
+    <h2 style="font-family: 'Poppins'; font-weight: 800; font-size: 2.5rem; margin-bottom: 10px;">Your cart is empty</h2>
+    <p style="color: var(--muted); margin-bottom: 30px;">Looks like you haven't added anything to your cart yet.</p>
+    <a href="{% url 'store' %}" class="btn-primary" style="display:inline-block; padding: 15px 40px; border-radius: 30px;">Return to Store</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let appliedDiscountPercent = 0;
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function updateServerQty(id, action) {
+        const formData = new FormData();
+        formData.append('action', action);
+        formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+
+        fetch(`/shop/update-cart/${id}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                if (data.item_qty <= 0) {
+                    location.reload(); // Simplest way to handle removal from view
+                } else {
+                    document.getElementById(`qty-${id}`).innerText = data.item_qty;
+                    updateBadge(data.cart_count);
+                    // Since totals are complex (Django objects), reload to be sure or calculate in JS
+                    location.reload(); 
+                }
+            }
+        });
+    }
+
+    function removeFromServer(id) {
+        fetch(`/shop/remove-from-cart/${id}/`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showToast(data.message);
+                updateBadge(data.cart_count);
+                document.getElementById(`item-${id}`).style.opacity = '0';
+                setTimeout(() => location.reload(), 500);
+            }
+        });
+    }
+
+    function updateBadge(count) {
+        document.querySelectorAll('.cart-count').forEach(el => el.innerText = count || 0);
+    }
+
+    function openCouponModal() {
+        document.getElementById('couponModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCouponModal() {
+        document.getElementById('couponModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function useCoupon(code) {
+        document.getElementById('couponInput').value = code;
+        applyCoupon();
+    }
+
+    function applyCoupon() {
+        const code = document.getElementById('couponInput').value.trim();
+        if (!code) return;
+
+        const formData = new FormData();
+        formData.append('coupon_code', code);
+        formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+
+        fetch('{% url "apply_coupon" %}', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const msg = document.getElementById('couponMsg');
+            msg.style.display = 'block';
+            if (data.status === 'success') {
+                appliedDiscountPercent = data.discount_percent;
+                msg.style.color = '#22c55e';
+                msg.innerText = data.message;
+                
+                localStorage.setItem('applied_coupon', code);
+
+                // 1. Recalculate each item's price in the UI
+                document.querySelectorAll('.cart-item').forEach(item => {
+                    const priceEl = item.querySelector('.c-item-price-val');
+                    if (priceEl) {
+                        const originalPrice = parseFloat(priceEl.dataset.original);
+                        const discount = (originalPrice * appliedDiscountPercent) / 100;
+                        const newPrice = originalPrice - discount;
+                        
+                        // Update the display
+                        priceEl.innerHTML = `₹${newPrice.toFixed(0)} <span style="text-decoration:line-through; font-size:0.8rem; opacity:0.5; margin-left:8px;">₹${originalPrice.toFixed(0)}</span>`;
+                    }
+                });
+
+                // 2. Recalculate summary totals
+                const subtotal = parseFloat('{{ total }}');
+                const tax = subtotal * 0.18;
+                const discAmount = (subtotal * appliedDiscountPercent) / 100;
+                const total = subtotal + tax - discAmount;
+
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountVal').innerText = `-₹${discAmount.toFixed(2)}`;
+                document.getElementById('finalTotal').innerText = `₹${total.toFixed(2)}`;
+                
+                showToast("Coupon Applied! Individual prices updated.");
+            } else {
+                msg.style.color = '#ef4444';
+                msg.innerText = data.message;
+                localStorage.removeItem('applied_coupon');
+            }
+        });
+    }
+
+    function showToast(msg) {
+        // Simple console log or you can use your project's toast function
+        console.log(msg);
+        if(typeof window.showToast === 'function') window.showToast(msg);
+    }
+
+    // Auto-apply coupon from URL if present
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const couponCode = urlParams.get('coupon');
+        if (couponCode) {
+            document.getElementById('couponInputContainer').style.display = 'block';
+            document.getElementById('couponInput').value = couponCode;
+            applyCoupon();
+            
+            // Clean up the URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    });
+
+</script>
+{% endblock %}

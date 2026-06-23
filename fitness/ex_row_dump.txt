@@ -1,0 +1,12 @@
+premium" style="text-transform:capitalize;">{{ ex.category }}</span></td>
+                <td class="text-muted" style="text-transform:capitalize;">{{ ex.exercise_type }}</td>
+                <td><span class="badge badge-{{ ex.difficulty }}">{{ ex.difficulty }}</span></td>
+                <td class="text-amber fw-700">{{ ex.calories_burned }} kcal</td>
+                <td class="text-muted">{{ ex.muscle_group|default:"—" }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon">💪</div><div class="empty-state-title">No exercises yet</div><div class="empty-state-text">Click "+ Add Exercise" to add your first exercise.</div></div></td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+  

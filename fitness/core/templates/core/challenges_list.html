@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Challenges | FitX{% endblock %}
+
+{% block content %}
+<section style="padding: 100px 5% 50px;">
+    <div style="text-align: center; margin-bottom: 50px;">
+        <h1 style="font-size: 2.5rem; font-weight: 900;">Take on a <span style="color: var(--accent);">Challenge</span></h1>
+        <p style="color: var(--muted);">Push your limits, track your daily progress, and earn massive XP rewards.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        {% for challenge in challenges %}
+        <div class="glass-card" style="padding: 20px; transition: transform 0.2s; border: 1px solid rgba(255,255,255,0.05);">
+            {% if challenge.image %}
+                <img src="{{ challenge.image.url }}" alt="{{ challenge.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;">
+            {% else %}
+                <div style="width: 100%; height: 200px; background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-trophy" style="font-size: 4rem; color: rgba(255,255,255,0.2);"></i>
+                </div>
+            {% endif %}
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                <h3 style="margin: 0; font-size: 1.25rem;">{{ challenge.title }}</h3>
+                <span class="badge" style="background: rgba(255,107,53,0.15); color: #ff6b35; padding: 4px 8px; border-radius: 8px; font-size: 0.75rem;">{{ challenge.get_difficulty_display }}</span>
+            </div>
+            
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 15px;">
+                {{ challenge.description|truncatewords:20 }}
+            </p>
+            
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-bottom: 20px; font-size: 0.85rem; color: #ccc;">
+                <div><i class="far fa-calendar-alt"></i> {{ challenge.duration_days }} Days</div>
+                <div><i class="fas fa-users"></i> {{ challenge.current_participants }} Joined</div>
+                <div style="color: #f7c948;"><i class="fas fa-star"></i> {{ challenge.reward_xp }} XP</div>
+            </div>
+            
+            {% if challenge.id in user_enrollments %}
+                <a href="{% url 'challenge_detail' challenge.id %}" class="btn-primary" style="display: block; text-align: center; width: 100%; padding: 10px; background: #22c55e;">Continue Challenge</a>
+            {% else %}
+                <a href="{% url 'challenge_detail' challenge.id %}" class="btn-primary" style="display: block; text-align: center; width: 100%; padding: 10px;">View Details</a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div style="text-align: center; padding: 50px; grid-column: 1 / -1;">
+            <i class="fas fa-flag-checkered" style="font-size: 3rem; color: var(--muted); margin-bottom: 15px;"></i>
+            <h3>No Active Challenges</h3>
+            <p style="color: var(--muted);">Check back later for new fitness challenges!</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

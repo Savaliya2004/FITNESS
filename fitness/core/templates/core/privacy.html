@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy | FitX{% endblock %}
+
+{% block content %}
+<section class="simple-hero" style="padding: 120px 5% 40px; text-align: center; background: var(--primary-bg);">
+    <h1 class="hero-title">Privacy <span class="text-accent">Policy</span></h1>
+    <p class="section-sub">Last Updated: March 2026</p>
+</section>
+
+<section class="content-section" style="padding: 60px 10%; line-height: 1.6; color: var(--muted);">
+    <div class="glass-card" style="padding: 40px; border-radius: 20px;">
+        <h3 style="color: #fff;">1. Data Collection</h3>
+        <p>We collect information that you provide directly to us, such as when you create an account, upload your fitness metrics, or contact support.</p>
+        
+        <h3 style="color: #fff; margin-top: 30px;">2. Use of Information</h3>
+        <p>Your data is used to provide personalized workout and diet recommendations. We do not sell your personal health data to third parties.</p>
+        
+        <h3 style="color: #fff; margin-top: 30px;">3. Security</h3>
+        <p>We implement industry-standard security measures to protect your data. However, no method of transmission over the internet is 100% secure.</p>
+    </div>
+</section>
+{% endblock %}

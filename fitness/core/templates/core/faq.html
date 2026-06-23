@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FAQ | FitX Support{% endblock %}
+
+{% block content %}
+<section class="simple-hero" style="padding: 120px 5% 40px; text-align: center; background: var(--primary-bg);">
+    <div class="section-tag">Helpline</div>
+    <h1 class="hero-title">Frequently Asked <span class="text-accent">Questions</span></h1>
+    <p class="section-sub">Find answers to common questions about our platform and services.</p>
+</section>
+
+<section class="faq-page-content" style="padding: 60px 10%;">
+    <div class="faq-container">
+        {% for faq in faqs %}
+        <div class="faq-item" onclick="toggleFaq(this)" style="background: rgba(40,40,60,0.3); margin-bottom: 15px; border-radius: 12px; padding: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;">
+            <div class="faq-q" style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 1.1rem; color: #fff;">
+                {{ faq.question }} 
+                <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: var(--accent); transition: 0.3s;"></i>
+            </div>
+            <div class="faq-a" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--muted); line-height: 1.6;">
+                {{ faq.answer }}
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align: center; color: var(--muted);">No FAQs available right now.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+function toggleFaq(el) {
+    const a = el.querySelector('.faq-a');
+    const i = el.querySelector('i');
+    const isOpen = a.style.display === 'block';
+    
+    // Close all others
+    document.querySelectorAll('.faq-a').forEach(item => item.style.display = 'none');
+    document.querySelectorAll('.faq-item i').forEach(item => item.style.transform = 'rotate(0)');
+    
+    if (!isOpen) {
+        a.style.display = 'block';
+        i.style.transform = 'rotate(180deg)';
+        el.style.borderColor = 'var(--accent)';
+    } else {
+        el.style.borderColor = 'rgba(255,255,255,0.05)';
+    }
+}
+</script>
+{% endblock %}

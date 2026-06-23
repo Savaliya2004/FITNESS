@@ -1,0 +1,1070 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitX | Dashboard</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Animations -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'account/css/dashboard.css' %}">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update Toggle Icon
+            const icon = document.querySelector('.theme-toggle-btn i');
+            if(icon) {
+                icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="{% url 'home' %}" class="nav-brand">
+                <i class="fas fa-bolt logo-icon"></i>
+                <span class="logo-text">Fit<span>X</span></span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="javascript:void(0)" class="nav-item active" onclick="switchTab('dashboard', this)">
+                <i class="fas fa-th-large"></i><span>Dashboard</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="switchTab('workouts', this)">
+                <i class="fas fa-dumbbell"></i><span>Workouts</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="switchTab('diet', this)">
+                <i class="fas fa-utensils"></i><span>Diet Plans</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="switchTab('progress', this)">
+                <i class="fas fa-chart-line"></i><span>Progress Tracking</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="switchTab('challenges', this)">
+                <i class="fas fa-trophy"></i><span>Challenges</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="switchTab('store', this)">
+                <i class="fas fa-shopping-bag"></i><span>Store</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="switchTab('profile', this)">
+                <i class="fas fa-user"></i><span>My Profile</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="switchTab('settings', this)">
+                <i class="fas fa-cog"></i><span>Settings</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <form action="{% url 'logout' %}" method="post" id="logoutFormSidebar">
+                {% csrf_token %}
+                <a href="javascript:void(0)" onclick="document.getElementById('logoutFormSidebar').submit();" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+                </a>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper" id="mainWrapper">
+        
+        <!-- Top Header Bar -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search workouts, diet plans, trainers...">
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <!-- Go to Home Button -->
+                <a href="{% url 'home' %}" class="home-btn" title="Back to Home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                
+                <!-- Theme Toggle Button -->
+                <div class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme" style="cursor:pointer; width:40px; height:40px; background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; display:flex; align-items:center; justify-content:center; color: var(--text-white); transition: all 0.3s; margin-right: 15px;">
+                    <i class="fas fa-moon"></i>
+                </div>
+                
+                <div class="notif-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    {% if unread_notifs > 0 %}
+                    <span class="badge" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: bold;">{{ unread_notifs }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="user-dropdown">
+                    <div class="profile-trigger" id="profileTrigger">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="User Avatar">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="javascript:void(0)" onclick="switchTab('profile')"><i class="fas fa-user-circle"></i> View Profile</a>
+                        <a href="javascript:void(0)" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Settings</a>
+                        <hr>
+                        <form action="{% url 'logout' %}" method="post" id="logoutFormDropdown">
+                            {% csrf_token %}
+                            <a href="javascript:void(0)" onclick="document.getElementById('logoutFormDropdown').submit();" class="text-danger">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Section -->
+        <main class="content-area">
+            
+            <!-- Dashboard Main View -->
+            <div id="view-dashboard" class="tab-view active">
+                
+                <!-- Welcome Section -->
+                <section class="welcome-section" data-aos="fade-down" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div>
+                        <h1>Welcome back, <span class="text-accent">{{ user.username }}</span> 👋</h1>
+                        <p>Stay consistent and achieve your fitness goals. You are doing great!</p>
+                    </div>
+                    <div style="background: rgba(196,77,255,0.1); padding: 10px 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
+                        <span style="display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Level {{ user.level }}</span>
+                        <span style="font-size: 1.2rem; font-weight: 800; color: var(--accent);">{{ user.xp_points }} XP</span>
+                    </div>
+                </section>
+
+                <!-- Statistics Cards -->
+                <section class="stats-grid">
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-icon orange"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-content">
+                            <h3>{{ total_workouts }}</h3>
+                            <p>Workouts Completed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-icon red"><i class="fas fa-fire"></i></div>
+                        <div class="stat-content">
+                            <h3>{{ total_calories }}</h3>
+                            <p>Calories Burned</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-icon blue"><i class="fas fa-weight"></i></div>
+                        <div class="stat-content">
+                            <h3>{{ current_weight }} <span>kg</span></h3>
+                            <p>Current Weight</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="stat-icon green"><i class="fas fa-bolt"></i></div>
+                        <div class="stat-content">
+                            <h3>{{ streak }}</h3>
+                            <p>Workout Streak</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Gamification Badges -->
+                {% if recent_badges %}
+                <section class="badges-section" style="margin-bottom: 40px;" data-aos="fade-up">
+                    <h2 class="section-title"><i class="fas fa-medal" style="color:var(--accent);"></i> Recent Achievements</h2>
+                    <div style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none;">
+                        {% for ub in recent_badges %}
+                        <div style="min-width: 140px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 20px 15px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-blue)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">
+                                {% if ub.badge.category == 'streak' %}<i class="fas fa-fire"></i>
+                                {% elif ub.badge.category == 'workout' %}<i class="fas fa-dumbbell"></i>
+                                {% else %}<i class="fas fa-trophy"></i>{% endif %}
+                            </div>
+                            <div>
+                                <h4 style="font-size: 0.9rem; margin: 0; color: white;">{{ ub.badge.name }}</h4>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">+{{ ub.badge.xp_reward }} XP</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                <!-- User Progress Section -->
+                <section class="progress-section" style="margin-bottom: 40px;" data-aos="fade-up">
+                    <h2 class="section-title">Goals & Progress</h2>
+                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                        <div class="chart-card">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <span style="font-weight: 600;">Daily Calorie Activity</span>
+                                <span style="color: var(--accent); font-weight: 700;">{{ total_routine_calories }} / 2,500 kcal</span>
+                            </div>
+                            <div class="progress-bar-wrap" style="height: 10px; background: var(--border-color); border-radius: 10px; overflow: hidden;">
+                                <div class="progress-fill" style="width: {{ calorie_percent }}%; height: 100%; background: var(--gradient);"></div>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <span style="font-weight: 600;">Weekly Workout Target</span>
+                                <span style="color: var(--accent-blue); font-weight: 700;">{{ sessions_this_week }} / {{ session_goal }} Sessions</span>
+                            </div>
+                            <div class="progress-bar-wrap" style="height: 10px; background: var(--border-color); border-radius: 10px; overflow: hidden;">
+                                <div class="progress-fill" style="width: {{ session_percent }}%; height: 100%; background: var(--accent-blue);"></div>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <span style="font-weight: 600;">Weight Journey</span>
+                                <span style="color: #4ade80; font-weight: 700;">
+                                    {% if weight_to_goal >= 0 %}
+                                        {{ weight_to_goal|floatformat:1 }} kg to goal
+                                    {% else %}
+                                        Target Reached! (+{{ weight_to_goal|floatformat:1|slice:"1:" }} kg)
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="progress-bar-wrap" style="height: 10px; background: var(--border-color); border-radius: 10px; overflow: hidden;">
+                                <div class="progress-fill" style="width: {% if target_weight > 0 %}{% widthratio target_weight current_weight 100 %}{% else %}0{% endif %}%; height: 100%; background: #4ade80;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Charts Section -->
+                <section class="charts-wrap">
+                    <div class="chart-card large" data-aos="fade-right">
+                        <div class="card-header">
+                            <h3>Weekly Workout Activity</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="weeklyActivityChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card" data-aos="fade-left">
+                        <div class="card-header">
+                            <h3>Weight Progress</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="weightProgressChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Routine from Fitness Page removed from here -->
+
+                <!-- Quick Actions Section -->
+                <section class="quick-actions" data-aos="fade-up">
+                    <h2 class="section-title">Quick Actions</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="location.href='{% url 'workouts' %}'">
+                            <i class="fas fa-play"></i>
+                            <span>Start Workout</span>
+                        </button>
+                        <button class="action-btn secondary" onclick="switchTab('diet', document.querySelector('[onclick*=diet]'))">
+                            <i class="fas fa-apple-alt"></i>
+                            <span>View Diet Plan</span>
+                        </button>
+                        <button class="action-btn accent" onclick="switchTab('progress', document.querySelector('[onclick*=progress]'))">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Track Progress</span>
+                        </button>
+                        <button class="action-btn outline" onclick="switchTab('challenges', document.querySelector('[onclick*=challenges]'))">
+                            <i class="fas fa-users"></i>
+                            <span>Join Challenge</span>
+                        </button>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- WORKOUTS VIEW -->
+            <div id="view-workouts" class="tab-view">
+                <section class="view-header" data-aos="fade-down" style="margin-bottom: 30px;">
+                    <h1>Workout <span class="text-accent">Library</span></h1>
+                    <p>Track your personalized routine and explore professional library programs.</p>
+                </section>
+
+                <!-- My Personalized Routine -->
+                <div id="routineSection" style="margin-bottom: 48px; background: rgba(255,255,255,0.02); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color);">
+                    <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 25px;">
+                        <h2 class="section-title" style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0;">My Personalized <span class="text-accent">Routine</span></h2>
+                        {% if routines %}
+                        <a href="{% url 'generate_routine' %}" class="action-btn outline sm" style="text-decoration:none;"><i class="fas fa-sync-alt"></i> Regenerate</a>
+                        {% endif %}
+                    </div>
+                    
+                    <div id="routineList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:25px;width:100%;">
+                        {% for r in routines %}
+                        <div style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:16px;overflow:hidden;transition:all 0.3s; position:relative;" onmouseover="this.style.transform='translateY(-5px)';this.style.borderColor='var(--accent)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='var(--border-color)'">
+                            <!-- Remove Button -->
+                            <a href="{% url 'remove_from_routine' r.id %}" style="position: absolute; top: 10px; right: 10px; z-index: 10; background: rgba(255, 59, 59, 0.9); color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                <i class="fas fa-trash"></i>
+                            </a>
+
+                            <div style="height:140px;overflow:hidden;position:relative;">
+                                <img src="{{ r.exercise.image_url }}" alt="{{ r.exercise.name }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                <div style="position:absolute;bottom:0;left:0;width:100%;background:linear-gradient(transparent, rgba(0,0,0,0.8));padding:10px 16px;">
+                                    <span style="font-size:0.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">{{ r.exercise.difficulty }}</span>
+                                </div>
+                            </div>
+                            <div style="padding:16px;">
+                                <h4 style="margin:0 0 8px 0;font-size:1.1rem;">{{ r.exercise.name }}</h4>
+                                <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:var(--text-muted);font-weight:500;">
+                                    <span><i class="fas fa-fire" style="color:#ff6b6b;margin-right:4px;"></i> {{ r.exercise.calories_burned }} kcal</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div id="routineEmpty" style="text-align:center;padding:60px 20px;color:var(--text-muted);background:rgba(255,255,255,0.01);border:1px dashed var(--border-color);border-radius:16px; grid-column: 1/-1;">
+                            <i class="fas fa-dumbbell" style="font-size: 3rem; color: var(--accent); margin-bottom: 16px; display: block; opacity: 0.3;"></i>
+                            <h3 style="color:var(--text-white); margin-bottom: 8px;">Your routine is empty</h3>
+                            <p style="font-size: 0.95rem; margin-bottom: 24px;">Add your favorite exercises from the main catalog to see them here.</p>
+                            <div style="display:flex; justify-content:center; gap: 16px;">
+                                <a href="{% url 'workouts' %}" class="action-btn primary" style="text-decoration:none; padding: 10px 25px;"><i class="fas fa-plus"></i> Go to Exercise Library</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if routines %}
+                    <div id="routineTotalCalories" style="margin-top:25px;padding:15px 24px;background:rgba(196,77,255,0.08);border:1px solid rgba(196,77,255,0.2);border-radius:12px;font-size:1rem;font-weight:600;display:inline-block;">
+                        <i class="fas fa-bolt" style="color:var(--accent);margin-right:8px;"></i> Estimated Total Burning: <strong id="totalCalVal" style="color:var(--accent); font-size: 1.2rem;">{{ total_routine_calories }} kcal</strong>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Professional Programs section removed -->
+            </div>
+
+            <!-- DIET PLAN VIEW -->
+            <div id="view-diet" class="tab-view">
+                <section class="view-header" data-aos="fade-down">
+                    <h1>Daily <span class="text-accent">Nutrition</span></h1>
+                    <p>Your personalized fuel for maximum performance.</p>
+                </section>
+
+
+                <div class="diet-plan-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; justify-content: center;">
+                    {% for meal in diet_plans %}
+                    <div class="diet-section" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                        <div class="meal-card diet-trigger" 
+                             data-day="{{ meal.get_day_of_week_display }}"
+                             data-bf="{{ meal.breakfast|default:"" }}"
+                             data-lu="{{ meal.lunch|default:"" }}"
+                             data-dn="{{ meal.dinner|default:"" }}"
+                             data-sn="{{ meal.snacks|default:"" }}"
+                             data-cal="{{ meal.calories|default:0 }}"
+                             data-pro="{{ meal.protein|default:0 }}"
+                             data-car="{{ meal.carbs|default:0 }}"
+                             data-fat="{{ meal.fats|default:0 }}"
+                             style="cursor: pointer; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center; transition: all 0.3s;" 
+                             onmouseover="this.style.transform='translateY(-5px)';this.style.borderColor='var(--accent)'" 
+                             onmouseout="this.style.transform='translateY(0)';this.style.borderColor='var(--border-color)'">
+                            <h2 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--accent);"><i class="fas fa-calendar-day"></i> {{ meal.get_day_of_week_display }}</h2>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">Click to view nutritional details</p>
+                            <div class="macros" style="display: flex; justify-content: space-around; font-size: 0.8rem; background: var(--card-hover); padding: 10px; border-radius: 10px;">
+                                <span><strong>{{ meal.calories }}</strong> kcal</span>
+                                <span><strong>{{ meal.protein }}g</strong> Pro</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="diet-section" style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted); background: var(--card); border-radius: 16px;">
+                        <i class="fas fa-utensils" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 16px; display: block; opacity: 0.5;"></i>
+                        <p style="margin-bottom: 20px; font-size: 1rem;">No diet plan assigned yet. Generate one based on your goals!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="text-center" style="margin-top:40px;">
+                    <a href="{% url 'diet' %}" class="action-btn secondary lg" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fas fa-plus"></i> Generate New Diet Plan
+                    </a>
+                </div>
+
+                <!-- Diet Modal -->
+                <div id="dietModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(10px); z-index:9999; justify-content:center; align-items:center;">
+                    <div style="background:var(--sidebar-bg); width:90%; max-width:500px; border-radius:24px; padding:35px; border:1px solid var(--border-color); position:relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+                        <button onclick="this.closest('#dietModal').style.display='none'" style="position:absolute; top:20px; right:20px; background:none; border:none; color:var(--text-white); font-size:1.5rem; cursor:pointer; z-index: 10001; padding: 10px;"><i class="fas fa-times"></i></button>
+                        <h2 id="dietModalTitle" style="color:var(--accent); margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;"><i class="fas fa-utensils"></i> Day</h2>
+                        
+                        <div style="display:flex; flex-direction:column; gap:15px;">
+                            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:10px; border-left:3px solid #f59e0b;">
+                                <h4 style="margin:0 0 5px 0; font-size:0.9rem; color:#f59e0b;">Breakfast</h4>
+                                <p id="dm-breakfast" style="margin:0; font-size:0.95rem; color:var(--text-muted);"></p>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:10px; border-left:3px solid #10b981;">
+                                <h4 style="margin:0 0 5px 0; font-size:0.9rem; color:#10b981;">Lunch</h4>
+                                <p id="dm-lunch" style="margin:0; font-size:0.95rem; color:var(--text-muted);"></p>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:10px; border-left:3px solid #3b82f6;">
+                                <h4 style="margin:0 0 5px 0; font-size:0.9rem; color:#3b82f6;">Dinner</h4>
+                                <p id="dm-dinner" style="margin:0; font-size:0.95rem; color:var(--text-muted);"></p>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:10px; border-left:3px solid #8b5cf6;">
+                                <h4 style="margin:0 0 5px 0; font-size:0.9rem; color:#8b5cf6;">Snacks</h4>
+                                <p id="dm-snacks" style="margin:0; font-size:0.95rem; color:var(--text-muted);"></p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
+                            <span style="font-size:1.1rem; font-weight:700;"><i class="fas fa-fire" style="color:var(--accent);"></i> <span id="dm-cal"></span> kcal</span>
+                            <div style="font-size:0.8rem; color:var(--text-muted); display:flex; gap:10px;">
+                                <span><strong id="dm-pro"></strong> P</span>
+                                <span><strong id="dm-car"></strong> C</span>
+                                <span><strong id="dm-fat"></strong> F</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    document.querySelectorAll('.diet-trigger').forEach(card => {
+                        card.onclick = function() {
+                            const d = this.dataset;
+                            document.getElementById('dietModalTitle').innerHTML = '<i class="fas fa-utensils"></i> ' + d.day;
+                            document.getElementById('dm-breakfast').innerText = d.bf || 'Healthy high-protein breakfast items';
+                            document.getElementById('dm-lunch').innerText = d.lu || 'Balanced protein and carb rich lunch';
+                            document.getElementById('dm-dinner').innerText = d.dn || 'Light protein dinner with vegetables';
+                            document.getElementById('dm-snacks').innerText = d.sn || 'Fruits or nuts for energy';
+                            document.getElementById('dm-cal').innerText = d.cal;
+                            document.getElementById('dm-pro').innerText = d.pro + 'g';
+                            document.getElementById('dm-car').innerText = d.car + 'g';
+                            document.getElementById('dm-fat').innerText = d.fat + 'g';
+                            
+                            document.getElementById('dietModal').style.display = 'flex';
+                        };
+                    });
+
+                    function closeDietModal() {
+                        document.getElementById('dietModal').style.display = 'none';
+                    }
+
+                    // Close modal on background click
+                    window.onclick = function(event) {
+                        const modal = document.getElementById('dietModal');
+                        if (event.target == modal) {
+                            closeDietModal();
+                        }
+                    }
+                </script>
+                
+                <!-- Full Diet Plan link removed -->
+
+
+            </div>
+
+            <!-- PROGRESS TRACKING VIEW -->
+            <div id="view-progress" class="tab-view">
+                <section class="view-header" data-aos="fade-down">
+                    <h1>Progress <span class="text-accent">Tracking</span></h1>
+                    <p>Log your weight & workouts to visualize your fitness journey over time.</p>
+                </section>
+
+                <!-- Manual Progress Entry Form -->
+                <div class="chart-card" data-aos="fade-up" style="margin-bottom: 32px;">
+                    <div class="card-header" style="margin-bottom: 20px;">
+                        <h3><i class="fas fa-plus-circle" style="color:var(--accent);margin-right:8px;"></i>Log Today's Progress</h3>
+                    </div>
+                    <form id="progressForm" action="{% url 'log_progress' %}" method="POST">
+                        {% csrf_token %}
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">Weight (kg)</label>
+                                <input type="number" name="weight" step="0.1" placeholder="e.g. 75.5" required
+                                    style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);color:var(--accent-text,#fff);padding:12px;border-radius:10px;outline:none;font-size:0.9rem;">
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">Calories Burned</label>
+                                <input type="number" name="calories_burned" placeholder="e.g. 450" required
+                                    style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);color:var(--accent-text,#fff);padding:12px;border-radius:10px;outline:none;font-size:0.9rem;">
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">Workouts Done</label>
+                                <input type="number" name="workouts_done" placeholder="e.g. 2" value="1"
+                                    style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);color:var(--accent-text,#fff);padding:12px;border-radius:10px;outline:none;font-size:0.9rem;">
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">Target Weight (kg)</label>
+                                <input type="number" name="target_weight" step="0.1" placeholder="e.g. 70.0" value="{{ target_weight }}"
+                                    style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);color:var(--accent-text,#fff);padding:12px;border-radius:10px;outline:none;font-size:0.9rem;">
+                            </div>
+                        </div>
+                        <button type="submit" class="action-btn primary" style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;">
+                            <i class="fas fa-save"></i> Save Progress
+                        </button>
+                    </form>
+                </div>
+
+                <section class="stats-grid" style="margin-bottom: 32px;">
+                    <div class="stat-card">
+                        <div class="stat-icon red"><i class="fas fa-dumbbell"></i></div>
+                        <div class="stat-content"><h3>{{ latest_progress.workouts_done|default:"0" }}</h3><p>Workouts Done</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-fire"></i></div>
+                        <div class="stat-content"><h3>{{ latest_progress.calories_burned|default:"0" }}</h3><p>Calories Burned</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-weight"></i></div>
+                        <div class="stat-content"><h3>{{ latest_progress.current_weight|default:"--" }} <span>kg</span></h3><p>Current Weight</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-bolt"></i></div>
+                        <div class="stat-content"><h3>{{ latest_progress.streak|default:"0" }}</h3><p>Streak Days</p></div>
+                    </div>
+                </section>
+
+                <div class="charts-wrap">
+                    <div class="chart-card large">
+                        <h3>Weight Progress Over Time</h3>
+                        <div class="chart-container"><canvas id="detailedWeightChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Calories Burned Chart</h3>
+                        <div class="chart-container"><canvas id="detailedCaloriesChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHALLENGES VIEW -->
+            <div id="view-challenges" class="tab-view">
+                <section class="view-header" data-aos="fade-down">
+                    <h1>Community <span class="text-accent">Challenges</span></h1>
+                    <p>Join world-wide missions and push your boundaries together.</p>
+                </section>
+
+                <div class="challenge-grid">
+                    {% for c in challenges %}
+                    <div class="challenge-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                        <div class="challenge-header">
+                            <div class="challenge-icon"><i class="fas fa-trophy"></i></div>
+                            <span class="active-badge">Active</span>
+                        </div>
+                        <h3>{{ c.title }}</h3>
+                        <p>{{ c.description }}</p>
+                        <ul class="challenge-meta">
+                            <li><i class="far fa-calendar-alt"></i> {{ c.start_date }} - {{ c.end_date }}</li>
+                            {% if c.reward %}<li><i class="fas fa-gift"></i> Reward: {{ c.reward }}</li>{% endif %}
+                        </ul>
+                        <button class="action-btn primary" onclick="joinChallenge('{{ c.title }}')">Join Challenge</button>
+                    </div>
+                    {% empty %}
+                    <!-- Dummy Challenges if DB is empty -->
+                    <div class="challenge-card" data-aos="fade-up">
+                        <div class="challenge-header">
+                            <div class="challenge-icon" style="background: rgba(196, 77, 255, 0.1); color: var(--accent); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 1.2rem;"><i class="fas fa-fire"></i></div>
+                            <span style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">Active</span>
+                        </div>
+                        <h3>30-Day Shred</h3>
+                        <p>A high-intensity program designed to maximize calorie burn and muscle definition.</p>
+                        <ul class="challenge-meta" style="list-style: none; padding: 0; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;">
+                            <li style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;"><i class="far fa-calendar-alt" style="color: var(--accent);"></i> Mar 1 - Mar 30</li>
+                            <li style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;"><i class="fas fa-gift" style="color: var(--accent);"></i> Reward: 500 FitPoints</li>
+                        </ul>
+                        <button class="action-btn primary" onclick="joinChallenge('30-Day Shred')" style="width: 100%;">Join Challenge</button>
+                    </div>
+                    <div class="challenge-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="challenge-header">
+                            <div class="challenge-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--accent-blue); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 1.2rem;"><i class="fas fa-walking"></i></div>
+                            <span style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">Active</span>
+                        </div>
+                        <h3>100k Steps Week</h3>
+                        <p>Push your limits and hit 100,000 steps in a single week. Every step counts!</p>
+                        <ul class="challenge-meta" style="list-style: none; padding: 0; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;">
+                            <li style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;"><i class="far fa-calendar-alt" style="color: var(--accent);"></i> Mar 15 - Mar 22</li>
+                            <li style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;"><i class="fas fa-gift" style="color: var(--accent);"></i> Reward: Badges & Discounts</li>
+                        </ul>
+                        <button class="action-btn primary" onclick="joinChallenge('100k Steps Week')" style="width: 100%;">Join Challenge</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- STORE VIEW -->
+            <div id="view-store" class="tab-view">
+                <section class="view-header" data-aos="fade-down">
+                    <h1>FitX <span class="text-accent">Store</span></h1>
+                    <p>Gear up with elite fitness equipment and premium supplements.</p>
+                </section>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="stat-content"><h3>My Cart</h3><p>3 Items</p></div>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top:20px; margin-bottom: 40px;">
+                    <a href="{% url 'store' %}" class="action-btn primary lg" style="text-decoration: none;">Go to Market</a>
+                </div>
+            </div>
+            <div id="view-profile" class="tab-view">
+                <section class="view-header" data-aos="fade-down">
+                    <h1>My <span class="text-accent">Profile</span></h1>
+                    <p>Manage your identity and personal fitness metrics.</p>
+                </section>
+
+                <div class="profile-container" data-aos="fade-up">
+                    <div id="profileDisplay">
+                        <div class="profile-header-card">
+                            <div class="profile-main">
+                                {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" alt="Profile Picture" class="profile-big-img" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--border-color); object-fit: cover; background: white;">
+                                {% else %}
+                                <div style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--border-color); background: var(--card-hover); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--accent);">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                {% endif %}
+                                <div class="profile-text">
+                                    <h2>{{ user.username }}</h2>
+                                    <p>{{ user.email }}</p>
+                                    
+                                    {% if user.membership_type == 'elite' %}
+                                    <span class="gold-badge" style="color: #f7c948; display: flex; align-items: center; gap: 5px; font-weight: 700;"><i class="fas fa-crown"></i> Elite Member</span>
+                                    {% elif user.membership_type == 'premium' %}
+                                    <span class="gold-badge" style="color: #ff6b35; display: flex; align-items: center; gap: 5px; font-weight: 700;"><i class="fas fa-medal"></i> Premium Member</span>
+                                    {% else %}
+                                    <span class="gold-badge" style="color: #aaa; display: flex; align-items: center; gap: 5px; font-weight: 700;"><i class="fas fa-user-check"></i> Standard Member</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <button onclick="toggleEditProfile()" class="action-btn outline sm"><i class="fas fa-edit"></i> Edit Profile</button>
+                        </div>
+
+                        <div class="profile-details-grid" style="margin-top: 30px;">
+                            <div class="detail-card">
+                                <span class="label">Age</span>
+                                <span class="value">{{ user.age|default:"28" }} Years</span>
+                            </div>
+                            <div class="detail-card">
+                                <span class="label">Height</span>
+                                <span class="value">{{ user.height|default:"182" }} cm</span>
+                            </div>
+                            <div class="detail-card">
+                                <span class="label">Weight</span>
+                                <span class="value">{{ user.weight|default:"75.3" }} kg</span>
+                            </div>
+                            <div class="detail-card">
+                                <span class="label">Fitness Goal</span>
+                                <span class="value">{{ user.get_fitness_goal_display|default:"Muscle Gain" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Profile Form (Hidden by default) -->
+                    <div id="profileEditForm" class="settings-section" style="display: none; border-radius: var(--radius-lg);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h3 style="margin-bottom: 0;"><i class="fas fa-user-edit"></i> Edit Profile</h3>
+                            <button onclick="toggleEditProfile()" class="action-btn outline sm" style="padding: 5px 12px;" type="button">Cancel</button>
+                        </div>
+                        <form action="{% url 'update_profile' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-size: 0.9rem; color: var(--text-muted);">Age</label>
+                                    <input type="number" name="age" value="{{ user.age|default:'' }}" placeholder="28" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 10px; outline: none;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-size: 0.9rem; color: var(--text-muted);">Height (cm)</label>
+                                    <input type="number" name="height" value="{{ user.height|default:'' }}" placeholder="182" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 10px; outline: none;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-size: 0.9rem; color: var(--text-muted);">Weight (kg)</label>
+                                    <input type="number" step="0.1" name="weight" value="{{ user.weight|default:'' }}" placeholder="75.3" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 10px; outline: none;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-size: 0.9rem; color: var(--text-muted);">Fitness Goal</label>
+                                    <select name="fitness_goal" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 10px; outline: none;">
+                                        <option value="muscle_gain" {% if user.fitness_goal == 'muscle_gain' %}selected{% endif %}>Muscle Gain</option>
+                                        <option value="weight_loss" {% if user.fitness_goal == 'weight_loss' %}selected{% endif %}>Weight Loss</option>
+                                        <option value="endurance" {% if user.fitness_goal == 'endurance' %}selected{% endif %}>Endurance</option>
+                                        <option value="flexibility" {% if user.fitness_goal == 'flexibility' %}selected{% endif %}>Flexibility</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-size: 0.9rem; color: var(--text-muted);">Profile Image</label>
+                                    <input type="file" name="profile_image" accept="image/*" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 10px; outline: none; padding-top: 10px;">
+                                </div>
+                            </div>
+                            <button type="submit" class="action-btn primary" style="width: 100%; margin-top: 30px; height: 50px;">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <div class="text-center" style="margin-top:40px;">
+                        <button class="action-btn accent lg" onclick="switchTab('dashboard')">Back to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS VIEW -->
+            <div id="view-settings" class="tab-view">
+                <section class="view-header" data-aos="fade-down">
+                    <h1>App <span class="text-accent">Settings</span></h1>
+                    <p>Customize your experience and manage account security.</p>
+                </section>
+
+                <div class="settings-wrap" data-aos="fade-up">
+                    <!-- Account Settings -->
+                    <div class="settings-section">
+                        <h3><i class="fas fa-user-lock"></i> Account Settings</h3>
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <h4>Change Password</h4>
+                                <p>Last changed 3 months ago</p>
+                            </div>
+                            <button class="action-btn outline sm">Update</button>
+                        </div>
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <h4>Email Address</h4>
+                                <p>{{ user.email }}</p>
+                            </div>
+                            <button class="action-btn outline sm">Change</button>
+                        </div>
+                    </div>
+
+                    <!-- Preferences -->
+                    <div class="settings-section">
+                        <h3><i class="fas fa-sliders-h"></i> Preferences</h3>
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <h4>Dark Mode</h4>
+                                <p>Classic night-optimized theme</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked disabled>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <h4>Push Notifications</h4>
+                                <p>Get alerts for workouts and meals</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Privacy -->
+                    <div class="settings-section">
+                        <h3><i class="fas fa-shield-alt"></i> Privacy</h3>
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <h4>Account Data</h4>
+                                <p>Export or delete your information</p>
+                            </div>
+                            <button class="action-btn outline sm danger">Manage</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, offset: 50 });
+
+        // Sidebar Toggle for Mobile
+        const sidebar = document.getElementById('sidebar');
+        const mainWrapper = document.getElementById('mainWrapper');
+        const menuToggle = document.getElementById('menuToggle');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            if(window.innerWidth > 992) {
+                sidebar.classList.toggle('collapsed');
+                mainWrapper.classList.toggle('expanded');
+            }
+        });
+
+        // Profile Dropdown
+        const profileTrigger = document.getElementById('profileTrigger');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        profileTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+
+        window.addEventListener('click', () => {
+            dropdownMenu.classList.remove('active');
+        });
+
+        // Tab Switching
+        function switchTab(tabId, el) {
+            // Update Navigation
+            if(el) {
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                el.classList.add('active');
+            }
+
+            // Update Views
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+            const targetView = document.getElementById('view-' + tabId);
+            if(targetView) targetView.classList.add('active');
+
+            const titleMap = {
+                'dashboard': 'Welcome back, <span class="text-accent">{{ user.username }}</span> 👋',
+                'workouts': 'Workout <span class="text-accent">Library</span> 🏋️',
+                'diet': 'Daily <span class="text-accent">Nutrition</span> 🥗',
+                'progress': 'Progress <span class="text-accent">Analytics</span> 📊',
+                'challenges': 'Community <span class="text-accent">Challenges</span> 🏆',
+                'store': 'FitX <span class="text-accent">Store</span> 🛒',
+                'profile': 'My <span class="text-accent">Profile</span> 👤',
+                'settings': 'App <span class="text-accent">Settings</span> ⚙️'
+            };
+            
+            const headerTitle = document.querySelector('.welcome-section h1');
+            if(headerTitle) headerTitle.innerHTML = titleMap[tabId] || 'Dashboard';
+
+            // Close sidebar on mobile after click
+            if(window.innerWidth <= 992) {
+                sidebar.classList.remove('active');
+            }
+
+            // Re-init charts if on progress tab
+            if(tabId === 'progress') {
+                setTimeout(initProgressCharts, 50);
+            }
+
+            // Refresh animations
+            if(window.AOS) {
+                setTimeout(() => { AOS.refresh(); }, 100);
+            }
+        }
+
+        // --- Charts Initialization ---
+        
+        function initDashboardCharts() {
+            // Weekly Activity Chart
+            const ctxWeek = document.getElementById('weeklyActivityChart');
+            if(ctxWeek) {
+                new Chart(ctxWeek.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Workout Minutes',
+                            data: [45, 60, 30, 90, 45, 120, 0],
+                            backgroundColor: '#c44dff',
+                            borderRadius: 8,
+                            barThickness: 15
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#1a1a1a',
+                                titleColor: '#fff',
+                                bodyColor: '#ccc',
+                                cornerRadius: 10
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
+                            x: { grid: { display: false }, ticks: { color: '#888' } }
+                        }
+                    }
+                });
+            }
+
+            // Weight Progress Chart (Small)
+            const ctxWeight = document.getElementById('weightProgressChart');
+            if(ctxWeight) {
+                new Chart(ctxWeight.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],
+                        datasets: [{
+                            label: 'Weight (kg)',
+                            data: [78.5, 77.8, 77.2, 76.5, 75.8, 75.3],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59,130,246,0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
+                            x: { grid: { display: false }, ticks: { color: '#888' } }
+                        }
+                    }
+                });
+            }
+        }
+
+        const progressData = JSON.parse('{{ progress_json|escapejs }}');
+
+        function initProgressCharts() {
+            const ctxDetailedCal = document.getElementById('detailedCaloriesChart');
+            if(ctxDetailedCal) {
+                new Chart(ctxDetailedCal.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: progressData.labels.length ? progressData.labels : ['No Data'],
+                        datasets: [{
+                            label: 'Calories Burned',
+                            data: progressData.calories.length ? progressData.calories : [0],
+                            backgroundColor: 'rgba(196, 77, 255, 0.5)',
+                            borderColor: 'rgba(196, 77, 255, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' }, beginAtZero: true },
+                            x: { grid: { display: false }, ticks: { color: '#888' } }
+                        }
+                    }
+                });
+            }
+
+            const ctxDetailedWeight = document.getElementById('detailedWeightChart');
+            if(ctxDetailedWeight) {
+                new Chart(ctxDetailedWeight.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: progressData.labels.length ? progressData.labels : ['No Data'],
+                        datasets: [{
+                            label: 'Weight (kg)',
+                            data: progressData.weights.length ? progressData.weights : [0],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59,130,246,0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
+                            x: { grid: { display: false }, ticks: { color: '#888' } }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Functional Helpers
+        function startWorkout(name) {
+            alert(`Starting ${name}! Prepare yourself...`);
+        }
+
+        function joinChallenge(name) {
+            alert(`You have successfully joined the ${name} challenge! Check your progress in the dashboard.`);
+        }
+
+        function toggleEditProfile() {
+            const display = document.getElementById('profileDisplay');
+            const form = document.getElementById('profileEditForm');
+            if(display.style.display === 'none') {
+                display.style.display = 'block';
+                form.style.display = 'none';
+            } else {
+                display.style.display = 'none';
+                form.style.display = 'block';
+            }
+        }
+
+        function updateProfile(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (response.ok || response.redirected) {
+                    // Update UI immediately (simulated)
+                    document.querySelector('.profile-text h2').innerText = formData.get('username') || document.querySelector('.profile-text h2').innerText;
+                    alert('Profile updated successfully! 🎉');
+                    // Optionally reload or switch back to profile view
+                    switchTab('profile');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        function openDietModal(day, breakfast, lunch, dinner, snacks, calories, protein, carbs, fats) {
+            document.getElementById('dietModalDay').innerText = day;
+            document.getElementById('modalBreakfast').innerText = breakfast || 'No plan';
+            document.getElementById('modalLunch').innerText = lunch || 'No plan';
+            document.getElementById('modalDinner').innerText = dinner || 'No plan';
+            document.getElementById('modalSnacks').innerText = snacks || 'No plan';
+            document.getElementById('modalCalories').innerText = calories || '0';
+            document.getElementById('modalProtein').innerText = protein || '0';
+            document.getElementById('modalCarbs').innerText = carbs || '0';
+            document.getElementById('modalFats').innerText = fats || '0';
+            document.getElementById('dietModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDietModal() {
+            document.getElementById('dietModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboardCharts();
+            initProgressCharts();
+            
+            // Set initial theme icon
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const icon = document.querySelector('.theme-toggle-btn i');
+            if(icon) {
+                icon.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+
+            // Auto collapse sidebar on mobile
+            if(window.innerWidth <= 992) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+    </script>
+</body>
+</html>

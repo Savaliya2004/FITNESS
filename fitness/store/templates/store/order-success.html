@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Order Confirmed | FitX Store{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'store/css/store.css' %}">
+<style>
+    body { background: #0a0a0f !important; }
+    .success-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 5%;
+    }
+    .success-box {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 30px;
+        padding: 60px 40px;
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        backdrop-filter: blur(20px);
+    }
+    .check-icon {
+        width: 100px;
+        height: 100px;
+        background: rgba(34, 197, 94, 0.1);
+        color: #22c55e;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        margin: 0 auto 30px;
+        box-shadow: 0 0 40px rgba(34, 197, 94, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-box" data-aos="zoom-in">
+        <div class="check-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h1 style="font-family: 'Poppins'; font-weight: 900; font-size: 2.5rem; margin-bottom: 10px;">ORDER <span class="text-gradient" style="background: linear-gradient(135deg, #22c55e, #10b981);">PLACED!</span></h1>
+        <p style="color: var(--muted); font-size: 1.1rem; margin-bottom: 40px;">Your payment was successful and your order is being processed.</p>
+
+        <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px; text-align: left; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <span style="color: var(--muted); font-weight: 500;">Estimated Delivery</span>
+                <span style="font-weight: 700; color: #fff;">3-5 Business Days</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                <span style="color: var(--muted); font-weight: 500;">Shipping Status</span>
+                <span style="font-weight: 700; color: #22c55e;">FREE EXPRESS</span>
+            </div>
+        </div>
+
+        <p style="font-size: 0.95rem; color: #666; line-height: 1.6; margin-bottom: 40px;">
+            A confirmation email has been sent to your inbox. You can track your real-time shipment status in your dashboard.
+        </p>
+
+        <div style="display: flex; gap: 20px; justify-content: center;">
+            <a href="{% url 'store' %}" class="btn-primary" style="padding: 15px 30px; border-radius: 30px;">Back to Store</a>
+            <a href="{% url 'dashboard' %}" class="btn-ghost" style="padding: 15px 30px; border-radius: 30px;">Go to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

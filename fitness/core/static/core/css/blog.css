@@ -1,0 +1,167 @@
+﻿/* =========================================
+   BLOG.CSS - Blog & Fitness Tips Page
+   ========================================= */
+:root {
+    --primary: #c44dff;
+    --primary-dark: #a333e8;
+    --bg-dark: #0d0d1a;
+    --card-bg: #161627;
+    --text-primary: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.04);
+    --gradient-text: linear-gradient(135deg, #c44dff, #d966ff);
+    --radius: 16px;
+
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg-dark); color: var(--text-primary); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+.text-gradient { background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+
+/* NAVBAR */
+.navbar.scrolled { background: rgba(13,13,26,0.97); }
+.nav-brand { display: flex; align-items: center; gap: 8px; }
+.nav-brand h1 { font-size: 1.4rem; font-weight: 800; } .nav-brand h1 span { color: var(--primary); }
+.nav-links { display: flex; gap: 24px; }
+.nav-links a:hover, .nav-links a.active { color: var(--primary); }
+.nav-actions { display: flex; gap: 12px; align-items: center; }
+.btn-outline-white:hover { border-color: var(--primary); color: var(--primary); }
+.btn-primary-sm:hover { background: var(--primary-dark); }
+.hamburger { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.3rem; cursor: pointer; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 8px 0; }
+.mobile-menu a.active { color: var(--primary); }
+
+/* BLOG HERO */
+.blog-hero h1 { font-size: clamp(2.5rem, 6vw, 3.8rem); font-weight: 900; margin-bottom: 16px; }
+.blog-hero p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; }
+.blog-search:focus-within { border-color: var(--primary); }
+.blog-search i { color: var(--text-muted); font-size: 0.9rem; }
+.blog-search input::placeholder { color: var(--text-muted); }
+
+/* CATEGORIES */
+.blog-categories { padding: 20px 5%; }
+.cat-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+.cat-pill:hover { border-color: var(--primary); color: var(--primary); }
+.cat-pill.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+/* FEATURED POST*/
+.featured-post-section { padding: 0 5% 40px; }
+.featured-post:hover { border-color: rgba(196,77,255,0.25); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+.featured-image { position: relative; }
+.featured-image img { width: 100%; height: 380px; object-fit: cover; display: block; transition: transform 0.5s; }
+.featured-post:hover .featured-image img { transform: scale(1.03); }
+.featured-content { padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+.post-meta { display: flex; align-items: center; gap: 12px; }
+.author-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+.author-name { display: block; font-size: 0.88rem; font-weight: 700; }
+.post-date { display: block; font-size: 0.75rem; color: var(--text-muted); }
+.featured-content h2 { font-size: 1.6rem; font-weight: 800; line-height: 1.3; }
+.featured-content p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; }
+.post-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-read-more:hover { background: var(--primary-dark); transform: translateX(4px); }
+
+/* BLOG GRID */
+.blog-grid-section { padding: 0 5% 60px; }
+.section-header-split { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.section-header-split h2 { font-size: 1.6rem; font-weight: 800; }
+.article-count { font-size: 0.82rem; color: var(--text-muted); }
+.blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.blog-card:hover { transform: translateY(-6px); border-color: rgba(196,77,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.blog-img-wrap { position: relative; height: 200px; overflow: hidden; }
+.blog-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.blog-card:hover .blog-img-wrap img { transform: scale(1.06); }
+.badge-red { background: rgba(239,68,68,0.85); color: white; }
+.badge-green { background: rgba(16,185,129,0.85); color: white; }
+.badge-purple { background: rgba(139,92,246,0.85); color: white; }
+.badge-orange { background: rgba(196,77,255,0.85); color: white; }
+.badge-blue { background: rgba(59,130,246,0.85); color: white; }
+.badge-yellow { background: rgba(251,191,36,0.85); color: #1a1a1a; }
+.blog-card-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.blog-meta { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; color: var(--text-muted); }
+.author-mini { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
+.read-time { margin-left: auto; background: var(--glass); padding: 3px 8px; border-radius: 50px; }
+.blog-card-body h3 { font-size: 1rem; font-weight: 700; line-height: 1.4; }
+.blog-card-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; flex: 1; }
+.blog-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.blog-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.blog-tags span { padding: 3px 8px; background: var(--glass); border-radius: 50px; font-size: 0.7rem; color: var(--primary); }
+.blog-read-link:hover { gap: 10px; }
+
+.no-results { text-align: center; padding: 60px; color: var(--text-muted); }
+.no-results i { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+
+/* NEWSLETTER */
+.newsletter-section { padding: 40px 5% 80px; }
+.nl-text h2 { font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; }
+.nl-text p { color: var(--text-muted); font-size: 0.95rem; }
+.nl-form { display: flex; gap: 12px; flex: 1; max-width: 450px; }
+.nl-form input:focus { border-color: var(--primary); }
+.btn-subscribe:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+
+
+.footer-brand .brand-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.footer-brand .brand-logo i { color: var(--primary); font-size: 1.4rem; }
+.footer-brand .brand-logo h2 { font-size: 1.3rem; font-weight: 800; }
+.footer-brand p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; margin-bottom: 20px; }
+.social-links { display: flex; gap: 12px; }
+.social-links a:hover { background: var(--primary); color: white; }
+.footer-links h4 { font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
+.footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.footer-links ul li a:hover { color: var(--primary); }
+.footer-bottom-bar { border-top: 1px solid var(--border); padding-top: 24px; text-align: center; color: var(--text-muted); font-size: 0.82rem; }
+
+/* FITX RESPONSIVE UTILITIES - 4-2-1 COLUMN SYSTEM */
+@media (min-width: 1200px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 25px !important;
+
+  }
+    .diet-plan-grid, .challenge-grid, .charts-wrap {
+        grid-template-columns: repeat(2, 1fr) !important;
+
+
+}
+}
+@media (max-width: 1199px) and (min-width: 768px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+
+  }
+    .page-hero, .hero-section {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 60px 5% !important;
+
+  }
+    .hero-content { margin-bottom: 30px !important; }
+
+    .navbar {
+        padding: 0 15px !important;
+
+  }
+    .nav-links {
+        display: none !important;
+
+  }
+    .hamburger, .menu-toggle {
+        display: block !important;
+
+  }
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+
+  }
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    /* .btn forced width removed for alignment */
+    .sidebar { width: 100% !important; z-index: 2000 !important; }
+}

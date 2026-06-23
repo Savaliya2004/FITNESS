@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX | Blog & Fitness Tips{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/blog.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="blog-hero">
+    <div class="hero-content">
+        <span class="tag-label">📖 INSIGHTS</span>
+        <h1>Fitness <span class="text-gradient">Knowledge Hub</span></h1>
+        <p>Expert tips on nutrition, training, recovery, and healthy living from our certified coaches.</p>
+    </div>
+</section>
+
+<!-- Blog Grid -->
+<section class="blog-grid-section" style="padding: 100px 5%;">
+    <div class="container">
+        <div class="section-header-split">
+            <h2>Latest <span class="text-gradient">Articles</span></h2>
+        </div>
+        <div class="blog-grid" id="blogGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
+            {% for post in blog_posts %}
+            <article class="blog-card" style="background: rgba(255,255,255,0.05); border-radius: 15px; overflow: hidden;">
+                <div class="blog-img-wrap">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=500&q=80" alt="{{ post.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+                    {% endif %}
+                </div>
+                <div class="blog-card-body" style="padding: 20px;">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.content|truncatewords:20 }}</p>
+                    <div class="blog-footer" style="margin-top: 20px;">
+                        <a href="#" class="blog-read-link" style="color: var(--accent); font-weight: bold; text-decoration: none;">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <p>No blog posts found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

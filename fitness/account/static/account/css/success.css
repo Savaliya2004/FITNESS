@@ -1,0 +1,77 @@
+.success-hero { padding: 100px 5% 50px; text-align: center; }
+    .success-hero h1 { font-family:'Poppins'; font-size:3.5rem; font-weight:800; margin-bottom:15px; }
+    
+    .story-card:hover { border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 15px 30px rgba(196,77,255,0.15); }
+    .story-thumb { height: 220px; width: 100%; object-fit: cover; }
+    .story-info { padding: 20px; }
+    .story-name { font-family:'Poppins'; font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
+    .story-res { color: #22c55e; font-weight: 700; font-size: 1rem; margin-bottom: 10px; }
+
+    /* MODAL */
+    .s-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000;
+      padding: 20px; backdrop-filter: blur(10px);
+
+}
+    .s-modal.active { opacity: 1; visibility: visible; }
+
+    .s-img-comp { position: relative; height: 100%; min-height: 300px; }
+    .label.L { left: 20px; }
+    .label.R { right: 20px; }
+
+    .s-details { padding: 40px; }
+    .s-name { font-family:'Poppins'; font-size: 2rem; font-weight: 800; margin-bottom: 5px; }
+    
+    .s-section p { font-size: 0.9rem; color: #ddd; margin-bottom: 20px; line-height: 1.6; }
+
+/* FITX RESPONSIVE UTILITIES - 4-2-1 COLUMN SYSTEM */
+@media (min-width: 1200px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 25px !important;
+
+  }
+    .diet-plan-grid, .challenge-grid, .charts-wrap {
+        grid-template-columns: repeat(2, 1fr) !important;
+
+
+}
+}
+@media (max-width: 1199px) and (min-width: 768px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+
+  }
+    .page-hero, .hero-section {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 60px 5% !important;
+
+  }
+    .hero-content { margin-bottom: 30px !important; }
+
+    .navbar {
+        padding: 0 15px !important;
+
+  }
+    .nav-links {
+        display: none !important;
+
+  }
+    .hamburger, .menu-toggle {
+        display: block !important;
+
+  }
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+
+  }
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    /* .btn forced width removed for alignment */
+    .sidebar { width: 100% !important; z-index: 2000 !important; }
+}

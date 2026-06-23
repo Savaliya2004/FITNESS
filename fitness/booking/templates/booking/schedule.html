@@ -1,0 +1,248 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX | Class Schedule{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --card-bg: var(--card);
+        --border-color: var(--glassBorder);
+        --accent: #c44dff;
+        --accent-hover: #a333e8;
+        --text-white: #fff;
+        --hero-overlay: rgba(10,10,15,0.85);
+    }
+
+    [data-theme="light"] {
+        --card-bg: #ffffff;
+        --border-color: rgba(0,0,0,0.08);
+        --text-white: #1a1a2e;
+        --hero-overlay: rgba(255,255,255,0.85);
+    }
+
+    .schedule-header {
+        text-align: center;
+        padding: 100px 5% 60px;
+        background: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80') center/cover;
+        border-bottom: 1px solid var(--border-color);
+        margin-top: 72px;
+        transition: background 0.3s;
+    }
+
+    .schedule-header h1 {
+        font-size: 3.5rem;
+        font-weight: 900;
+        margin-bottom: 15px;
+        color: var(--text-white);
+    }
+
+    .schedule-header p {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .schedule-container {
+        padding: 60px 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .date-pill {
+        padding: 15px 30px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        min-width: 100px;
+        color: var(--text-white);
+    }
+
+    .date-pill:hover, .date-pill.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+    }
+
+    .classes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+    }
+
+    .class-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: transform 0.3s, border-color 0.3s;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"] .class-card { box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+    .class-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent);
+    }
+
+    .class-img { height: 220px; position: relative; }
+    .class-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .class-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: var(--accent);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(196,77,255,0.3);
+    }
+
+    .class-content {
+        padding: 30px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .class-content h3 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-white);
+    }
+
+    .class-meta {
+        display: flex;
+        gap: 15px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .class-meta span { display: flex; align-items: center; gap: 8px; }
+
+    .class-footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--border-color);
+        padding-top: 25px;
+    }
+
+    .capacity { font-size: 0.95rem; color: var(--muted); font-weight: 600; }
+    .capacity strong { color: var(--text-white); font-weight: 800; }
+    .capacity.full strong { color: #ef4444; }
+
+    .book-btn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(196,77,255,0.25);
+    }
+
+    .book-btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(196,77,255,0.4);
+    }
+
+    .book-btn.waitlist {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-white);
+        box-shadow: none;
+    }
+    
+    .book-btn.waitlist:hover {
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+
+    .book-btn.booked {
+        background: #22c55e;
+        pointer-events: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="schedule-header">
+    <h1>Class <span class="text-accent">Schedule</span></h1>
+    <p>Reserve your spot in our elite group training sessions. From HIIT to Yoga, push your limits with the best coaches.</p>
+</header>
+
+<div class="schedule-container">
+    {% if not schedules %}
+        <div style="text-align: center; padding: 60px 20px; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color);">
+            <i class="fas fa-calendar-times" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 20px;"></i>
+            <h3>No Classes Scheduled</h3>
+            <p style="color: var(--text-muted);">Check back later for new class schedules.</p>
+        </div>
+    {% else %}
+        <div class="classes-grid">
+            {% for schedule in schedules %}
+            <div class="class-card">
+                <div class="class-img">
+                    <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80" alt="{{ schedule.class_type.name }}">
+                    <div class="class-badge">{{ schedule.class_type.category }}</div>
+                </div>
+                <div class="class-content">
+                    <h3>{{ schedule.class_type.name }}</h3>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock" style="color:var(--accent);"></i> {{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}</span>
+                        <span><i class="fas fa-fire" style="color:#ef4444;"></i> {{ schedule.class_type.duration }}m</span>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-muted); flex-grow: 1;">
+                        <p style="margin-bottom: 8px;"><i class="fas fa-map-marker-alt" style="width: 20px; text-align: center;"></i> {{ schedule.center.name }}</p>
+                        <p><i class="fas fa-user-ninja" style="width: 20px; text-align: center;"></i> Coach {{ schedule.trainer.user.username }}</p>
+                    </div>
+
+                    <div class="class-footer">
+                        {% if schedule.user_booking_id %}
+                            <div class="capacity">
+                                <strong>You're Booked</strong>
+                            </div>
+                            <form action="{% url 'cancel_booking' schedule.user_booking_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="book-btn waitlist" style="padding: 8px 16px; font-size: 0.85rem;" title="Cancel Booking"><i class="fas fa-times"></i> Cancel</button>
+                            </form>
+                        {% else %}
+                            <div class="capacity {% if schedule.available_seats == 0 %}full{% endif %}">
+                                <strong>{{ schedule.available_seats }}</strong> / {{ schedule.capacity }} spots left
+                            </div>
+                            <form action="{% url 'book_class' schedule.id %}" method="post">
+                                {% csrf_token %}
+                                {% if schedule.available_seats > 0 %}
+                                    <button type="submit" class="book-btn">Book Class</button>
+                                {% else %}
+                                    <button type="submit" class="book-btn waitlist">Join Waitlist</button>
+                                {% endif %}
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

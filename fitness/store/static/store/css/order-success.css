@@ -1,0 +1,30 @@
+.success-box {
+    max-width: 600px;
+    margin: 150px auto;
+    text-align: center;
+    background: var(--cardBg);
+    padding: 50px;
+    border-radius: 30px;
+    border: 1px solid var(--glassBorder);
+    backdrop-filter: blur(20px);
+
+}
+.check-icon {
+    width: 80px;
+    height: 80px;
+    background: #22c55e;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 30px;
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+
+}
+[data-theme="light"] .card, [data-theme="light"] .prod-card, [data-theme="light"] .program-card, [data-theme="light"] .trainer-card, [data-theme="light"] .faq-item { background: #fff; border-color: #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+
+
+

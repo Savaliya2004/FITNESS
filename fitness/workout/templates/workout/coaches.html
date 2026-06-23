@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Coaches | FitX{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'workout/css/trainers.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Hero -->
+    <section class="trainers-hero">
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-content">
+            <span class="tag-label">🏋️ COACHES</span>
+            <h1>Meet Our <span class="text-gradient">Elite Trainers</span></h1>
+            <p>Certified world-class coaches dedicated to transforming your fitness journey with science, passion, and expertise.</p>
+            <div class="hero-stats">
+                <div class="hstat"><span>25+</span><label>Expert Trainers</label></div>
+                <div class="hstat"><span>50K+</span><label>Sessions Delivered</label></div>
+                <div class="hstat"><span>4.9★</span><label>Avg Trainer Rating</label></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trainers Grid -->
+    <section class="trainers-section">
+        <div class="container">
+            <div class="section-header centered">
+                <span class="section-tag">OUR TEAM</span>
+                <h2>World-Class <span class="text-gradient">Fitness Experts</span></h2>
+                <p>Each trainer is carefully selected for expertise, passion, and ability to motivate you.</p>
+            <div class="trainers-grid">
+                {% for trainer in trainers %}
+                <div class="trainer-card">
+                    <div class="trainer-img-wrap">
+                        <img src="{% if trainer.profile_image %}{{ trainer.profile_image.url }}{% else %}https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=500&q=80{% endif %}" alt="{{ trainer.name }}">
+                        <div class="trainer-overlay">
+                            <div class="trainer-socials">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="trainer-badge">{{ trainer.specialty|truncatechars:15 }}</div>
+                    </div>
+                    <div class="trainer-info">
+                        <div class="trainer-header">
+                            <div>
+                                <h3>{{ trainer.name }}</h3>
+                                <span class="specialization">{{ trainer.specialty }}</span>
+                            </div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> {{ trainer.rating }}</div>
+                        </div>
+                        <div class="trainer-stats-row">
+                            <div class="t-stat"><i class="fas fa-medal"></i><span>Expert</span></div>
+                            <div class="t-stat"><i class="fas fa-users"></i><span>Active Coach</span></div>
+                            <div class="t-stat"><i class="fas fa-certificate"></i><span>Certified</span></div>
+                        </div>
+                        <p class="trainer-bio">{{ trainer.bio|truncatewords:30 }}</p>
+                        <div class="specialties-tags">
+                            <span>{{ trainer.specialty }}</span>
+                        </div>
+                        <a href="{% url 'login' %}" class="btn-book">Book Session</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--muted);">
+                    <p>No trainers available at the moment. Join our community to be notified!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Become Trainer CTA -->
+    <section class="become-trainer-cta">
+        <div class="container">
+            <div class="become-inner">
+                <div class="become-text">
+                    <h2>Are You a Fitness Expert?</h2>
+                    <p>Join our elite team of trainers and reach thousands of clients. Build your brand, grow your income, and make an impact.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Flexible scheduling</li>
+                        <li><i class="fas fa-check-circle"></i> Competitive revenue share</li>
+                        <li><i class="fas fa-check-circle"></i> Marketing & brand support</li>
+                    </ul>
+                    <a href="{% url 'contact' %}" class="btn-primary-lg">Apply to Train <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="become-visual">
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Trainer">
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

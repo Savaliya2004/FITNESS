@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Verify OTP - FitX{% endblock %}
+
+{% block content %}
+<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; background: linear-gradient(to bottom, #0A0A0A, #111);">
+  <div style="background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+    <div style="background: rgba(131, 100, 255, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+        <i class="fas fa-envelope-open-text" style="color: var(--accent); font-size: 1.5rem;"></i>
+    </div>
+    
+    <h2 style="color: #fff; margin-bottom: 10px; font-size: 1.8rem;">Verify Your Login</h2>
+    <p style="color: var(--muted); margin-bottom: 30px; font-size: 0.95rem; line-height: 1.5;">
+        We've sent a 6-digit confirmation code to <br><strong style="color: #fff;">{{ email }}</strong>
+    </p>
+
+    <form method="POST" action="{% url 'verify_otp' %}">
+      {% csrf_token %}
+      
+      <div style="margin-bottom: 25px; text-align: left;">
+        <label for="otp" style="color: #ccc; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Enter OTP Code</label>
+        <input type="text" id="otp" name="otp" maxlength="6" pattern="\d*" placeholder="••••••" required
+               style="width: 100%; padding: 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1.5rem; text-align: center; letter-spacing: 5px; transition: 0.3s; box-sizing: border-box;"
+               onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+
+      <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; font-size: 1rem; border-radius: 12px; font-weight: 700; margin-bottom: 20px;">
+        Verify & Login <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+      </button>
+    </form>
+    
+    <p style="color: var(--muted); font-size: 0.9rem;">
+        Didn't receive code? <a href="{% url 'login' %}" style="color: var(--accent); text-decoration: none; font-weight: 600;">Go back</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

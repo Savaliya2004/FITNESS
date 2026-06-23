@@ -1,0 +1,373 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX | Premium Fitness Store{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'store/css/store.css' %}">
+<style>
+    /* Premium Dropdown Styles */
+    .store-nav {
+        position: sticky;
+        top: 72px;
+        z-index: 1000;
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 0 5%;
+    }
+
+    .dropdown-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        height: 60px;
+        align-items: center;
+    }
+
+    .category-item {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .category-link {
+        color: #888;
+        text-decoration: none;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .category-item:hover .category-link,
+    .category-item.active .category-link {
+        color: var(--accent);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: #111;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 15px;
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .category-item:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-item {
+        padding: 10px 15px;
+        color: #ccc;
+        text-decoration: none;
+        font-size: 0.82rem;
+        border-radius: 8px;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--accent);
+        transform: translateX(5px);
+    }
+
+    .store-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Section Styles */
+    .store-section {
+        padding: 60px 5%;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .view-all {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    /* Product Card Enhancements */
+    .prod-card {
+        background: rgba(255,255,255,0.03);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: 0.4s;
+        position: relative;
+    }
+
+    .prod-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .prod-img-box {
+        height: 280px;
+        position: relative;
+        background: #000;
+    }
+
+    .prod-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.6s;
+    }
+
+    .prod-card:hover .prod-img {
+        transform: scale(1.1);
+    }
+
+    .prod-info {
+        padding: 20px;
+    }
+
+    .prod-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .prod-price-flex {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .current-price {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--accent);
+    }
+
+    .old-price {
+        font-size: 0.9rem;
+        color: #666;
+        text-decoration: line-through;
+    }
+
+    .add-cart-btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--accent);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .add-cart-btn:hover {
+        background: var(--accent2);
+        transform: translateY(-2px);
+    }
+
+    .rating-stars {
+        color: #facc15;
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+
+    .badge-top {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        z-index: 10;
+        text-transform: uppercase;
+    }
+
+    .badge-trending { background: var(--accent); color: #fff; }
+    .badge-sale { background: #ef4444; color: #fff; }
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="store-nav">
+    <div class="dropdown-container">
+
+        <a href="?category=men" class="category-link {% if current_cat == 'men' %}active{% endif %}">Men</a>
+        <a href="?category=women" class="category-link {% if current_cat == 'women' %}active{% endif %}">Women</a>
+        <a href="?category=equipment" class="category-link {% if current_cat == 'equipment' %}active{% endif %}">Equipment</a>
+        <a href="?category=supplements" class="category-link {% if current_cat == 'supplements' %}active{% endif %}">Supplements</a>
+        <a href="?category=yoga" class="category-link {% if current_cat == 'yoga' %}active{% endif %}">Yoga</a>
+        <a href="?category=accessories" class="category-link {% if current_cat == 'accessories' %}active{% endif %}">Accessories</a>
+        
+        <div style="display:flex; align-items:center; gap:20px; border-left: 1px solid rgba(255,255,255,0.1); padding-left:20px; margin-left:10px;">
+            {% if user.is_authenticated %}
+            <a href="{% url 'my_orders' %}" class="category-link" style="display:flex; align-items:center; gap:8px;">
+                <i class="fas fa-box"></i> ORDERS
+            </a>
+            {% endif %}
+            <a href="{% url 'cart' %}" class="category-link" style="color: var(--accent); font-weight: 700; display:flex; align-items:center; gap:8px;">
+                <i class="fas fa-shopping-cart"></i> CART
+                <span class="cart-count" style="background: var(--accent); color:#fff; font-size:0.65rem; font-weight:800; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%;">{{ cart_count|default:0 }}</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="hero-mini" style="padding: 100px 5% 60px; text-align: center; background: radial-gradient(circle at center, rgba(196,77,255,0.08), transparent 70%);">
+    <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 20px;">UNLEASH <span class="text-gradient">POTENTIAL</span></h1>
+    <p style="color: var(--muted); max-width: 700px; margin: 0 auto; font-size: 1.1rem;">Engineered for athletes, designed for life. Explore our elite collection.</p>
+</div>
+
+{% if not current_cat and not current_sub %}
+    <!-- 1️⃣ Trending Products -->
+    <section class="store-section" data-aos="fade-up">
+        <div class="section-header">
+            <h2 class="section-title">🔥 Trending Products</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="product-grid">
+            {% for p in trending %}
+                {% include 'store/includes/product_card.html' with p=p %}
+            {% empty %}
+                <p style="color: #666;">No trending products yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 2️⃣ Best Sellers -->
+    <section class="store-section" data-aos="fade-up">
+        <div class="section-header">
+            <h2 class="section-title">🏆 Best Sellers</h2>
+            <a href="{% url 'store' %}" class="view-all">View All</a>
+        </div>
+        <div class="product-grid">
+            {% for p in best_sellers %}
+                {% include 'store/includes/product_card.html' with p=p %}
+            {% empty %}
+                <p style="color: #666;">No best sellers yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 3️⃣ Budget Friendly -->
+    <section class="store-section" data-aos="fade-up">
+        <div class="section-header">
+            <h2 class="section-title">💰 Budget Picks</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="product-grid">
+            {% for p in budget_friendly %}
+                {% include 'store/includes/product_card.html' with p=p %}
+            {% empty %}
+                <p style="color: #666;">No budget picks available.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% else %}
+    <section class="store-section">
+        <div class="section-header">
+            <h2 class="section-title">
+                {% if current_sub %}{{ current_sub }}{% else %}{{ current_cat|capfirst }}{% endif %} 
+                <span style="color: #666; font-size: 1rem; font-weight: 500; margin-left: 10px;">({{ products.count }} items)</span>
+            </h2>
+            <a href="{% url 'store' %}" class="view-all">Back to Home</a>
+        </div>
+        <div class="product-grid">
+            {% for p in products %}
+                {% include 'store/includes/product_card.html' with p=p %}
+            {% empty %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 100px; color: #666;">
+                    <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2;"></i>
+                    <p>No products found in this category.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function addToCart(id, name) {
+        const url = "{% url 'add_to_cart' 0 %}".replace('0', id);
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                updateBadge(data.cart_count);
+                showToast(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast("Failed to add " + name + " to cart.");
+        });
+    }
+
+    function updateBadge(count) {
+        document.querySelectorAll('.cart-count').forEach(el => el.innerText = count || 0);
+    }
+
+    // Initialize cart count from session on page load (via a data attribute or initial value)
+    document.addEventListener('DOMContentLoaded', () => {
+        // We could also fetch the current count here if needed
+    });
+</script>
+{% endblock %}

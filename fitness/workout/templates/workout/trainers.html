@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitX | Expert Trainers</title>
+    <meta name="description" content="Meet our world-class trainers at FitX. Certified experts in strength, yoga, HIIT, boxing and more.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="trainers.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar glass" id="navbar">
+        <div class="nav-brand">
+            <a href="{% url 'home' %}" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                <i class="fas fa-fire" style="color: var(--primary);font-size:1.6rem;"></i>
+                <h1>Fit<span>X</span></h1>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">HOME</a>
+            <a href="{% url 'workouts' %}">WORKOUTS</a>
+            <a href="{% url 'trainers' %}" class="active">TRAINERS</a>
+            <a href="membership.html">MEMBERSHIP</a>
+            <a href="blog.html">BLOG</a>
+            <a href="contact.html">CONTACT</a>
+        </div>
+        <div class="nav-actions">
+            <a href="{% url 'login' %}" class="btn-outline-white">LOGIN</a>
+            <a href="dashboard.html" class="btn-primary-sm">DASHBOARD</a>
+        </div>
+        <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="{% url 'home' %}">HOME</a>
+        <a href="{% url 'workouts' %}">WORKOUTS</a>
+        <a href="{% url 'trainers' %}" class="active">TRAINERS</a>
+        <a href="membership.html">MEMBERSHIP</a>
+        <a href="blog.html">BLOG</a>
+        <a href="contact.html">CONTACT</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="trainers-hero">
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-content">
+            <span class="tag-label">🏋️ COACHES</span>
+            <h1>Meet Our <span class="text-gradient">Elite Trainers</span></h1>
+            <p>Certified world-class coaches dedicated to transforming your fitness journey with science, passion, and expertise.</p>
+            <div class="hero-stats">
+                <div class="hstat"><span>25+</span><label>Expert Trainers</label></div>
+                <div class="hstat"><span>50K+</span><label>Sessions Delivered</label></div>
+                <div class="hstat"><span>4.9★</span><label>Avg Trainer Rating</label></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trainers Grid -->
+    <section class="trainers-section">
+        <div class="container">
+            <div class="section-header centered">
+                <span class="section-tag">OUR TEAM</span>
+                <h2>World-Class <span class="text-gradient">Fitness Experts</span></h2>
+                <p>Each trainer is carefully selected for expertise, passion, and ability to motivate you.</p>
+            </div>
+
+            <div class="trainers-grid">
+                <!-- Trainer 1 -->
+                <div class="trainer-card">
+                    <div class="trainer-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=500&q=80" alt="Alex Carter">
+                        <div class="trainer-overlay">
+                            <div class="trainer-socials">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="trainer-badge">Strength</div>
+                    </div>
+                    <div class="trainer-info">
+                        <div class="trainer-header">
+                            <div>
+                                <h3>Alex Carter</h3>
+                                <span class="specialization">Strength & Conditioning</span>
+                            </div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> 4.9</div>
+                        </div>
+                        <div class="trainer-stats-row">
+                            <div class="t-stat"><i class="fas fa-medal"></i><span>8 Years Exp.</span></div>
+                            <div class="t-stat"><i class="fas fa-users"></i><span>1200+ Clients</span></div>
+                            <div class="t-stat"><i class="fas fa-certificate"></i><span>NSCA Certified</span></div>
+                        </div>
+                        <p class="trainer-bio">Former Olympic strength coach with a passion for helping everyday athletes reach peak performance. Alex has trained national-level powerlifters and professional football players.</p>
+                        <div class="specialties-tags">
+                            <span>Powerlifting</span><span>Olympic Lifting</span><span>Muscle Building</span>
+                        </div>
+                        <a href="{% url 'login' %}" class="btn-book">Book Session</a>
+                    </div>
+                </div>
+
+                <!-- Trainer 2 -->
+                <div class="trainer-card">
+                    <div class="trainer-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=500&q=80" alt="Priya Sharma">
+                        <div class="trainer-overlay">
+                            <div class="trainer-socials">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="trainer-badge badge-purple">Yoga</div>
+                    </div>
+                    <div class="trainer-info">
+                        <div class="trainer-header">
+                            <div>
+                                <h3>Priya Sharma</h3>
+                                <span class="specialization">Yoga & Mindfulness</span>
+                            </div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> 4.9</div>
+                        </div>
+                        <div class="trainer-stats-row">
+                            <div class="t-stat"><i class="fas fa-medal"></i><span>12 Years Exp.</span></div>
+                            <div class="t-stat"><i class="fas fa-users"></i><span>3000+ Clients</span></div>
+                            <div class="t-stat"><i class="fas fa-certificate"></i><span>RYT-500</span></div>
+                        </div>
+                        <p class="trainer-bio">India's leading yoga educator and wellness advocate. Priya blends traditional Hatha yoga with modern sports science to deliver transformative experiences that heal both body and mind.</p>
+                        <div class="specialties-tags">
+                            <span>Hatha Yoga</span><span>Meditation</span><span>Breathwork</span>
+                        </div>
+                        <a href="{% url 'login' %}" class="btn-book">Book Session</a>
+                    </div>
+                </div>
+
+                <!-- Trainer 3 -->
+                <div class="trainer-card">
+                    <div class="trainer-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1611672585731-fa10d931762b?w=500&q=80" alt="Marcus Johnson">
+                        <div class="trainer-overlay">
+                            <div class="trainer-socials">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="trainer-badge badge-red">HIIT</div>
+                    </div>
+                    <div class="trainer-info">
+                        <div class="trainer-header">
+                            <div>
+                                <h3>Marcus Johnson</h3>
+                                <span class="specialization">HIIT & Metabolic Training</span>
+                            </div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> 4.8</div>
+                        </div>
+                        <div class="trainer-stats-row">
+                            <div class="t-stat"><i class="fas fa-medal"></i><span>6 Years Exp.</span></div>
+                            <div class="t-stat"><i class="fas fa-users"></i><span>800+ Clients</span></div>
+                            <div class="t-stat"><i class="fas fa-certificate"></i><span>ACE Certified</span></div>
+                        </div>
+                        <p class="trainer-bio">Former track athlete turned HIIT expert. Marcus specializes in metabolic conditioning programs that maximize fat burning while preserving hard-earned muscle. Known for his electrifying class energy.</p>
+                        <div class="specialties-tags">
+                            <span>HIIT</span><span>Fat Loss</span><span>Sprint Training</span>
+                        </div>
+                        <a href="{% url 'login' %}" class="btn-book">Book Session</a>
+                    </div>
+                </div>
+
+                <!-- Trainer 4 -->
+                <div class="trainer-card">
+                    <div class="trainer-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&q=80" alt="Sofia Rodriguez">
+                        <div class="trainer-overlay">
+                            <div class="trainer-socials">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="trainer-badge badge-blue">Cardio</div>
+                    </div>
+                    <div class="trainer-info">
+                        <div class="trainer-header">
+                            <div>
+                                <h3>Sofia Rodriguez</h3>
+                                <span class="specialization">Dance Cardio & Zumba</span>
+                            </div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> 4.9</div>
+                        </div>
+                        <div class="trainer-stats-row">
+                            <div class="t-stat"><i class="fas fa-medal"></i><span>10 Years Exp.</span></div>
+                            <div class="t-stat"><i class="fas fa-users"></i><span>2500+ Clients</span></div>
+                            <div class="t-stat"><i class="fas fa-certificate"></i><span>Zumba Certified</span></div>
+                        </div>
+                        <p class="trainer-bio">Award-winning Latin dance instructor and certified fitness professional. Sofia's infectious energy makes every session feel like a celebration. Her classes consistently sell out within minutes.</p>
+                        <div class="specialties-tags">
+                            <span>Zumba</span><span>Salsa</span><span>Aerobics</span>
+                        </div>
+                        <a href="{% url 'login' %}" class="btn-book">Book Session</a>
+                    </div>
+                </div>
+
+                <!-- Trainer 5 -->
+                <div class="trainer-card">
+                    <div class="trainer-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=500&q=80" alt="Dr. Anita Kapoor">
+                        <div class="trainer-overlay">
+                            <div class="trainer-socials">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="trainer-badge badge-green">Nutrition</div>
+                    </div>
+                    <div class="trainer-info">
+                        <div class="trainer-header">
+                            <div>
+                                <h3>Dr. Anita Kapoor</h3>
+                                <span class="specialization">Sports Nutrition & Weight Loss</span>
+                            </div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> 5.0</div>
+                        </div>
+                        <div class="trainer-stats-row">
+                            <div class="t-stat"><i class="fas fa-medal"></i><span>15 Years Exp.</span></div>
+                            <div class="t-stat"><i class="fas fa-users"></i><span>5000+ Clients</span></div>
+                            <div class="t-stat"><i class="fas fa-certificate"></i><span>PhD Nutrition</span></div>
+                        </div>
+                        <p class="trainer-bio">PhD in Sports Nutrition from IIT Bombay. Dr. Kapoor combines evidence-based dietary science with practical fitness programming to deliver sustainable transformations, with over 200 published success stories.</p>
+                        <div class="specialties-tags">
+                            <span>Sports Nutrition</span><span>Weight Loss</span><span>Diet Planning</span>
+                        </div>
+                        <a href="{% url 'login' %}" class="btn-book">Book Session</a>
+                    </div>
+                </div>
+
+                <!-- Trainer 6 -->
+                <div class="trainer-card">
+                    <div class="trainer-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&q=80" alt="Raj Verma">
+                        <div class="trainer-overlay">
+                            <div class="trainer-socials">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="trainer-badge badge-orange">Boxing</div>
+                    </div>
+                    <div class="trainer-info">
+                        <div class="trainer-header">
+                            <div>
+                                <h3>Raj Verma</h3>
+                                <span class="specialization">Boxing & Combat Fitness</span>
+                            </div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> 4.8</div>
+                        </div>
+                        <div class="trainer-stats-row">
+                            <div class="t-stat"><i class="fas fa-medal"></i><span>9 Years Exp.</span></div>
+                            <div class="t-stat"><i class="fas fa-users"></i><span>900+ Clients</span></div>
+                            <div class="t-stat"><i class="fas fa-certificate"></i><span>IBF Certified</span></div>
+                        </div>
+                        <p class="trainer-bio">National Amateur Boxing Champion turned fitness coach. Raj brings the discipline and intensity of competitive boxing to fitness training, creating programs that build not just physical but mental toughness.</p>
+                        <div class="specialties-tags">
+                            <span>Boxing</span><span>Kickboxing</span><span>Combat Fitness</span>
+                        </div>
+                        <a href="{% url 'login' %}" class="btn-book">Book Session</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Become Trainer CTA -->
+    <section class="become-trainer-cta">
+        <div class="container">
+            <div class="become-inner">
+                <div class="become-text">
+                    <h2>Are You a Fitness Expert?</h2>
+                    <p>Join our elite team of trainers and reach thousands of clients. Build your brand, grow your income, and make an impact.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Flexible scheduling</li>
+                        <li><i class="fas fa-check-circle"></i> Competitive revenue share</li>
+                        <li><i class="fas fa-check-circle"></i> Marketing & brand support</li>
+                    </ul>
+                    <a href="contact.html" class="btn-primary-lg">Apply to Train <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="become-visual">
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Trainer">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand-logo"><i class="fas fa-fire"></i><h2>FitX</h2></div>
+                    <p>Making fitness a daily habit for millions. Expert trainers, science-backed programs. #BeBetterEveryDay</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="{% url 'workouts' %}">Strength Training</a></li>
+                        <li><a href="{% url 'workouts' %}">HIIT</a></li>
+                        <li><a href="{% url 'workouts' %}">Yoga</a></li>
+                        <li><a href="{% url 'workouts' %}">Weight Loss</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="{% url 'trainers' %}">Our Trainers</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom-bar">
+                <p>© 2026 FitX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

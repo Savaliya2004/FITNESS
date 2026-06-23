@@ -1,0 +1,113 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX | Workout Library{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'workout/css/workouts.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-content">
+            <span class="tag-label">💪 PROGRAMS</span>
+            <h1>Find Your <span class="text-gradient">Perfect Workout</span></h1>
+            <p>Scientifically designed programs for every fitness level — beginner to elite.</p>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80" alt="Workout">
+            <div class="float-badge">
+                <i class="fas fa-bolt"></i>
+                <span>50+ Programs</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All Programs</button>
+                <button class="filter-btn" data-filter="strength">Strength</button>
+                <button class="filter-btn" data-filter="cardio">Cardio</button>
+                <button class="filter-btn" data-filter="yoga">Yoga & Mind</button>
+                <button class="filter-btn" data-filter="hiit">HIIT</button>
+                <button class="filter-btn" data-filter="weight-loss">Weight Loss</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Grid -->
+    <section class="programs-section">
+        <div class="container">
+            <div class="trainers-grid">
+                {% for workout in workouts %}
+                <div class="program-card" data-category="{{ workout.category }}">
+                    <div class="program-image-wrap">
+                        <img src="{% if workout.image %}{{ workout.image.url }}{% else %}https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80{% endif %}" alt="{{ workout.title }}">
+                        <div class="program-overlay"></div>
+                        <span class="prog-badge badge-{{ workout.category }}">{{ workout.get_category_display }}</span>
+                        <div class="prog-rating"><i class="fas fa-star"></i> {{ workout.trainer.rating|default:"4.9" }}</div>
+                    </div>
+                    <div class="program-body">
+                        <div class="program-meta">
+                            <span><i class="fas fa-clock"></i> {{ workout.duration_weeks }} Weeks</span>
+                            <span class="difficulty {{ workout.difficulty }}"><i class="fas fa-signal"></i> {{ workout.get_difficulty_display }}</span>
+                        </div>
+                        <h3>{{ workout.title }}</h3>
+                        <p>{{ workout.description|truncatewords:25 }}</p>
+                        {% if workout.trainer %}
+                        <div class="trainer-info">
+                            <img src="{% if workout.trainer.profile_image %}{{ workout.trainer.profile_image.url }}{% else %}https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=100&q=80{% endif %}" alt="{{ workout.trainer.name }}">
+                            <div>
+                                <span class="trainer-name">{{ workout.trainer.name }}</span>
+                                <span class="trainer-role">{{ workout.trainer.specialty }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="program-footer" style="margin-top: auto;">
+                            <a href="{% url 'login' %}" class="btn-primary-sm" style="display: block; text-align: center;">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted);">
+                    <i class="fas fa-dumbbell" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2;"></i>
+                    <p>No workout programs found. Check back later!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script>
+
+        // Filter
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const programCards = document.querySelectorAll('.program-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.getAttribute('data-filter');
+                programCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                        card.style.animation = 'fadeInUp 0.4s ease';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+

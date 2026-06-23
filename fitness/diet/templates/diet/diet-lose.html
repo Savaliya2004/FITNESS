@@ -1,0 +1,136 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Fat Loss Protocol | FitX{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'diet/css/diet.css' %}">
+<style>
+    .fitness-hero { margin-top: -72px; padding-top: 150px; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1600&q=80') center/cover; }
+    .results-section { display: none; margin-top: 40px; }
+    [data-theme="light"] .results-section { background: #fff; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="fitness-hero" style="text-align: center; padding: 120px 5% 60px;">
+    <h1 style="font-size: 3rem; font-weight: 800; color: #fff;">The <span style="color: var(--accent);">Fat Loss</span> Protocol</h1>
+    <p style="color: #ccc; max-width: 700px; margin: 20px auto;">Scientific calorie deficit modeling combined with nutrient-dense meal plans.</p>
+</section>
+
+<div class="diet-wrapper" style="max-width: 1200px; margin: -50px auto 100px; padding: 0 5%;">
+    <section class="planner-card" style="background: var(--card); border: 1px solid var(--glassBorder); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px);">
+        <form id="dietForm" class="form-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" id="age" placeholder="25" required style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glassBorder); color: #fff;">
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                <select id="gender" style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glassBorder); color: #fff;">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Height (cm)</label>
+                <input type="number" id="height" placeholder="175" required style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glassBorder); color: #fff;">
+            </div>
+            <div class="form-group">
+                <label>Weight (kg)</label>
+                <input type="number" id="weight" placeholder="70" required style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glassBorder); color: #fff;">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Activity Level</label>
+                <select id="activity" style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glassBorder); color: #fff;">
+                    <option value="1.2">Sedentary</option>
+                    <option value="1.55">Moderate (3-5 days/week)</option>
+                    <option value="1.9">Extreme Athlete</option>
+                </select>
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Dietary Pref</label>
+                <select id="dietType" style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glassBorder); color: #fff;">
+                    <option value="veg">Vegetarian</option>
+                    <option value="egg">Eggtarian</option>
+                    <option value="nonveg">Non-Vegetarian</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary" style="grid-column: span 2; padding: 15px; font-size: 1rem;">Generate Deficit Plan</button>
+        </form>
+    </section>
+
+    <div id="results" class="results-section">
+        <div class="results-header" style="text-align: center; margin-bottom: 40px;">
+            <p style="color: var(--muted); text-transform: uppercase; letter-spacing: 2px;">Target Daily Calories</p>
+            <h2 id="calorieValue" style="font-size: 4rem; font-weight: 800; color: var(--accent);">0</h2>
+            <p style="color: var(--muted);">kcal / day</p>
+        </div>
+
+        <div class="meals-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div class="meal-card" style="background: var(--card2); padding: 30px; border-radius: 15px; border: 1px solid var(--glassBorder);">
+                <h3 style="margin-bottom: 10px; color: #fff;">Breakfast</h3>
+                <p id="breakfastText" style="color: var(--muted);"></p>
+            </div>
+            <div class="meal-card" style="background: var(--card2); padding: 30px; border-radius: 15px; border: 1px solid var(--glassBorder);">
+                <h3 style="margin-bottom: 10px; color: #fff;">Lunch</h3>
+                <p id="lunchText" style="color: var(--muted);"></p>
+            </div>
+            <div class="meal-card" style="background: var(--card2); padding: 30px; border-radius: 15px; border: 1px solid var(--glassBorder);">
+                <h3 style="margin-bottom: 10px; color: #fff;">Dinner</h3>
+                <p id="dinnerText" style="color: var(--muted);"></p>
+            </div>
+            <div class="meal-card" style="background: var(--card2); padding: 30px; border-radius: 15px; border: 1px solid var(--glassBorder);">
+                <h3 style="margin-bottom: 10px; color: #fff;">Hydration</h3>
+                <p id="waterText" style="color: var(--muted);"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('dietForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const age = parseInt(document.getElementById('age').value);
+        const gender = document.getElementById('gender').value;
+        const height = parseInt(document.getElementById('height').value);
+        const weight = parseInt(document.getElementById('weight').value);
+        const activity = parseFloat(document.getElementById('activity').value);
+        const dietType = document.getElementById('dietType').value;
+
+        let bmr = (gender === 'male') ? (10 * weight) + (6.25 * height) - (5 * age) + 5 : (10 * weight) + (6.25 * height) - (5 * age) - 161;
+        let targetCal = (bmr * activity) - 500;
+
+        document.getElementById('calorieValue').innerText = Math.round(targetCal);
+        
+        const meals = {
+            veg: {
+                breakfast: "Oats with water and berries + 5 soaked almonds.",
+                lunch: "Paneer & Tofu salad with large bowl of greens.",
+                dinner: "Moong dal (1 cup) with steamed veggies (no oil)."
+            },
+            egg: {
+                breakfast: "3 Egg whites + 1 whole egg scrambled with spinach.",
+                lunch: "2 Boiled eggs with cucumber and tomato salad.",
+                dinner: "Egg white curry (3 eggs) with cauliflower rice."
+            },
+            nonveg: {
+                breakfast: "Smoked salmon or lean chicken slices.",
+                lunch: "Grilled chicken breast (150g) with massive green salad.",
+                dinner: "Baked white fish (150g) with steamed asparagus."
+            }
+        };
+
+        const selected = meals[dietType];
+        document.getElementById('breakfastText').innerText = selected.breakfast;
+        document.getElementById('lunchText').innerText = selected.lunch;
+        document.getElementById('dinnerText').innerText = selected.dinner;
+        document.getElementById('waterText').innerText = `Drink ${Math.round(weight * 0.035 * 10) / 10}L of water daily.`;
+
+        document.getElementById('results').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('results').offsetTop - 100, behavior: 'smooth' });
+    });
+</script>
+{% endblock %}

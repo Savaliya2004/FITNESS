@@ -1,0 +1,174 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX Community{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/community.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <section class="comm-hero">
+    <i class="fas fa-dumbbell floating-icons" style="top:20%; left:10%; animation-delay: 0s;"></i>
+    <i class="fas fa-fire floating-icons" style="top:50%; right:15%; animation-delay: 1.5s;"></i>
+    <i class="fas fa-heartbeat floating-icons" style="bottom:10%; left:25%; animation-delay: 3s;"></i>
+    <div data-aos="zoom-in">
+      <h1>Join the Fitness Community</h1>
+      <p>A place where members share progress, support each other, and stay motivated to achieve their best.</p>
+      <a href="{% url 'signup' %}" class="btn-primary" style="padding: 15px 40px; border-radius: 30px;">Join the Community</a>
+    </div>
+  </section>
+
+  <div class="comm-container">
+    
+    <!-- MAIN FEED -->
+    <div class="feed">
+      
+      {% if user.is_authenticated %}
+      <div class="glass-card post-card" data-aos="fade-up" style="margin-bottom: 30px;">
+        <form action="{% url 'create_post' %}" method="post">
+            {% csrf_token %}
+            <div style="display: flex; gap: 15px;">
+                <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" alt="Avatar">
+                <div style="flex-grow: 1;">
+                    <textarea name="content" rows="3" placeholder="Share your fitness progress or ask a question..." required style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; padding: 15px; resize: none; margin-bottom: 10px;"></textarea>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <select name="post_type" style="background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 5px 10px;">
+                            <option value="discussion">Discussion</option>
+                            <option value="progress">Progress Update</option>
+                            <option value="tip">Fitness Tip</option>
+                            <option value="achievement">Achievement</option>
+                            <option value="question">Question</option>
+                        </select>
+                        <button type="submit" class="btn-primary" style="padding: 8px 20px; border-radius: 20px; border: none; font-size: 0.9rem; font-weight: bold; cursor: pointer;">Post</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+      </div>
+      {% endif %}
+
+      {% if posts %}
+          {% for post in posts %}
+          <div class="glass-card post-card" data-aos="fade-up">
+            <div class="post-header">
+              <img src="{% if post.author.profile_image %}{{ post.author.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" alt="User">
+              <div>
+                <div class="post-user">
+                    {{ post.author.get_full_name|default:post.author.username }}
+                    {% if post.author.role == 'trainer' or post.author.role == 'admin' %}
+                        <i class="fas fa-check-circle" style="color: var(--accent); font-size: 0.8rem; margin-left: 2px;" title="Verified Professional"></i>
+                    {% endif %}
+                </div>
+                <div class="post-time">{{ post.created_at|timesince }} ago • <span style="text-transform: capitalize; color: var(--accent); font-size: 0.8rem;">{{ post.post_type }}</span></div>
+              </div>
+            </div>
+            
+            {% if post.title %}
+                <h4 style="margin-bottom: 10px; color: white;">{{ post.title }}</h4>
+            {% endif %}
+            
+            <div class="post-text">{{ post.content|linebreaksbr }}</div>
+            
+            {% if post.image %}
+                <img src="{{ post.image.url }}" class="post-img" alt="Workout photo">
+            {% endif %}
+            
+            <div class="post-actions">
+              <form action="{% url 'like_post' post.id %}" method="post" style="display: inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="post-btn" {% if user.is_authenticated and post in user.liked_posts.all %}style="color: var(--accent);"{% endif %}>
+                      <i class="{% if user.is_authenticated and post in user.liked_posts.all %}fas{% else %}far{% endif %} fa-heart"></i> {{ post.likes_count }} Likes
+                  </button>
+              </form>
+              <button class="post-btn"><i class="far fa-comment"></i> {{ post.comments_count }} Comments</button>
+              <button class="post-btn" onclick="navigator.clipboard.writeText(window.location.origin + '/community/post/{{ post.id }}'); alert('Link copied!');"><i class="far fa-share-square"></i> Share</button>
+            </div>
+          </div>
+          {% endfor %}
+      {% else %}
+          <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">
+              <i class="fas fa-comment-dots" style="font-size: 3rem; margin-bottom: 20px;"></i>
+              <h3>No posts yet</h3>
+              <p>Be the first to start the conversation!</p>
+          </div>
+      {% endif %}
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      
+      <!-- Challenges -->
+      <div class="glass-card sidebar-widget" data-aos="fade-left">
+        <h3 class="title">Active Challenges</h3>
+        {% if challenges %}
+            {% for chal in challenges %}
+            <div class="chal-item" style="border-left: 4px solid var(--accent); margin-bottom: 15px; padding-left: 15px;">
+              <div class="chal-title">{{ chal.title }}</div>
+              <p style="font-size:0.8rem; color:var(--muted); margin-bottom:5px;">{{ chal.description }}</p>
+              <div class="chal-stats">
+                  <span><i class="fas fa-gift"></i> {{ chal.reward }}</span>
+                  <button class="chal-join" style="padding: 5px 15px; border-radius: 20px; background: var(--accent); border: none; color: #fff; cursor: pointer; font-size: 0.75rem;">Join</button>
+              </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: var(--muted); font-size: 0.85rem;">No active challenges at the moment.</p>
+        {% endif %}
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="glass-card sidebar-widget" data-aos="fade-left" data-aos-delay="100">
+        <h3 class="title">Top Achievers</h3>
+        {% if top_users %}
+            {% for top_user in top_users %}
+            <div class="leader-row" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+              <div class="leader-rank" style="font-weight: bold; color: var(--accent); width: 20px;">{{ forloop.counter }}</div>
+              <img src="{% if top_user.profile_image %}{{ top_user.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" style="width:36px;height:36px;" alt="Avatar">
+              <div class="leader-info" style="flex-grow: 1;">
+                  <div class="leader-name" style="font-size: 0.9rem; color: white;">{{ top_user.username }}</div>
+                  <div class="leader-pts" style="font-size: 0.75rem; color: var(--accent);">Level {{ top_user.level }} • {{ top_user.xp_points }} XP</div>
+              </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: var(--muted); font-size: 0.85rem;">Rankings updating soon...</p>
+        {% endif %}
+      </div>
+
+      <!-- Forum -->
+      <div class="glass-card sidebar-widget" data-aos="fade-left" data-aos-delay="200">
+        <h3 class="title">Discussion Forum</h3>
+        <div class="forum-topic">
+          <span class="forum-title">Beginner running advice? Kness hurt.</span>
+          <span class="forum-replies">45</span>
+        </div>
+        <div class="forum-topic">
+          <span class="forum-title">Best whey protein flavors?</span>
+          <span class="forum-replies">112</span>
+        </div>
+        <div class="forum-topic">
+          <span class="forum-title">How to prep meals for muscle gain</span>
+          <span class="forum-replies">89</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cta-banner" data-aos="zoom-in">
+    <h2 style="font-family:'Poppins';font-weight:800;font-size:2.4rem;">Start your fitness journey with a supportive community.</h2>
+    <p style="color:var(--muted); margin: 15px auto 30px;">Share. Connect. Thrive. Don't do it alone.</p>
+    <a href="{% url 'signup' %}" class="btn-primary" style="padding:15px 40px; border-radius:30px;">Join Now</a>
+  </div>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    // AOS init and navbar scroll are in base.html already. 
+    // Just keeping any specifics if there are any.
+  </script>
+{% endblock %}

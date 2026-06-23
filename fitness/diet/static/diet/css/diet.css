@@ -1,0 +1,608 @@
+/* ===========================
+   FitX — Diet Planner CSS
+   =========================== */
+
+:root {
+    --bg: #0a0a0f;
+    --card: rgba(255, 255, 255, 0.04);
+    --card2: rgba(255, 255, 255, 0.06);
+    --accent: #c44dff;
+    --accent-glow: rgba(196, 77, 255, 0.4);
+    --glass: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.09);
+    --text: #f0f0f0;
+    --muted: #8888aa;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --card2: #f8fafc;
+    --text: #1a1a2e;
+    --muted: #555577;
+    --glass-border: rgba(0, 0, 0, 0.08);
+}
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+
+}
+/* --- Layout --- */
+.diet-wrapper {
+    max-width: 1100px;
+    margin: 120px auto 60px;
+    padding: 0 5%;
+
+}
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+
+}
+.section-header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+
+}
+.section-header p {
+    color: var(--muted);
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+
+}
+/* --- Planner Card (Form Area) --- */
+.planner-card {
+    background: rgba(21,18,31,0.8);
+    backdrop-filter: blur(20px);
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+
+}
+.planner-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+
+}
+.form-group {
+    margin-bottom: 15px;
+    margin-bottom: 15px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+}
+.form-group input, .form-group select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--glass-border);
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+
+}
+.form-group input:focus, .form-group select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+
+}
+.btn-generate {
+    grid-column: span 2;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--accent), #a333e8);
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(196,77,255,0.3);
+    margin-top: 20px;
+
+}
+.btn-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(196,77,255,0.5);
+
+}
+@media (max-width: 600px) {
+    .meals-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .btn-generate { grid-column: span 1; }
+}
+
+/* --- Results Area --- */
+.results-section {
+    display: none;
+    margin-top: 60px;
+    padding-top: 20px;
+}
+
+.results-main-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    border-radius: 32px;
+    padding: 50px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    margin-bottom: 60px;
+}
+
+.results-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.calories-box {
+    background: linear-gradient(135deg, var(--accent), #7c3aed);
+    padding: 40px;
+    border-radius: 24px;
+    text-align: center;
+    flex: 1;
+    min-width: 280px;
+    box-shadow: 0 15px 35px rgba(196, 77, 255, 0.2);
+}
+
+.calories-box h2 {
+    font-size: 4rem;
+    font-weight: 900;
+    margin: 10px 0;
+    color: #fff;
+}
+
+.calories-box p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.results-content-wrap {
+    background: rgba(0,0,0,0.2);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.calorie-progress {
+    flex: 2;
+    min-width: 300px;
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+    padding: 40px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.progress-track {
+    height: 12px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient, linear-gradient(90deg, var(--accent), #3b82f6));
+    width: 0%;
+    transition: width 1s ease-in-out;
+}
+
+/* --- Result Cards (Info Grid) --- */
+.result-card {
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+    padding: 25px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: var(--transition);
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    background: var(--card2);
+}
+
+.result-card i {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.result-card h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.result-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1rem;
+}
+
+.result-card.highlight {
+    background: rgba(196, 77, 255, 0.05);
+    border-color: rgba(196, 77, 255, 0.2);
+}
+
+/* --- Meal Cards --- */
+.meals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.meal-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 35px;
+    transition: var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.meal-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.meal-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.meal-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.meal-desc {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    flex-grow: 1;
+}
+/* --- Extra Sections --- */
+.extra-section {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 24px;
+    margin-bottom: 50px;
+
+}
+.quote-card {
+    background: linear-gradient(135deg, rgba(196,77,255,0.1), transparent);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    opacity: 0.4;
+
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 500;
+
+}
+.water-card {
+    background: rgba(59, 130, 246, 0.05);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+
+}
+.water-icon {
+    font-size: 2.5rem;
+    color: #3b82f6;
+    margin-bottom: 15px;
+    animation: wave 2s ease-in-out infinite;
+
+}
+@keyframes wave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* --- Actions --- */
+.planner-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+
+}
+.btn-action {
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--accent-glow);
+
+}
+.btn-outline {
+    border: 2px solid var(--glass-border);
+    color: #fff;
+
+}
+.btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+
+}
+/* --- FAQ Segment --- */
+.faq-section {
+    margin-top: 80px;
+
+}
+.faq-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    margin-bottom: 15px;
+    overflow: hidden;
+
+}
+.faq-q {
+    padding: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.faq-q i {
+    transition: 0.3s;
+
+}
+.faq-a {
+    padding: 0 20px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    display: none;
+
+}
+
+
+/* FITX RESPONSIVE UTILITIES - 4-2-1 COLUMN SYSTEM */
+@media (min-width: 1200px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 25px !important;
+
+  }
+    .diet-plan-grid, .challenge-grid, .charts-wrap {
+        grid-template-columns: repeat(2, 1fr) !important;
+
+
+}
+}
+@media (max-width: 1199px) and (min-width: 768px) {
+    .prod-grid, .workout-grid, .exercise-grid, .trainer-grid, .program-grid, .success-grid, .coaches-grid, .diet-grid, .product-grid, .story-grid, .stats-grid, .diet-plan-grid, .challenge-grid, .profile-details-grid, .action-buttons, .charts-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+
+  }
+    .page-hero, .hero-section {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 60px 5% !important;
+
+  }
+    .hero-content { margin-bottom: 30px !important; }
+
+    .navbar {
+        padding: 0 15px !important;
+
+  }
+    .nav-links {
+        display: none !important;
+
+  }
+    .hamburger, .menu-toggle {
+        display: block !important;
+
+  }
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+
+  }
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    /* .btn forced width removed for alignment */
+    .sidebar { width: 100% !important; z-index: 2000 !important; }
+}
+
+/* --- Print Optimizations --- */
+@media print {
+    /* Reset everything */
+    * { background: transparent !important; color: black !important; box-shadow: none !important; text-shadow: none !important; }
+    
+    body { background: white !important; margin: 0; padding: 0; width: 100%; height: auto; }
+    
+    /* Hide ALL non-essential elements */
+    .navbar, .footer, footer, #dietForm, .faq-section, .planner-actions, 
+    .section-header p, .section-tag, .btn-action, .extra-section .water-card, 
+    .btn-generate, .whatsapp-btn, .calorie-progress, .extra-info-grid, 
+    .chart-wrap, script, .modal-overlay, header:not(.section-header), .location-dropdown, .theme-dropdown {
+        display: none !important;
+    }
+
+    /* Target Wrapper */
+    .diet-wrapper { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; }
+    
+    /* Position the header */
+    .section-header { 
+        margin: 0 0 30px 0 !important; 
+        padding-top: 20px !important; 
+        text-align: center !important; 
+    }
+    .section-header h1 { 
+        font-size: 28pt !important; 
+        margin: 0 !important; 
+        color: black !important; 
+        -webkit-text-fill-color: black !important; 
+    }
+    .text-accent { color: #8364ff !important; -webkit-text-fill-color: #8364ff !important; }
+
+    /* Results Section display */
+    .results-section { 
+        display: block !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    
+    /* Result Card Layout */
+    .results-main-card {
+        background: white !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+
+    .results-header { 
+        margin-bottom: 30px !important;
+        display: block !important;
+    }
+
+    .calories-box {
+        background: #f8f8f8 !important;
+        border: 2px solid #000 !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+        width: 60% !important; /* Proper width for PDF */
+        margin: 0 auto 20px !important;
+        text-align: center !important;
+    }
+    .calories-box h2 { font-size: 36pt !important; margin: 10px 0 !important; color: black !important; }
+    .calories-box p { font-size: 14pt !important; font-weight: bold !important; color: #333 !important; }
+
+    /* Meals Grid into vertical list for better print fit */
+    .meals-grid { 
+        display: block !important; 
+        width: 100% !important;
+    }
+    
+    .meal-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        margin-bottom: 20px !important;
+        padding: 15px !important;
+        border-radius: 10px !important;
+        display: block !important;
+        page-break-inside: avoid !important;
+    }
+    
+    .meal-card h3 { 
+        font-size: 16pt !important; 
+        margin-bottom: 8px !important; 
+        border-bottom: 1px solid #eee !important; 
+        padding-bottom: 5px !important; 
+    }
+    
+    .meal-desc { 
+        font-size: 12pt !important; 
+        line-height: 1.5 !important; 
+        color: #333 !important; 
+    }
+
+    .meal-icon { font-size: 20pt !important; margin-right: 15px !important; float: left !important; }
+
+    .quote-card {
+        border-top: 1px dashed #ccc !important;
+        margin-top: 40px !important;
+        padding-top: 20px !important;
+        font-style: italic !important;
+        text-align: center !important;
+        color: #666 !important;
+    }
+}

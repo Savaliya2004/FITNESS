@@ -1,0 +1,191 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX AI Coach{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'ai_coach/css/coach.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="coach-container">
+    <div class="coach-header">
+        <h1>Your AI Fitness Coach</h1>
+        <p>Personalized training, diet, and habits built just for you, in seconds.</p>
+    </div>
+
+    <!-- Input Form -->
+    <div class="input-card" id="coach-setup">
+        <div class="form-row">
+            <!-- Mood Selection -->
+            <div class="form-group">
+                <label>How are you feeling today?</label>
+                <div class="mood-selector">
+                    <div class="mood-btn active" data-mood="energetic" onclick="selectMood(this)">
+                        <i class="fas fa-bolt" style="color: #FFD700;"></i>
+                        <span>Energetic</span>
+                    </div>
+                    <div class="mood-btn" data-mood="normal" onclick="selectMood(this)">
+                        <i class="fas fa-smile" style="color: #4CAF50;"></i>
+                        <span>Normal</span>
+                    </div>
+                    <div class="mood-btn" data-mood="tired" onclick="selectMood(this)">
+                        <i class="fas fa-battery-quarter" style="color: #FF5722;"></i>
+                        <span>Tired</span>
+                    </div>
+                    <div class="mood-btn" data-mood="stressed" onclick="selectMood(this)">
+                        <i class="fas fa-brain" style="color: #9C27B0;"></i>
+                        <span>Stressed</span>
+                    </div>
+                </div>
+                <input type="hidden" id="selected-mood" value="energetic">
+            </div>
+            
+            <!-- Time Selection -->
+            <div class="form-group">
+                <label>Time Available (Minutes)</label>
+                <div class="time-slider-container">
+                    <input type="range" min="10" max="90" step="5" value="30" class="time-slider" id="time-input" oninput="updateTimeDisplay(this.value)">
+                    <div class="time-display"><span id="time-val">30</span> Minutes</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="generate-btn" onclick="generateAIPlan()">
+            <i class="fas fa-magic"></i> Generate My Plan
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-overlay" id="loading-state">
+        <div class="loader"></div>
+        <h3>Analyzing your profile & behavior...</h3>
+        <p style="color: var(--text-dim);">Generating personalized workout and diet.</p>
+    </div>
+
+    <!-- Results -->
+    <div class="results-grid" id="results-state">
+        
+        <!-- Workout -->
+        <div class="result-card">
+            <div class="card-icon icon-workout"><i class="fas fa-dumbbell"></i></div>
+            <h3>Today's Workout</h3>
+            <div class="result-content" id="res-workout"></div>
+        </div>
+
+        <!-- Diet -->
+        <div class="result-card">
+            <div class="card-icon icon-diet"><i class="fas fa-utensils"></i></div>
+            <h3>Nutrition Plan</h3>
+            <div class="result-content" id="res-diet"></div>
+        </div>
+
+        <!-- Insight & Habit -->
+        <div class="result-card full-width" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 0; background: transparent; border: none; box-shadow: none;">
+            
+            <div class="result-card" style="margin:0;">
+                <div class="card-icon icon-mind"><i class="fas fa-lightbulb"></i></div>
+                <h3>Behavioral Insight</h3>
+                <div class="result-content" id="res-insight"></div>
+            </div>
+
+            <div class="result-card" style="margin:0;">
+                <div class="card-icon icon-habit"><i class="fas fa-seedling"></i></div>
+                <h3>Micro Habit & Motivation</h3>
+                <div style="margin-bottom: 15px;">
+                    <strong>Habit: </strong><span class="result-content" id="res-habit"></span>
+                </div>
+                <div>
+                    <strong>Coach says: </strong><em class="result-content" id="res-motivation" style="color: var(--primary-light);"></em>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="result-card full-width" style="text-align: center; border: 1px dashed var(--glass-border); cursor: pointer;" onclick="resetCoach()">
+            <i class="fas fa-redo" style="margin-right: 8px;"></i> Generate a different plan
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Security token for AJAX
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function selectMood(element) {
+        document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+        document.getElementById('selected-mood').value = element.getAttribute('data-mood');
+    }
+
+    function updateTimeDisplay(val) {
+        document.getElementById('time-val').innerText = val;
+    }
+
+    function resetCoach() {
+        document.getElementById('results-state').style.display = 'none';
+        document.getElementById('coach-setup').style.display = 'block';
+    }
+
+    function generateAIPlan() {
+        const mood = document.getElementById('selected-mood').value;
+        const time = document.getElementById('time-input').value;
+        const csrfToken = getCookie('csrftoken');
+
+        document.getElementById('coach-setup').style.display = 'none';
+        document.getElementById('loading-state').style.display = 'block';
+        document.getElementById('results-state').style.display = 'none';
+
+        const formData = new FormData();
+        formData.append('mood', mood);
+        formData.append('time', time);
+
+        fetch('{% url "ai_coach_generate" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loading-state').style.display = 'none';
+            
+            if(data.error) {
+                alert('Error: ' + data.message);
+                resetCoach();
+                return;
+            }
+            
+            const res = data.data;
+            document.getElementById('res-workout').innerText = res.workout || "Not generated.";
+            document.getElementById('res-diet').innerText = res.diet || "Not generated.";
+            document.getElementById('res-insight').innerText = res.insight || "Not generated.";
+            document.getElementById('res-habit').innerText = res.habit || "Not generated.";
+            document.getElementById('res-motivation').innerText = res.motivation || "Not generated.";
+            
+            document.getElementById('results-state').style.display = 'grid';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong. Please try again.');
+            resetCoach();
+        });
+    }
+</script>
+{% endblock %}

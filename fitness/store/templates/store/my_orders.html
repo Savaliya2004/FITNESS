@@ -1,0 +1,293 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}My Orders — FitX{% endblock %}
+
+{% block content %}
+<style>
+    .orders-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .orders-header {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--border-color, #333);
+    }
+
+    .orders-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .orders-header p {
+        color: var(--muted, #999);
+        font-size: 1.1rem;
+    }
+
+    .order-card {
+        background: linear-gradient(135deg,rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .order-card:hover {
+        border-color: #667eea;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .order-info {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .order-id {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .order-date {
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+        background-color: rgba(255, 165, 0, 0.15);
+        color: #FFA500;
+    }
+
+    .status-shipped {
+        background-color: rgba(52, 152, 219, 0.15);
+        color: #3498DB;
+    }
+
+    .status-delivered {
+        background-color: rgba(39, 174, 96, 0.15);
+        color: #27AE60;
+    }
+
+    .status-cancelled {
+        background-color: rgba(231, 76, 60, 0.15);
+        color: #E74C3C;
+    }
+
+    .order-items {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+    }
+
+    .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .item:last-child {
+        border-bottom: none;
+    }
+
+    .item-name {
+        font-weight: 500;
+        color: #fff;
+    }
+
+    .item-qty {
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    .item-price {
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .order-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 16px;
+    }
+
+    .total-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .total-amount {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+
+    .no-orders {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .no-orders-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+    }
+
+    .no-orders-text {
+        color: var(--muted);
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    .shop-btn {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 32px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .shop-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .status-icon {
+        font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+        .orders-header h1 {
+            font-size: 2rem;
+        }
+
+        .order-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .order-info {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .order-items {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<div class="orders-container" style="padding-top: 120px; max-width: 1200px; margin: 0 auto; padding-left: 5%; padding-right: 5%;">
+    {% if user.is_authenticated %}
+        <div class="orders-header" data-aos="fade-down" style="padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 40px;">
+            <h1 style="font-family: 'Poppins'; font-weight: 900; font-size: 3rem;">YOUR <span class="text-gradient">ORDERS</span></h1>
+            <p style="color: var(--muted); margin-top: 10px; font-size: 1.1rem;">Track your fitness journey and equipment deliveries.</p>
+        </div>
+
+        <div class="orders-grid" style="display: flex; flex-direction: column; gap: 30px; margin-bottom: 100px;">
+        {% if orders %}
+            {% for order in orders %}
+            <div class="order-card" data-aos="fade-up" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 35px; position: relative; overflow: hidden; backdrop-filter: blur(20px);">
+                <div style="position: absolute; top: 0; right: 0; width: 120px; height: 120px; background: radial-gradient(circle at top right, rgba(196,77,255,0.1), transparent); pointer-events: none;"></div>
+                
+                <div class="order-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
+                    <div>
+                        <div class="order-id" style="font-family: 'Poppins'; font-weight: 800; font-size: 1.4rem; color: #fff; letter-spacing: 1px;">Order #{{ order.id }}</div>
+                        <div class="order-date" style="color: var(--muted); font-size: 0.9rem; margin-top: 6px; font-weight: 500;">{{ order.created_at|date:"M d, Y • g:i A" }}</div>
+                    </div>
+                    <span class="status-badge status-{{ order.status }}" style="padding: 12px 24px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--accent);">
+                        {% if order.status == 'pending' %}⏳ PENDING
+                        {% elif order.status == 'shipped' %}🚚 SHIPPED
+                        {% elif order.status == 'delivered' %}✅ DELIVERED
+                        {% elif order.status == 'cancelled' %}❌ CANCELLED
+                        {% endif %}
+                    </span>
+                </div>
+
+                <div class="order-items" style="background: rgba(0,0,0,0.2); border-radius: 20px; padding: 25px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.03);">
+                    {% for item in order.items.all %}
+                    <div class="item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; background: rgba(196,77,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-weight: 900; font-size: 0.95rem;">{{ item.quantity }}x</div>
+                            <div class="item-name" style="font-weight: 600; color: #eee; font-size: 1rem;">{{ item.product.name }}</div>
+                        </div>
+                        <div class="item-price" style="font-weight: 800; color: #fff; font-size: 1.1rem;">₹{{ item.price }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="order-footer" style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <div style="flex: 1;">
+                        {% if order.discount > 0 %}
+                            <div style="background: rgba(34, 197, 94, 0.1); color: #4ade80; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; border: 1px solid rgba(34, 197, 94, 0.2);">
+                                <i class="fas fa-tag"></i> SAVED ₹{{ order.discount }} WITH {{ order.coupon.code }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="color: var(--muted); font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Final Amount</span>
+                        <div class="total-amount" style="font-size: 2.5rem; font-weight: 950; color: #fff; margin-top: 5px; line-height: 1;">₹{{ order.final_price }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-orders" style="text-align: center; padding: 100px 0; background: rgba(255,255,255,0.02); border: 2px dashed rgba(255,255,255,0.05); border-radius: 30px;">
+                <div style="font-size: 6rem; margin-bottom: 25px; filter: grayscale(1) opacity(0.2);">🛍️</div>
+                <h2 style="font-family: 'Poppins'; font-weight: 900; font-size: 2.5rem; color: #fff; margin-bottom: 15px;">NO ORDERS YET</h2>
+                <p style="color: var(--muted); margin-bottom: 40px; font-size: 1.1rem;">Looks like you haven't explored our premium store yet.</p>
+                <a href="{% url 'store' %}" class="btn-primary" style="display: inline-block; padding: 20px 50px; border-radius: 15px; font-weight: 800; letter-spacing: 1px;">START SHOPPING</a>
+            </div>
+        {% endif %}
+        </div>
+    {% else %}
+        <div class="no-orders" style="text-align: center; padding: 120px 0;">
+            <div style="font-size: 6rem; margin-bottom: 25px; filter: grayscale(1) opacity(0.2);">🔐</div>
+            <h2 style="font-family: 'Poppins'; font-weight: 900; font-size: 2.5rem; color: #fff; margin-bottom: 15px;">LOGIN REQUIRED</h2>
+            <p style="color: var(--muted); margin-bottom: 40px; font-size: 1.1rem;">Access your orders and delivery tracking by signing in.</p>
+            <a href="{% url 'login' %}" class="btn-primary" style="display: inline-block; padding: 20px 50px; border-radius: 15px; font-weight: 800; letter-spacing: 1px;">SIGN IN NOW</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
