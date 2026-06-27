@@ -23,9 +23,9 @@ def role_required(*required_roles):
                 messages.warning(request, '🔐 Please login first.')
                 return redirect('login')
 
-            # Specific Admin Rule: Only this email or username can ever have the 'admin' role
+            # Admin role: only superusers (set via ensure_admin management command) can access
             if 'admin' in required_roles:
-                if request.user.email != 'maheksavaliya3004@gmail.com' and request.user.username != 'MaHeK':
+                if not request.user.is_superuser:
                     messages.error(request, '⛔ You do not have permission to access the admin dashboard.')
                     return redirect('dashboard')
                 return view_func(request, *args, **kwargs)

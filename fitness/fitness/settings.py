@@ -176,6 +176,7 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_NAME = 'fitx_sessionid'  # Prevents collision with other local Django projects
 SESSION_COOKIE_AGE = 86400  # 24 hours
 SESSION_SAVE_EVERY_REQUEST = True   # Refresh session on every request to prevent expiry
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session alive after browser close

@@ -24,7 +24,7 @@
   <!-- Navbar -->
   {% block navbar %}
   <nav class="navbar" id="navbar">
-    <a href="{% if user.email == 'maheksavaliya3004@gmail.com' %}{% url 'admin_dashboard' %}{% else %}{% url 'home' %}{% endif %}" class="nav-brand">
+    <a href="{% if user.is_superuser %}{% url 'admin_dashboard' %}{% else %}{% url 'home' %}{% endif %}" class="nav-brand">
       <i class="fas fa-bolt logo-icon"></i>
       <span class="logo-text">Fit<span>X</span></span>
     </a>
@@ -72,7 +72,7 @@
             <i class="fas fa-trophy"></i>
         </a>
         
-        {% if user.email == 'maheksavaliya3004@gmail.com' %}
+        {% if user.is_superuser %}
           <a href="{% url 'admin_dashboard' %}" class="btn-primary" style="background:var(--purple); border-color:var(--purple); margin-right: 12px;">Admin Panel</a>
         {% else %}
           <a href="{% url 'dashboard' %}" class="btn-primary">Dashboard</a>
@@ -105,7 +105,7 @@
       <a href="{% url 'login' %}" style="color:#888;text-decoration:none;font-size:.9rem;font-weight:600;letter-spacing:1px;">LOGIN</a>
     {% endif %}
     {% if user.is_authenticated %}
-    {% if user.email == 'maheksavaliya3004@gmail.com' %}
+    {% if user.is_superuser %}
       <a href="{% url 'admin_dashboard' %}" style="color:var(--purple);text-decoration:none;font-size:.9rem;font-weight:600;letter-spacing:1px;">ADMIN PANEL</a>
     {% else %}
       <a href="{% url 'dashboard' %}" class="btn-primary" style="text-align:center;">DASHBOARD</a>

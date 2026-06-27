@@ -256,7 +256,7 @@ def verify_otp(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        if request.user.username == 'MaHeK':
+        if request.user.is_superuser:
             return redirect('admin_dashboard')
         return redirect('dashboard')
 
@@ -265,8 +265,8 @@ def login_view(request):
         password = request.POST.get('password', '')
         user = authenticate(request, username=username, password=password)
         if user:
-            # ✅ Specific Admin Rule: Only this username goes to the dashboard
-            if user.username == 'MaHeK':
+            # Superuser goes directly to admin dashboard (no OTP required)
+            if user.is_superuser:
                 login(request, user)
                 messages.success(request, f'Welcome back, Super Admin {user.username}! 🔐')
                 return redirect('admin_dashboard')

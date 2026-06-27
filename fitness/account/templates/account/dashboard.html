@@ -141,7 +141,7 @@
             <div id="view-dashboard" class="tab-view active">
                 
                 <!-- Welcome Section -->
-                <section class="welcome-section" data-aos="fade-down" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <section class="welcome-section" data-aos="fade-down" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
                     <div>
                         <h1>Welcome back, <span class="text-accent">{{ user.username }}</span> 👋</h1>
                         <p>Stay consistent and achieve your fitness goals. You are doing great!</p>
@@ -302,7 +302,7 @@
 
                 <!-- My Personalized Routine -->
                 <div id="routineSection" style="margin-bottom: 48px; background: rgba(255,255,255,0.02); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color);">
-                    <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 25px;">
+                    <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
                         <h2 class="section-title" style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0;">My Personalized <span class="text-accent">Routine</span></h2>
                         {% if routines %}
                         <a href="{% url 'generate_routine' %}" class="action-btn outline sm" style="text-decoration:none;"><i class="fas fa-sync-alt"></i> Regenerate</a>
