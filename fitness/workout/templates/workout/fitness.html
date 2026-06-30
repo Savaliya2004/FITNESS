@@ -1,13 +1,11 @@
 {% extends 'core/base.html' %}
 {% load static %}
-
 {% block title %}Fitness Training | FitX — Elevate Your Performance{% endblock %}
-
 {% block extra_css %}
 <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <link rel="stylesheet" href="{% static 'workout/css/fitness.css' %}">
 <style>
-    .hidden { display: none !important; }
+    .hidden { display: none !important;}
     /* Hero overlap fixes since we are using base layout */
     .fitness-hero { margin-top: -72px; padding-top: 150px; }
     [data-theme="light"] .fitness-nav { background: rgba(255,255,255,0.9); border-bottom-color: #eee; }
@@ -18,7 +16,7 @@
 
 {% block content %}
 <main>
-    <!-- 1. HERO SECTION -->
+    <!-- 1. HERO Section -->
     <section class="fitness-hero">
         <div class="hero-bg"></div>
         <div class="hero-content" data-aos="zoom-out">
@@ -32,7 +30,7 @@
         </div>
     </section>
 
-    <!-- 2. WORKOUT CATEGORIES NAV -->
+    <!-- 2. WORKOUT NAVBAR -->
     <div class="fitness-nav">
         <div class="nav-container" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
             <button class="sub-btn active" onclick="switchMainTab('strength', this)">Strength Training</button>
