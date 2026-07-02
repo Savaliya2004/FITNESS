@@ -22,6 +22,7 @@
 :root {
   --bg-primary:    #080b14;
   --bg-secondary:  #0d1117;
+  --bg-nav:        rgba(13,17,23,0.9);
   --bg-card:       rgba(13,17,23,0.85);
   --bg-glass:      rgba(255,255,255,0.03);
   --bg-glass-hover:rgba(255,255,255,0.06);
@@ -56,6 +57,25 @@
   --transition:    all 0.25s cubic-bezier(0.4,0,0.2,1);
   --shadow-card:   0 4px 24px rgba(0,0,0,0.4);
   --shadow-glow:   0 0 30px var(--purple-glow);
+}
+
+/* ── Light Theme Overrides ── */
+[data-theme='light'] {
+  --bg-primary:    #f8fafc;
+  --bg-secondary:  #ffffff;
+  --bg-nav:        rgba(255,255,255,0.9);
+  --bg-card:       #ffffff;
+  --bg-glass:      rgba(0,0,0,0.03);
+  --bg-glass-hover:rgba(0,0,0,0.06);
+  --border:        #e2e8f0;
+  --border-hover:  #cbd5e1;
+
+  --text-primary:  #0f172a;
+  --text-secondary:#64748b;
+  --text-muted:    #94a3b8;
+  
+  --shadow-card:   0 4px 20px rgba(0,0,0,0.05);
+  --shadow-glow:   0 0 20px rgba(124,58,237,0.1);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -314,7 +334,7 @@ input, select, textarea { font-family: inherit; }
 ═══════════════════════════════════════════════════════════════ */
 .topnav {
   height: var(--nav-h);
-  background: rgba(13,17,23,0.9);
+  background: var(--bg-nav);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -1130,6 +1150,16 @@ input, select, textarea { font-family: inherit; }
   .topnav-search { display: none; }
   .charts-grid { grid-template-columns: 1fr; }
 }
+@media (max-width: 560px) {
+  .profile-name { display: none; }
+  .topnav-title > span { display: none; }
+  .topnav { padding: 0 10px; gap: 8px; }
+  .nav-action-btn[title="Messages"], 
+  .nav-action-btn[title="Django Admin Panel"] { display: none; }
+  .page-content { padding: 16px 12px 40px; }
+  .kpi-grid { min-width: 0; gap: 12px; }
+  .kpi-card { min-width: 0; padding: 18px 16px 14px; }
+}
 
 /* Mobile sidebar overlay */
 .mobile-overlay {
@@ -1315,6 +1345,11 @@ input, select, textarea { font-family: inherit; }
     </div>
 
     <div class="topnav-actions">
+      <!-- Theme Toggle -->
+      <div class="nav-action-btn" id="themeToggleBtn" onclick="toggleAdminTheme()" title="Toggle Theme">
+        <span id="themeIcon">☀️</span>
+      </div>
+
       <!-- Notifications -->
       <div class="nav-action-btn" title="Notifications">
         🔔
@@ -1650,7 +1685,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">Track all financial transactions and membership revenue.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="kpi-grid">
         <div class="kpi-card kpi-emerald">
           <div class="kpi-card-header"><div class="kpi-icon">💵</div><div class="kpi-trend trend-up">↑ Total</div></div>
           <div class="kpi-value">₹{{ total_revenue|floatformat:0 }}</div>
@@ -1880,7 +1915,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">Manage all class bookings and trainer sessions.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:28px;">
+      <div class="kpi-grid" style="margin-bottom:28px;">
         <div class="kpi-card kpi-blue">
           <div class="kpi-card-header"><div class="kpi-icon">📅</div></div>
           <div class="kpi-value">{{ total_bookings }}</div>
@@ -1940,7 +1975,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">Monitor all nutrition plans and meal data.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);max-width:600px;margin-bottom:28px;">
+      <div class="kpi-grid" style="max-width:600px;margin-bottom:28px;">
         <div class="kpi-card kpi-emerald">
           <div class="kpi-card-header"><div class="kpi-icon">🥗</div></div>
           <div class="kpi-value">{{ total_meal_plans }}</div>
@@ -2065,7 +2100,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">Monitor and moderate all user-generated community content.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:28px;">
+      <div class="kpi-grid" style="margin-bottom:28px;">
         <div class="kpi-card kpi-blue">
           <div class="kpi-card-header"><div class="kpi-icon">📣</div></div>
           <div class="kpi-value">{{ total_posts }}</div>
@@ -2138,7 +2173,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">Manage all articles, drafts, and published content.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:28px;">
+      <div class="kpi-grid" style="margin-bottom:28px;">
         <div class="kpi-card kpi-emerald">
           <div class="kpi-card-header"><div class="kpi-icon">📝</div></div>
           <div class="kpi-value">{{ total_blogs }}</div>
@@ -2205,7 +2240,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">Monitor all fitness challenges and participant engagement.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:28px;">
+      <div class="kpi-grid" style="margin-bottom:28px;">
         <div class="kpi-card kpi-rose">
           <div class="kpi-card-header"><div class="kpi-icon">🏆</div></div>
           <div class="kpi-value">{{ total_challenges }}</div>
@@ -2268,7 +2303,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">Manage all incoming contact requests and support messages.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:28px;">
+      <div class="kpi-grid" style="margin-bottom:28px;">
         <div class="kpi-card kpi-cyan">
           <div class="kpi-card-header"><div class="kpi-icon">✉️</div></div>
           <div class="kpi-value">{{ total_contacts }}</div>
@@ -2330,7 +2365,7 @@ input, select, textarea { font-family: inherit; }
         <p class="section-subtitle">View and manage all customer orders placed in the FitX store.</p>
       </div>
 
-      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:28px;">
+      <div class="kpi-grid" style="margin-bottom:28px;">
         <div class="kpi-card kpi-amber">
           <div class="kpi-card-header"><div class="kpi-icon">📦</div><div class="kpi-trend trend-neutral">All</div></div>
           <div class="kpi-value">{{ total_store_orders }}</div>
@@ -3212,6 +3247,35 @@ function openChallengeModal(id, title, desc, start, end, diff, status) {
 </div>
 
 <script>
+// Theme Initialization
+const savedTheme = localStorage.getItem('fitx_theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) {
+        themeIcon.innerText = savedTheme === 'dark' ? '☀️' : '🌙';
+    }
+});
+
+function toggleAdminTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('fitx_theme', newTheme);
+    
+    const themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) {
+        themeIcon.innerText = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+    
+    // Refresh charts if needed to update colors
+    if(window.Chart) {
+        // Option to fully refresh charts here
+    }
+}
+
 function openAssignModal(userId, username) {
   document.getElementById('assignModalTitle').innerText = 'Assign Plans to ' + username;
   document.getElementById('assignExerciseForm').action = '/accounts/admin-panel/user/' + userId + '/assign-exercise/';

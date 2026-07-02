@@ -84,7 +84,7 @@
     {% for story in stories_list %}
     <a href="{% url 'story_detail' %}?id={{ story.id }}" class="story-card" data-aos="fade-up">
         <div class="story-thumb-wrap">
-            <img src="{% if story.image %}{{ story.image.url }}{% else %}{{ story.image_url }}{% endif %}" alt="{{ story.name }}" class="story-thumb">
+            <img src="{% if story.image %}{{ story.image.url }}{% else %}{{ story.image_url }}{% endif %}" alt="{{ story.name }}" class="story-thumb" loading="lazy">
             <div style="position:absolute; bottom:15px; left:15px;" class="story-res">
                 <i class="fas {% if story.is_gain %}fa-arrow-up{% else %}fa-arrow-down{% endif %}"></i> {{ story.result_stat }}
             </div>

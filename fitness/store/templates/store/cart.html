@@ -85,7 +85,7 @@
         <div class="cart-list" id="cartItemsList" data-aos="fade-right">
             {% for item in items %}
             <div class="cart-item" id="item-{{ item.product.id }}">
-                <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}https://images.unsplash.com/photo-1541534741688-6078c65b5a33?w=500&q=80{% endif %}" class="c-item-img">
+                <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}https://images.unsplash.com/photo-1541534741688-6078c65b5a33?w=500&q=80{% endif %}" class="c-item-img" loading="lazy" alt="Image">
                 <div class="c-item-info">
                     <div class="c-item-name">{{ item.product.name }}</div>
                     <div class="c-item-price">

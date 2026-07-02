@@ -240,7 +240,7 @@
             data.forEach((ex, index) => {
                 html += `
                 <div class="ex-box" data-aos="fade-up" data-aos-delay="${index * 50}">
-                    <div class="ex-img-wrap" onclick="openExerciseDetail('${cat}', '${type}', '${ex.id}')" style="cursor:pointer;"><img src="${ex.img}" alt="${ex.name}"></div>
+                    <div class="ex-img-wrap" onclick="openExerciseDetail('${cat}', '${type}', '${ex.id}')" style="cursor:pointer;"><img src="${ex.img}" alt="${ex.name}" loading="lazy"></div>
                     <div class="ex-content">
                         <div class="ex-name">${ex.name}</div>
                         <div class="ex-short-desc">${ex.steps[0] ? ex.steps[0].substring(0, 60) + '...' : ''}</div>

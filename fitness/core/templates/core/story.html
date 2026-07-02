@@ -7,7 +7,7 @@
 <style>
     .story-hero {
         padding: 140px 5% 60px;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.7), var(--bg-dark)), url('{{ story.image_url|default:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80" }}');
+        background: linear-gradient(to bottom, rgba(0,0,0,0.7), var(--bg)), url('{{ story.image_url|default:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80" }}');
         background-size: cover;
         background-position: center;
         text-align: center;
@@ -23,10 +23,10 @@
     .comp-card {
         flex: 1;
         max-width: 500px;
-        background: var(--card-bg);
+        background: var(--card);
         border-radius: 24px;
         overflow: hidden;
-        border: 1px solid var(--border);
+        border: 1px solid var(--glass-border);
         box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
     .comp-card img {
@@ -47,10 +47,10 @@
         padding: 0 5% 100px;
     }
     .story-card {
-        background: var(--card-bg);
+        background: var(--card);
         padding: 50px;
         border-radius: 30px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--glass-border);
     }
     .story-card h1 {
         font-size: 3rem;
@@ -68,7 +68,7 @@
     .story-text {
         font-size: 1.15rem;
         line-height: 1.8;
-        color: var(--text-muted);
+        color: var(--muted);
     }
     .timeline {
         margin-top: 50px;
@@ -123,11 +123,11 @@
 <div class="comp-container">
     <div class="comp-card">
         <div class="comp-label">BEFORE</div>
-        <img src="{% if story.before_image %}{{ story.before_image.url }}{% else %}{{ story.image_url|default:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80' }}{% endif %}" alt="Before">
+        <img src="{% if story.before_image %}{{ story.before_image.url }}{% else %}{{ story.image_url|default:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80' }}{% endif %}" alt="Before" loading="lazy">
     </div>
     <div class="comp-card">
         <div class="comp-label">AFTER</div>
-        <img src="{% if story.after_image %}{{ story.after_image.url }}{% else %}{{ story.image_url|default:'https://images.unsplash.com/photo-1549476464-37392f717541?w=600&q=80' }}{% endif %}" alt="After">
+        <img src="{% if story.after_image %}{{ story.after_image.url }}{% else %}{{ story.image_url|default:'https://images.unsplash.com/photo-1549476464-37392f717541?w=600&q=80' }}{% endif %}" alt="After" loading="lazy">
     </div>
 </div>
 

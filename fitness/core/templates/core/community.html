@@ -30,7 +30,7 @@
         <form action="{% url 'create_post' %}" method="post">
             {% csrf_token %}
             <div style="display: flex; gap: 15px;">
-                <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" alt="Avatar">
+                <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" alt="Avatar" loading="lazy">
                 <div style="flex-grow: 1;">
                     <textarea name="content" rows="3" placeholder="Share your fitness progress or ask a question..." required style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; padding: 15px; resize: none; margin-bottom: 10px;"></textarea>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -53,7 +53,7 @@
           {% for post in posts %}
           <div class="glass-card post-card" data-aos="fade-up">
             <div class="post-header">
-              <img src="{% if post.author.profile_image %}{{ post.author.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" alt="User">
+              <img src="{% if post.author.profile_image %}{{ post.author.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" alt="User" loading="lazy">
               <div>
                 <div class="post-user">
                     {{ post.author.get_full_name|default:post.author.username }}
@@ -72,7 +72,7 @@
             <div class="post-text">{{ post.content|linebreaksbr }}</div>
             
             {% if post.image %}
-                <img src="{{ post.image.url }}" class="post-img" alt="Workout photo">
+                <img src="{{ post.image.url }}" class="post-img" alt="Workout photo" loading="lazy">
             {% endif %}
             
             <div class="post-actions">
@@ -126,7 +126,7 @@
             {% for top_user in top_users %}
             <div class="leader-row" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
               <div class="leader-rank" style="font-weight: bold; color: var(--accent); width: 20px;">{{ forloop.counter }}</div>
-              <img src="{% if top_user.profile_image %}{{ top_user.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" style="width:36px;height:36px;" alt="Avatar">
+              <img src="{% if top_user.profile_image %}{{ top_user.profile_image.url }}{% else %}{% static 'core/images/default_avatar.png' %}{% endif %}" class="post-avatar" style="width:36px;height:36px;" alt="Avatar" loading="lazy">
               <div class="leader-info" style="flex-grow: 1;">
                   <div class="leader-name" style="font-size: 0.9rem; color: white;">{{ top_user.username }}</div>
                   <div class="leader-pts" style="font-size: 0.75rem; color: var(--accent);">Level {{ top_user.level }} • {{ top_user.xp_points }} XP</div>

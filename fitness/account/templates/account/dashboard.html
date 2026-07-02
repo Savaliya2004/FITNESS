@@ -18,7 +18,12 @@
     <link rel="stylesheet" href="{% static 'account/css/dashboard.css' %}">
     <script>
         (function() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            // Migration for old 'theme' key
+            let savedTheme = localStorage.getItem('fitx_theme');
+            if (!savedTheme) {
+                savedTheme = localStorage.getItem('theme') || 'dark';
+                localStorage.setItem('fitx_theme', savedTheme);
+            }
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
 
@@ -26,7 +31,7 @@
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            localStorage.setItem('fitx_theme', newTheme);
             
             // Update Toggle Icon
             const icon = document.querySelector('.theme-toggle-btn i');
@@ -116,7 +121,7 @@
                 
                 <div class="user-dropdown">
                     <div class="profile-trigger" id="profileTrigger">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="User Avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="User Avatar" loading="lazy">
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="dropdownMenu">
@@ -209,7 +214,7 @@
                 <!-- User Progress Section -->
                 <section class="progress-section" style="margin-bottom: 40px;" data-aos="fade-up">
                     <h2 class="section-title">Goals & Progress</h2>
-                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                    <div class="stats-grid">
                         <div class="chart-card">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                 <span style="font-weight: 600;">Daily Calorie Activity</span>
@@ -309,7 +314,7 @@
                         {% endif %}
                     </div>
                     
-                    <div id="routineList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:25px;width:100%;">
+                    <div id="routineList" class="workout-grid">
                         {% for r in routines %}
                         <div style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:16px;overflow:hidden;transition:all 0.3s; position:relative;" onmouseover="this.style.transform='translateY(-5px)';this.style.borderColor='var(--accent)'" onmouseout="this.style.transform='translateY(0)';this.style.borderColor='var(--border-color)'">
                             <!-- Remove Button -->
@@ -318,7 +323,7 @@
                             </a>
 
                             <div style="height:140px;overflow:hidden;position:relative;">
-                                <img src="{{ r.exercise.image_url }}" alt="{{ r.exercise.name }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                <img src="{{ r.exercise.image_url }}" alt="{{ r.exercise.name }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" loading="lazy">
                                 <div style="position:absolute;bottom:0;left:0;width:100%;background:linear-gradient(transparent, rgba(0,0,0,0.8));padding:10px 16px;">
                                     <span style="font-size:0.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">{{ r.exercise.difficulty }}</span>
                                 </div>
@@ -626,7 +631,7 @@
                         <div class="profile-header-card">
                             <div class="profile-main">
                                 {% if user.profile_image %}
-                                <img src="{{ user.profile_image.url }}" alt="Profile Picture" class="profile-big-img" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--border-color); object-fit: cover; background: white;">
+                                <img src="{{ user.profile_image.url }}" alt="Profile Picture" class="profile-big-img" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--border-color); object-fit: cover; background: white;" loading="lazy">
                                 {% else %}
                                 <div style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--border-color); background: var(--card-hover); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--accent);">
                                     <i class="fas fa-user-circle"></i>
@@ -795,6 +800,7 @@
 
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('active');
+            document.body.classList.toggle('sidebar-open');
             if(window.innerWidth > 992) {
                 sidebar.classList.toggle('collapsed');
                 mainWrapper.classList.toggle('expanded');
@@ -844,6 +850,7 @@
             // Close sidebar on mobile after click
             if(window.innerWidth <= 992) {
                 sidebar.classList.remove('active');
+                document.body.classList.remove('sidebar-open');
             }
 
             // Re-init charts if on progress tab
@@ -1059,8 +1066,20 @@
                 icon.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
             }
 
+            // Sidebar outside click
+            if(sidebar && menuToggle) {
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 992 && sidebar.classList.contains('active')) {
+                        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                            sidebar.classList.remove('active');
+                            document.body.classList.remove('sidebar-open');
+                        }
+                    }
+                });
+            }
+
             // Auto collapse sidebar on mobile
-            if(window.innerWidth <= 992) {
+            if(window.innerWidth <= 992 && sidebar) {
                 sidebar.classList.remove('active');
             }
         });

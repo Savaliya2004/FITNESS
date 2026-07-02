@@ -19,7 +19,7 @@
             <p>Scientifically designed programs for every fitness level — beginner to elite.</p>
         </div>
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80" alt="Workout">
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80" alt="Workout" loading="lazy">
             <div class="float-badge">
                 <i class="fas fa-bolt"></i>
                 <span>50+ Programs</span>
@@ -48,7 +48,7 @@
                 {% for workout in workouts %}
                 <div class="program-card" data-category="{{ workout.category }}">
                     <div class="program-image-wrap">
-                        <img src="{% if workout.image %}{{ workout.image.url }}{% else %}https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80{% endif %}" alt="{{ workout.title }}">
+                        <img src="{% if workout.image %}{{ workout.image.url }}{% else %}https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80{% endif %}" alt="{{ workout.title }}" loading="lazy">
                         <div class="program-overlay"></div>
                         <span class="prog-badge badge-{{ workout.category }}">{{ workout.get_category_display }}</span>
                         <div class="prog-rating"><i class="fas fa-star"></i> {{ workout.trainer.rating|default:"4.9" }}</div>
@@ -62,7 +62,7 @@
                         <p>{{ workout.description|truncatewords:25 }}</p>
                         {% if workout.trainer %}
                         <div class="trainer-info">
-                            <img src="{% if workout.trainer.profile_image %}{{ workout.trainer.profile_image.url }}{% else %}https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=100&q=80{% endif %}" alt="{{ workout.trainer.name }}">
+                            <img src="{% if workout.trainer.profile_image %}{{ workout.trainer.profile_image.url }}{% else %}https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=100&q=80{% endif %}" alt="{{ workout.trainer.name }}" loading="lazy">
                             <div>
                                 <span class="trainer-name">{{ workout.trainer.name }}</span>
                                 <span class="trainer-role">{{ workout.trainer.specialty }}</span>

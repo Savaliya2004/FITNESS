@@ -166,7 +166,7 @@
   <style>
     .membership-sec { 
       padding: 80px 5%; 
-      background: linear-gradient(to right, rgba(9, 11, 16, 0.95), rgba(9, 11, 16, 0.8)), url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1920&auto=format&fit=crop');
+      background: linear-gradient(to right, rgba(9, 11, 16, 0.95), rgba(9, 11, 16, 0.8)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1920&auto=format&fit=crop');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -183,8 +183,8 @@
       gap: 24px;
     }
     .membership-card { 
-      background: rgba(255,255,255,0.03); 
-      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05); 
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 20px; 
       padding: 40px 30px; 
       display: flex; 
@@ -232,7 +232,7 @@
       box-sizing: border-box;
     }
     .plan-cta:hover { background: rgba(255,255,255,0.15); }
-    .membership-card.featured .plan-cta { background: linear-gradient(135deg,#8364ff,#f742b7); border: none; }
+    .membership-card.featured .plan-cta { background: linear-gradient(135deg,#8364ff,#f742b7); border: none; color: #fff; }
     .membership-card.featured .plan-cta:hover { opacity: 0.9; box-shadow: 0 5px 15px rgba(131,100,255,0.3); }
     .plan-cta:disabled { opacity:.6; cursor:not-allowed; }
     
@@ -242,6 +242,56 @@
       .membership-grid { grid-template-columns: 1fr; }
       .membership-sec { padding: 60px 20px; }
       .membership-card.featured { transform: scale(1); }
+    }
+
+    /* ── Light Theme Overrides ─────────────────── */
+    [data-theme="light"] .membership-sec {
+      background: linear-gradient(to right, rgba(240, 242, 248, 0.97), rgba(248, 249, 255, 0.95)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1920&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      border-top: 1px solid rgba(0,0,0,0.07);
+    }
+    [data-theme="light"] .membership-head h2 { color: #0f172a; }
+    [data-theme="light"] .membership-head p { color: #64748b; }
+    [data-theme="light"] .membership-card {
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.09);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    [data-theme="light"] .membership-card.featured {
+      border-color: #8364ff;
+      box-shadow: 0 8px 40px rgba(131,100,255,0.18);
+    }
+    [data-theme="light"] .plan-title { color: #0f172a; }
+    [data-theme="light"] .plan-subtitle { color: #64748b; }
+    [data-theme="light"] .plan-price { color: #0f172a; }
+    [data-theme="light"] .plan-period { color: #64748b; }
+    [data-theme="light"] .plan-save { color: #64748b; }
+    [data-theme="light"] .plan-divider { border-top-color: rgba(0,0,0,0.08); }
+    [data-theme="light"] .plan-item { color: #334155; }
+    [data-theme="light"] .plan-cta {
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      color: #0f172a;
+    }
+    [data-theme="light"] .plan-cta:hover {
+      background: #e2e8f0;
+      border-color: #8364ff;
+      color: #8364ff;
+    }
+    [data-theme="light"] .membership-card.featured .plan-cta {
+      background: linear-gradient(135deg,#8364ff,#f742b7);
+      border: none;
+      color: #fff;
+    }
+    [data-theme="light"] .current-badge {
+      background: rgba(34,197,94,0.1);
+      color: #16a34a;
+      border-color: rgba(34,197,94,0.25);
+    }
+    [data-theme="light"] .membership-card > div[style*="border-top"] {
+      border-top-color: rgba(0,0,0,0.07) !important;
     }
   </style>
 
@@ -315,7 +365,7 @@
         </div>
         <p class="testi-text">"{{ testi.content }}"</p>
         <div class="testi-author">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="{{ testi.user.username }}" class="testi-avatar">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="{{ testi.user.username }}" class="testi-avatar" loading="lazy">
           <div>
             <div class="testi-name">{{ testi.user.username }}</div>
             <div class="testi-role">Verified Member</div>
@@ -337,7 +387,7 @@
         </div>
         <p class="testi-text">"{{ testi.text }}"</p>
         <div class="testi-author">
-          <img src="{{ testi.avatar }}" alt="{{ testi.name }}" class="testi-avatar">
+          <img src="{{ testi.avatar }}" alt="{{ testi.name }}" class="testi-avatar" loading="lazy">
           <div>
             <div class="testi-name">{{ testi.name }}</div>
             <div class="testi-role">{{ testi.role }}</div>

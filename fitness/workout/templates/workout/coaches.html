@@ -34,7 +34,7 @@
                 {% for trainer in trainers %}
                 <div class="trainer-card">
                     <div class="trainer-img-wrap">
-                        <img src="{% if trainer.profile_image %}{{ trainer.profile_image.url }}{% else %}https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=500&q=80{% endif %}" alt="{{ trainer.name }}">
+                        <img src="{% if trainer.profile_image %}{{ trainer.profile_image.url }}{% else %}https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=500&q=80{% endif %}" alt="{{ trainer.name }}" loading="lazy">
                         <div class="trainer-overlay">
                             <div class="trainer-socials">
                                 <a href="#"><i class="fab fa-instagram"></i></a>
@@ -88,7 +88,7 @@
                     <a href="{% url 'contact' %}" class="btn-primary-lg">Apply to Train <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="become-visual">
-                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Trainer">
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Trainer" loading="lazy">
                 </div>
             </div>
         </div>

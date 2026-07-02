@@ -5,371 +5,667 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'store/css/store.css' %}">
-<style>
-    /* Premium Dropdown Styles */
-    .store-nav {
-        position: sticky;
-        top: 72px;
-        z-index: 1000;
-        background: rgba(10, 10, 15, 0.95);
-        backdrop-filter: blur(15px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        padding: 0 5%;
-    }
-
-    .dropdown-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-        min-height: 60px;
-        padding: 10px 0;
-        align-items: center;
-    }
-
-    .category-item {
-        position: relative;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .category-link {
-        color: #888;
-        text-decoration: none;
-        font-size: 0.82rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: 0.3s;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .category-item:hover .category-link,
-    .category-item.active .category-link {
-        color: var(--accent);
-    }
-
-    .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(10px);
-        background: #111;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        padding: 15px;
-        min-width: 220px;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 5px;
-    }
-
-    .category-item:hover .dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0);
-    }
-
-    .dropdown-item {
-        padding: 10px 15px;
-        color: #ccc;
-        text-decoration: none;
-        font-size: 0.82rem;
-        border-radius: 8px;
-        transition: 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .dropdown-item:hover {
-        background: rgba(255, 255, 255, 0.05);
-        color: var(--accent);
-        transform: translateX(5px);
-    }
-
-    .store-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    /* Section Styles */
-    .store-section {
-        padding: 60px 5%;
-    }
-
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-    }
-
-    .section-title {
-        font-size: 1.8rem;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .view-all {
-        color: var(--accent);
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 25px;
-    }
-
-    /* Product Card Enhancements */
-    .prod-card {
-        background: rgba(255,255,255,0.03);
-        border-radius: 20px;
-        overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.05);
-        transition: 0.4s;
-        position: relative;
-    }
-
-    .prod-card:hover {
-        transform: translateY(-10px);
-        border-color: var(--accent);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-    }
-
-    .prod-img-box {
-        height: 280px;
-        position: relative;
-        background: #000;
-    }
-
-    .prod-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: 0.6s;
-    }
-
-    .prod-card:hover .prod-img {
-        transform: scale(1.1);
-    }
-
-    .prod-info {
-        padding: 20px;
-    }
-
-    .prod-name {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #fff;
-    }
-
-    .prod-price-flex {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 15px;
-    }
-
-    .current-price {
-        font-size: 1.3rem;
-        font-weight: 800;
-        color: var(--accent);
-    }
-
-    .old-price {
-        font-size: 0.9rem;
-        color: #666;
-        text-decoration: line-through;
-    }
-
-    .add-cart-btn {
-        width: 100%;
-        padding: 12px;
-        background: var(--accent);
-        border: none;
-        border-radius: 12px;
-        color: #fff;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .add-cart-btn:hover {
-        background: var(--accent2);
-        transform: translateY(-2px);
-    }
-
-    .rating-stars {
-        color: #facc15;
-        font-size: 0.85rem;
-        margin-bottom: 10px;
-    }
-
-    .badge-top {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.7rem;
-        font-weight: 800;
-        z-index: 10;
-        text-transform: uppercase;
-    }
-
-    .badge-trending { background: var(--accent); color: #fff; }
-    .badge-sale { background: #ef4444; color: #fff; }
-</style>
 {% endblock %}
 
 {% block content %}
-<nav class="store-nav">
-    <div class="dropdown-container">
-
-        <a href="?category=men" class="category-link {% if current_cat == 'men' %}active{% endif %}">Men</a>
-        <a href="?category=women" class="category-link {% if current_cat == 'women' %}active{% endif %}">Women</a>
-        <a href="?category=equipment" class="category-link {% if current_cat == 'equipment' %}active{% endif %}">Equipment</a>
-        <a href="?category=supplements" class="category-link {% if current_cat == 'supplements' %}active{% endif %}">Supplements</a>
-        <a href="?category=yoga" class="category-link {% if current_cat == 'yoga' %}active{% endif %}">Yoga</a>
-        <a href="?category=accessories" class="category-link {% if current_cat == 'accessories' %}active{% endif %}">Accessories</a>
-        
-        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center;">
-            {% if user.is_authenticated %}
-            <a href="{% url 'my_orders' %}" class="category-link" style="display:flex; align-items:center; gap:8px;">
-                <i class="fas fa-box"></i> ORDERS
-            </a>
-            {% endif %}
-            <a href="{% url 'cart' %}" class="category-link" style="color: var(--accent); font-weight: 700; display:flex; align-items:center; gap:8px;">
-                <i class="fas fa-shopping-cart"></i> CART
-                <span class="cart-count" style="background: var(--accent); color:#fff; font-size:0.65rem; font-weight:800; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%;">{{ cart_count|default:0 }}</span>
-            </a>
-        </div>
+<!-- Store Hero Section -->
+<section class="store-hero">
+    <div class="hero-eyebrow"><i class="fas fa-sparkles"></i> NEW COLLECTION</div>
+    <h1>Premium <span>Fitness</span> Gear</h1>
+    <p>Engineered for athletes, designed for life. Explore our elite collection of fitness equipment, apparel, and supplements.</p>
+    <div class="hero-cat-pills">
+        <a href="?category=men" class="hero-pill {% if current_cat == 'men' %}active{% endif %}">Men</a>
+        <a href="?category=women" class="hero-pill {% if current_cat == 'women' %}active{% endif %}">Women</a>
+        <a href="?category=equipment" class="hero-pill {% if current_cat == 'equipment' %}active{% endif %}">Equipment</a>
+        <a href="?category=supplements" class="hero-pill {% if current_cat == 'supplements' %}active{% endif %}">Supplements</a>
     </div>
-</nav>
+</section>
 
-<div class="hero-mini" style="padding: 100px 5% 60px; text-align: center; background: radial-gradient(circle at center, rgba(196,77,255,0.08), transparent 70%);">
-    <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 20px;">UNLEASH <span class="text-gradient">POTENTIAL</span></h1>
-    <p style="color: var(--muted); max-width: 700px; margin: 0 auto; font-size: 1.1rem;">Engineered for athletes, designed for life. Explore our elite collection.</p>
+<!-- Sticky Toolbar -->
+<div class="store-toolbar" id="storeToolbar">
+    <button class="toolbar-filter-btn" onclick="toggleMobileFilter()">
+        <i class="fas fa-filter"></i> Filters
+        <span class="filter-dot" id="filterDot"></span>
+    </button>
+    
+    <div class="toolbar-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="storeSearch" placeholder="Search products...">
+    </div>
+    
+    <div class="toolbar-count">
+        Showing <strong id="productCount">{{ products|length }}</strong> results
+    </div>
+    
+    <div class="toolbar-right">
+        <select id="sortSelect">
+            <option value="featured">Featured</option>
+            <option value="newest">Newest Arrivals</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+        </select>
+        
+        <div class="view-toggle">
+            <button class="view-btn active" id="btnGrid" title="Grid View">
+                <i class="fas fa-th-large"></i>
+            </button>
+            <button class="view-btn" id="btnList" title="List View">
+                <i class="fas fa-list"></i>
+            </button>
+        </div>
+
+        <a href="{% url 'cart' %}" class="toolbar-cart-btn">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+            <span class="cart-count-badge cart-count">{{ request.session.cart|length|default:0 }}</span>
+        </a>
+
+        <a href="{% url 'my_orders' %}" class="toolbar-orders-btn">
+            <i class="fas fa-box-open"></i>
+            <span>My Orders</span>
+        </a>
+    </div>
 </div>
 
-{% if not current_cat and not current_sub %}
-    <!-- 1️⃣ Trending Products -->
-    <section class="store-section" data-aos="fade-up">
-        <div class="section-header">
-            <h2 class="section-title">🔥 Trending Products</h2>
-            <a href="#" class="view-all">View All</a>
+<!-- Layout: Sidebar + Grid -->
+<div class="store-layout">
+    
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar">
+        <div class="filter-top-row">
+            <h3>Filters</h3>
+            <button class="btn-clear-filters" id="btnClearFilters">Clear All</button>
         </div>
-        <div class="product-grid">
-            {% for p in trending %}
-                {% include 'store/includes/product_card.html' with p=p %}
-            {% empty %}
-                <p style="color: #666;">No trending products yet.</p>
-            {% endfor %}
+        
+        <!-- Categories -->
+        <div class="filter-group">
+            <div class="fg-title" onclick="this.parentElement.classList.toggle('collapsed')">
+                <span>Category</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fg-body">
+                {% for code, name in categories %}
+                <div class="f-option">
+                    <input type="checkbox" id="cat-{{ code }}" value="{{ code }}" class="cat-filter">
+                    <label for="cat-{{ code }}">
+                        <span>{{ name }}</span>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-    </section>
-
-    <!-- 2️⃣ Best Sellers -->
-    <section class="store-section" data-aos="fade-up">
-        <div class="section-header">
-            <h2 class="section-title">🏆 Best Sellers</h2>
-            <a href="{% url 'store' %}" class="view-all">View All</a>
+        
+        <!-- Price Range -->
+        <div class="filter-group">
+            <div class="fg-title" onclick="this.parentElement.classList.toggle('collapsed')">
+                <span>Price Range</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fg-body">
+                <div class="price-display-row">
+                    <span id="priceMinDisplay">₹0</span>
+                    <span id="priceMaxDisplay">₹10000+</span>
+                </div>
+                <div class="slider-wrap">
+                    <div class="slider-track-bg"></div>
+                    <div class="slider-track-fill" id="sliderFill" style="left:0%; width:100%;"></div>
+                    <input type="range" class="s-range" id="priceMaxSlider" min="0" max="10000" value="10000" step="100">
+                </div>
+                <div class="price-inputs-row">
+                    <div class="price-inp-wrap">
+                        <i class="fas fa-rupee-sign curr-sym"></i>
+                        <input type="number" id="priceMinInp" value="0" min="0">
+                    </div>
+                    <div class="price-inp-wrap">
+                        <i class="fas fa-rupee-sign curr-sym"></i>
+                        <input type="number" id="priceMaxInp" value="10000" min="0">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="product-grid">
-            {% for p in best_sellers %}
-                {% include 'store/includes/product_card.html' with p=p %}
-            {% empty %}
-                <p style="color: #666;">No best sellers yet.</p>
-            {% endfor %}
+        
+        <!-- Availability -->
+        <div class="filter-group">
+            <div class="fg-title" onclick="this.parentElement.classList.toggle('collapsed')">
+                <span>Availability</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fg-body">
+                <div class="avail-row">
+                    <span>In Stock Only</span>
+                    <div class="s-toggle" id="inStockToggle">
+                        <div class="s-toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
-
-    <!-- 3️⃣ Budget Friendly -->
-    <section class="store-section" data-aos="fade-up">
-        <div class="section-header">
-            <h2 class="section-title">💰 Budget Picks</h2>
-            <a href="#" class="view-all">View All</a>
+        
+        <!-- Rating -->
+        <div class="filter-group">
+            <div class="fg-title" onclick="this.parentElement.classList.toggle('collapsed')">
+                <span>Rating</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fg-body rating-opts">
+                <div class="rating-opt" data-rating="4">
+                    <div class="s-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                    <span>4.0 & Up</span>
+                </div>
+                <div class="rating-opt" data-rating="3">
+                    <div class="s-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                    <span>3.0 & Up</span>
+                </div>
+            </div>
         </div>
-        <div class="product-grid">
-            {% for p in budget_friendly %}
-                {% include 'store/includes/product_card.html' with p=p %}
-            {% empty %}
-                <p style="color: #666;">No budget picks available.</p>
-            {% endfor %}
+        
+    </aside>
+    
+    <!-- Products Area -->
+    <div class="product-area">
+        <div class="pa-header">
+            <h2 class="pa-title">All Products <span class="pa-subtitle" id="paCount">({{ products|length }} items)</span></h2>
         </div>
-    </section>
-{% else %}
-    <section class="store-section">
-        <div class="section-header">
-            <h2 class="section-title">
-                {% if current_sub %}{{ current_sub }}{% else %}{{ current_cat|capfirst }}{% endif %} 
-                <span style="color: #666; font-size: 1rem; font-weight: 500; margin-left: 10px;">({{ products.count }} items)</span>
-            </h2>
-            <a href="{% url 'store' %}" class="view-all">Back to Home</a>
+        
+        <div class="active-tags" id="activeFilterTags">
+            <!-- Populated by JS -->
         </div>
-        <div class="product-grid">
+        
+        <div class="products-grid" id="productsGrid">
             {% for p in products %}
                 {% include 'store/includes/product_card.html' with p=p %}
             {% empty %}
-                <div style="grid-column: 1/-1; text-align: center; padding: 100px; color: #666;">
-                    <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2;"></i>
-                    <p>No products found in this category.</p>
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <h3>No Products Found</h3>
+                    <p>We couldn't find any products matching your criteria.</p>
                 </div>
             {% endfor %}
+            <div id="noResultsState" class="empty-state hidden" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No Matches Found</h3>
+                <p>Try adjusting your filters or search term.</p>
+            </div>
         </div>
-    </section>
-{% endif %}
+        
+        <div class="load-more-section">
+            <button class="btn-load-more" id="btnLoadMore">
+                Load More <i class="fas fa-spinner fa-spin" style="display:none;" id="lmSpinner"></i>
+            </button>
+            <p class="load-prog-text">Showing <span id="visibleCount"></span> of <span id="totalMatchCount"></span></p>
+            <div class="prog-track">
+                <div class="prog-fill" id="loadProgFill" style="width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Filter Drawer -->
+<div class="filter-overlay" id="filterOverlay"></div>
+<div class="filter-drawer" id="filterDrawer">
+    <div class="drawer-hdr">
+        <h3>Filters</h3>
+        <button class="btn-close-drawer" id="btnCloseDrawer"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="mobileFilterContainer">
+        <!-- JS will populate -->
+        <p style="color:var(--s-muted); font-size:0.85rem; margin-bottom:15px; padding-top:10px;">For the best experience, use desktop. (Filters mirror desktop exactly).</p>
+    </div>
+    <button class="btn-apply-filter" id="btnApplyMobileFilter">Apply Filters</button>
+</div>
+
+<!-- Toast Notifications -->
+<div id="storeToast"></div>
+
+<!-- Quick View Modal -->
+<div class="qv-overlay" id="qvOverlay">
+    <div class="qv-modal" id="qvModal">
+        <button class="qv-close-btn" id="qvCloseBtn"><i class="fas fa-times"></i></button>
+        <div class="qv-img-pane">
+            <img src="" id="qvImg" alt="Product" loading="lazy">
+        </div>
+        <div class="qv-info-pane">
+            <div class="qv-cat" id="qvCat">Category</div>
+            <h2 class="qv-name" id="qvName">Product Name</h2>
+            <div class="qv-rating">
+                <div class="qv-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+            <div class="qv-price-row">
+                <span class="qv-price" id="qvPrice">₹0.00</span>
+                <span class="qv-old" id="qvOldPrice"></span>
+            </div>
+            <div class="qv-stock stock-in" id="qvStock"><i class="fas fa-check-circle"></i> In Stock</div>
+            <p class="qv-desc" id="qvDesc">Description...</p>
+            <div class="qv-actions">
+                <button class="btn-add-cart" id="qvAddCartBtn">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+                <button class="btn-buy-now" id="qvBuyNowBtn">
+                    <i class="fas fa-bolt"></i> Buy Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
+    // Configuration & State
+    const CONFIG = {
+        itemsPerPage: 12,
+        currentView: localStorage.getItem('storeView') || 'grid'
+    };
+    
+    let STATE = {
+        page: 1,
+        searchQuery: '',
+        category: [],
+        priceMin: 0,
+        priceMax: 10000,
+        inStock: false,
+        rating: 0,
+        sort: 'featured',
+        allCards: [],
+        filteredCards: []
+    };
+
+    // DOM Elements
+    const els = {
+        grid: document.getElementById('productsGrid'),
+        cards: Array.from(document.querySelectorAll('.s-prod-card')),
+        searchInput: document.getElementById('storeSearch'),
+        catFilters: document.querySelectorAll('.cat-filter'),
+        priceMinInp: document.getElementById('priceMinInp'),
+        priceMaxInp: document.getElementById('priceMaxInp'),
+        priceMaxSlider: document.getElementById('priceMaxSlider'),
+        priceMinDisplay: document.getElementById('priceMinDisplay'),
+        priceMaxDisplay: document.getElementById('priceMaxDisplay'),
+        sliderFill: document.getElementById('sliderFill'),
+        inStockToggle: document.getElementById('inStockToggle'),
+        ratingOpts: document.querySelectorAll('.rating-opt'),
+        sortSelect: document.getElementById('sortSelect'),
+        btnGrid: document.getElementById('btnGrid'),
+        btnList: document.getElementById('btnList'),
+        btnLoadMore: document.getElementById('btnLoadMore'),
+        lmSpinner: document.getElementById('lmSpinner'),
+        productCount: document.getElementById('productCount'),
+        paCount: document.getElementById('paCount'),
+        visibleCount: document.getElementById('visibleCount'),
+        totalMatchCount: document.getElementById('totalMatchCount'),
+        loadProgFill: document.getElementById('loadProgFill'),
+        noResultsState: document.getElementById('noResultsState'),
+        activeFilterTags: document.getElementById('activeFilterTags'),
+        filterDot: document.getElementById('filterDot'),
+        btnClearFilters: document.getElementById('btnClearFilters')
+    };
+
+    // Initialize
+    function initStore() {
+        STATE.allCards = els.cards;
+        
+        // Setup View
+        setGridView(CONFIG.currentView);
+        
+        // Setup Event Listeners
+        els.searchInput.addEventListener('input', (e) => { STATE.searchQuery = e.target.value.toLowerCase(); applyFilters(); });
+        els.catFilters.forEach(cb => cb.addEventListener('change', () => {
+            STATE.category = Array.from(els.catFilters).filter(c => c.checked).map(c => c.value);
+            applyFilters();
+        }));
+        els.priceMaxSlider.addEventListener('input', syncPriceSlider);
+        els.priceMaxInp.addEventListener('change', syncPriceInput);
+        els.priceMinInp.addEventListener('change', syncPriceInput);
+        
+        els.inStockToggle.addEventListener('click', () => {
+            els.inStockToggle.classList.toggle('on');
+            STATE.inStock = els.inStockToggle.classList.contains('on');
+            applyFilters();
+        });
+        
+        els.ratingOpts.forEach(opt => {
+            opt.addEventListener('click', () => {
+                if(opt.classList.contains('active')) {
+                    opt.classList.remove('active');
+                    STATE.rating = 0;
+                } else {
+                    els.ratingOpts.forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    STATE.rating = parseFloat(opt.dataset.rating);
+                }
+                applyFilters();
+            });
+        });
+        
+        els.sortSelect.addEventListener('change', (e) => {
+            STATE.sort = e.target.value;
+            applyFilters();
+        });
+        
+        els.btnGrid.addEventListener('click', () => setGridView('grid'));
+        els.btnList.addEventListener('click', () => setGridView('list'));
+        els.btnLoadMore.addEventListener('click', loadMore);
+        els.btnClearFilters.addEventListener('click', clearFilters);
+        
+        // Mobile Drawer listeners
+        document.getElementById('btnCloseDrawer').addEventListener('click', toggleMobileFilter);
+        document.getElementById('btnApplyMobileFilter').addEventListener('click', toggleMobileFilter);
+        document.getElementById('filterOverlay').addEventListener('click', toggleMobileFilter);
+        
+        // Quick view close listeners
+        document.getElementById('qvCloseBtn').addEventListener('click', closeQuickView);
+        document.getElementById('qvOverlay').addEventListener('click', (e) => {
+            if(e.target === document.getElementById('qvOverlay')) closeQuickView();
+        });
+
+        // Pre-select category from URL if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const catParam = urlParams.get('category');
+        if (catParam) {
+            const cb = document.getElementById(`cat-${catParam}`);
+            if (cb) { cb.checked = true; STATE.category = [catParam]; }
+        }
+        
+        // Initial Apply
+        applyFilters();
+    }
+
+    // View Toggle
+    function setGridView(view) {
+        CONFIG.currentView = view;
+        localStorage.setItem('storeView', view);
+        if(view === 'list') {
+            els.grid.classList.add('list-view');
+            els.btnList.classList.add('active');
+            els.btnGrid.classList.remove('active');
+        } else {
+            els.grid.classList.remove('list-view');
+            els.btnGrid.classList.add('active');
+            els.btnList.classList.remove('active');
+        }
+    }
+
+    // Price Sync
+    function syncPriceSlider() {
+        let max = parseInt(els.priceMaxSlider.value);
+        els.priceMaxInp.value = max;
+        updatePriceState(0, max);
+    }
+    
+    function syncPriceInput() {
+        let min = parseInt(els.priceMinInp.value) || 0;
+        let max = parseInt(els.priceMaxInp.value) || 10000;
+        if(min > max) { let temp = min; min = max; max = temp; }
+        els.priceMaxSlider.value = max;
+        updatePriceState(min, max);
+    }
+    
+    function updatePriceState(min, max) {
+        STATE.priceMin = min;
+        STATE.priceMax = max;
+        els.priceMinDisplay.innerText = `₹${min}`;
+        els.priceMaxDisplay.innerText = max >= 10000 ? `₹10000+` : `₹${max}`;
+        let percent = (max / 10000) * 100;
+        els.sliderFill.style.width = `${percent}%`;
+        applyFilters();
+    }
+
+    // Filtering Logic
+    function applyFilters() {
+        STATE.page = 1;
+        
+        STATE.filteredCards = STATE.allCards.filter(card => {
+            // Data
+            const cat = card.dataset.category;
+            const price = parseFloat(card.dataset.price);
+            const rating = parseFloat(card.dataset.rating);
+            const stock = parseInt(card.dataset.stock);
+            const name = card.dataset.name;
+            
+            // Search
+            if(STATE.searchQuery && !name.includes(STATE.searchQuery)) return false;
+            
+            // Category
+            if(STATE.category.length > 0) {
+                if(!STATE.category.includes(cat)) return false;
+            }
+            
+            // Price
+            if(price < STATE.priceMin || price > STATE.priceMax) return false;
+            
+            // Availability
+            if(STATE.inStock && stock <= 0) return false;
+            
+            // Rating
+            if(STATE.rating > 0 && rating < STATE.rating) return false;
+            
+            return true;
+        });
+        
+        // Sorting
+        sortCards(STATE.filteredCards, STATE.sort);
+        
+        // UI Updates
+        updateTags();
+        renderProducts();
+    }
+
+    function sortCards(cards, sortType) {
+        cards.sort((a, b) => {
+            const pa = parseFloat(a.dataset.price);
+            const pb = parseFloat(b.dataset.price);
+            const ra = parseFloat(a.dataset.rating);
+            const rb = parseFloat(b.dataset.rating);
+            
+            switch(sortType) {
+                case 'price-low': return pa - pb;
+                case 'price-high': return pb - pa;
+                case 'rating': return rb - ra;
+                case 'newest': return parseInt(b.dataset.id) - parseInt(a.dataset.id);
+                default: return 0; // featured uses original order mostly
+            }
+        });
+    }
+
+    function renderProducts() {
+        // Hide all first
+        STATE.allCards.forEach(c => {
+            c.classList.add('hidden');
+            els.grid.appendChild(c); // Ensure correct order by appending
+        });
+        
+        const total = STATE.filteredCards.length;
+        const toShow = Math.min(total, STATE.page * CONFIG.itemsPerPage);
+        
+        // Re-append in sorted order and show
+        for(let i=0; i<toShow; i++) {
+            const card = STATE.filteredCards[i];
+            card.classList.remove('hidden');
+            els.grid.appendChild(card);
+        }
+        
+        // Update counts
+        els.productCount.innerText = total;
+        els.paCount.innerText = `(${total} items)`;
+        els.totalMatchCount.innerText = total;
+        els.visibleCount.innerText = toShow;
+        
+        let prog = total === 0 ? 0 : (toShow / total) * 100;
+        els.loadProgFill.style.width = `${prog}%`;
+        
+        if(toShow < total) {
+            els.btnLoadMore.classList.remove('hidden');
+        } else {
+            els.btnLoadMore.classList.add('hidden');
+        }
+        
+        if(total === 0) {
+            els.noResultsState.style.display = 'block';
+        } else {
+            els.noResultsState.style.display = 'none';
+        }
+        
+        // Filter dot
+        let hasFilters = STATE.searchQuery !== '' || STATE.category.length > 0 || STATE.priceMin > 0 || STATE.priceMax < 10000 || STATE.inStock || STATE.rating > 0;
+        if(hasFilters) els.filterDot.classList.add('on');
+        else els.filterDot.classList.remove('on');
+    }
+
+    function loadMore() {
+        els.lmSpinner.style.display = 'inline-block';
+        setTimeout(() => {
+            STATE.page++;
+            renderProducts();
+            els.lmSpinner.style.display = 'none';
+        }, 400); // Simulate network
+    }
+
+    function updateTags() {
+        els.activeFilterTags.innerHTML = '';
+        if(STATE.searchQuery) addTag(`Search: ${STATE.searchQuery}`, () => { els.searchInput.value=''; STATE.searchQuery=''; applyFilters(); });
+        STATE.category.forEach(c => addTag(c.toUpperCase(), () => { document.getElementById(`cat-${c}`).checked=false; STATE.category = STATE.category.filter(x=>x!==c); applyFilters(); }));
+        if(STATE.inStock) addTag('In Stock', () => { els.inStockToggle.classList.remove('on'); STATE.inStock=false; applyFilters(); });
+        if(STATE.rating > 0) addTag(`${STATE.rating}.0+ Stars`, () => { els.ratingOpts.forEach(o=>o.classList.remove('active')); STATE.rating=0; applyFilters(); });
+        if(STATE.priceMin > 0 || STATE.priceMax < 10000) addTag(`₹${STATE.priceMin} - ₹${STATE.priceMax}`, () => { 
+            els.priceMinInp.value=0; els.priceMaxInp.value=10000; els.priceMaxSlider.value=10000; updatePriceState(0, 10000); 
+        });
+    }
+
+    function addTag(label, onRemove) {
+        const t = document.createElement('div');
+        t.className = 'atag';
+        t.innerHTML = `<span>${label}</span> <i class="fas fa-times"></i>`;
+        t.onclick = onRemove;
+        els.activeFilterTags.appendChild(t);
+    }
+
+    function clearFilters() {
+        els.searchInput.value = ''; STATE.searchQuery = '';
+        els.catFilters.forEach(cb => cb.checked = false); STATE.category = [];
+        els.inStockToggle.classList.remove('on'); STATE.inStock = false;
+        els.ratingOpts.forEach(o=>o.classList.remove('active')); STATE.rating = 0;
+        els.priceMinInp.value=0; els.priceMaxInp.value=10000; els.priceMaxSlider.value=10000;
+        STATE.priceMin = 0; STATE.priceMax = 10000;
+        updatePriceState(0, 10000);
+    }
+
+    // Quick View
+    function openQuickView(id) {
+        const script = document.getElementById(`p-data-${id}`);
+        if(!script) return;
+        const data = JSON.parse(script.innerHTML);
+        
+        document.getElementById('qvImg').src = data.image;
+        document.getElementById('qvCat').innerText = data.category;
+        document.getElementById('qvName').innerText = data.name;
+        document.getElementById('qvPrice').innerText = `₹${data.price}`;
+        
+        if(data.oldPrice) {
+            document.getElementById('qvOldPrice').innerText = `₹${data.oldPrice}`;
+            document.getElementById('qvOldPrice').style.display = 'inline';
+        } else {
+            document.getElementById('qvOldPrice').style.display = 'none';
+        }
+        
+        const qvStock = document.getElementById('qvStock');
+        const st = parseInt(data.stock);
+        if(st > 10) { qvStock.className = 'qv-stock stock-in'; qvStock.innerHTML = `<i class="fas fa-check-circle"></i> In Stock`; }
+        else if(st > 0) { qvStock.className = 'qv-stock stock-low'; qvStock.innerHTML = `<i class="fas fa-exclamation-circle"></i> Only ${st} left`; }
+        else { qvStock.className = 'qv-stock stock-out'; qvStock.innerHTML = `<i class="fas fa-times-circle"></i> Out of Stock`; }
+        
+        document.getElementById('qvDesc').innerText = data.desc;
+        
+        const btnAdd = document.getElementById('qvAddCartBtn');
+        const btnBuy = document.getElementById('qvBuyNowBtn');
+        
+        if(st <= 0) {
+            btnAdd.disabled = true; btnBuy.disabled = true;
+        } else {
+            btnAdd.disabled = false; btnBuy.disabled = false;
+            btnAdd.onclick = () => { addToCart(id, data.name); closeQuickView(); };
+            btnBuy.onclick = () => { buyNow(id, data.name); };
+        }
+        
+        document.getElementById('qvOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeQuickView() {
+        document.getElementById('qvOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Mobile Drawer
+    function toggleMobileFilter() {
+        document.getElementById('filterOverlay').classList.toggle('open');
+        document.getElementById('filterDrawer').classList.toggle('open');
+        if(document.getElementById('filterOverlay').classList.contains('open')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+
+    // API Actions
+    function showToast(msg, type='success') {
+        const t = document.createElement('div');
+        t.className = `toast-item toast-${type}`;
+        const icon = type==='success' ? 'fa-check' : (type==='error' ? 'fa-times' : 'fa-info');
+        t.innerHTML = `<div class="t-icon"><i class="fas ${icon}"></i></div><span>${msg}</span>`;
+        document.getElementById('storeToast').appendChild(t);
+        setTimeout(() => { if(t.parentElement) t.remove(); }, 3500);
+    }
+
     function addToCart(id, name) {
         const url = "{% url 'add_to_cart' 0 %}".replace('0', id);
         fetch(url, {
             method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success') {
+            if(data.status === 'success') {
                 updateBadge(data.cart_count);
-                showToast(data.message);
+                showToast(data.message, 'success');
             }
         })
-        .catch(error => {
-            console.error('Error:', error);
-            showToast("Failed to add " + name + " to cart.");
-        });
+        .catch(err => showToast(`Failed to add ${name}`, 'error'));
+    }
+    
+    function buyNow(id, name) {
+        const url = "{% url 'add_to_cart' 0 %}".replace('0', id);
+        fetch(url, {
+            method: 'GET',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success') {
+                window.location.href = "{% url 'cart' %}";
+            }
+        })
+        .catch(err => showToast(`Failed to add ${name}`, 'error'));
     }
 
     function updateBadge(count) {
         document.querySelectorAll('.cart-count').forEach(el => el.innerText = count || 0);
     }
+    
+    function toggleWishlist(id, btn) {
+        btn.classList.toggle('wishlisted');
+        if(btn.classList.contains('wishlisted')) {
+            showToast('Added to Wishlist', 'info');
+        } else {
+            showToast('Removed from Wishlist', 'info');
+        }
+    }
 
-    // Initialize cart count from session on page load (via a data attribute or initial value)
-    document.addEventListener('DOMContentLoaded', () => {
-        // We could also fetch the current count here if needed
-    });
+    document.addEventListener('DOMContentLoaded', initStore);
 </script>
 {% endblock %}

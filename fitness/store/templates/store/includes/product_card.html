@@ -1,27 +1,85 @@
-<div class="prod-card">
-    <div class="prod-img-box">
-        {% if p.featured %}<div class="badge-top badge-trending">Featured</div>{% endif %}
-        {% if p.discount_price %}<div class="badge-top badge-sale" style="left: auto; right: 15px;">Sale</div>{% endif %}
-        <img src="{% if p.image %}{{ p.image.url }}{% else %}https://images.unsplash.com/photo-1541534741688-6078c65b5a33?w=500&q=80{% endif %}" class="prod-img" alt="{{ p.name }}">
+<div class="s-prod-card" 
+     data-category="{{ p.category }}"
+     data-price="{% if p.discount_price %}{{ p.discount_price }}{% else %}{{ p.price }}{% endif %}"
+     data-rating="{{ p.rating }}"
+     data-stock="{{ p.stock }}"
+     data-date="{{ p.id }}"
+     data-name="{{ p.name|lower }}"
+     data-id="{{ p.id }}">
+    
+    <div class="card-badges">
+        {% if p.featured %}<div class="c-badge badge-featured">Featured</div>{% endif %}
+        {% if p.discount_price %}<div class="c-badge badge-sale">Sale</div>{% endif %}
     </div>
-    <div class="prod-info">
-        <div class="rating-stars">
-            {% for i in "12345" %}
-                <i class="fas fa-star" style="{% if forloop.counter <= p.rating %}color:#facc15;{% else %}color:#333;{% endif %}"></i>
-            {% endfor %}
-            <span style="color: #666; font-size: 0.75rem; margin-left: 5px;">({{ p.rating }})</span>
+
+    <div class="card-wishlist-btn" onclick="toggleWishlist('{{ p.id }}', this)" title="Add to Wishlist">
+        <i class="fas fa-heart"></i>
+    </div>
+
+    <div class="s-card-img">
+        <img src="{% if p.image %}{{ p.image.url }}{% else %}https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=80{% endif %}" alt="{{ p.name }}" loading="lazy">
+        
+        <div class="card-quickview-bar">
+            <button class="qv-btn" onclick="openQuickView('{{ p.id }}')">
+                <i class="fas fa-eye"></i> Quick View
+            </button>
         </div>
-        <h3 class="prod-name">{{ p.name }}</h3>
-        <div class="prod-price-flex">
+    </div>
+    
+    <div class="s-card-body">
+        <div class="card-category-tag">{{ p.get_category_display }}</div>
+        
+        <h3 class="card-name" title="{{ p.name }}">{{ p.name }}</h3>
+        
+        <div class="card-rating-row">
+            <div class="c-stars">
+                {% for i in "12345" %}
+                    <i class="fas fa-star" style="{% if forloop.counter <= p.rating %}color:var(--s-yellow);{% else %}color:var(--s-muted);{% endif %}"></i>
+                {% endfor %}
+            </div>
+            <span class="c-rating-num">({{ p.rating }})</span>
+        </div>
+        
+        <div class="card-price-row">
             {% if p.discount_price %}
-                <span class="current-price">₹{{ p.discount_price }}</span>
-                <span class="old-price">₹{{ p.price }}</span>
+                <span class="card-price">₹{{ p.discount_price }}</span>
+                <span class="card-old-price">₹{{ p.price }}</span>
             {% else %}
-                <span class="current-price">₹{{ p.price }}</span>
+                <span class="card-price">₹{{ p.price }}</span>
             {% endif %}
         </div>
-        <button class="add-cart-btn" onclick="addToCart('{{ p.id }}', '{{ p.name }}')">
-            <i class="fas fa-plus"></i> Add to Cart
-        </button>
+        
+        <div class="card-stock {% if p.stock > 10 %}stock-in{% elif p.stock > 0 %}stock-low{% else %}stock-out{% endif %}">
+            {% if p.stock > 10 %}
+                <i class="fas fa-check-circle"></i> In Stock
+            {% elif p.stock > 0 %}
+                <i class="fas fa-exclamation-circle"></i> Only {{ p.stock }} left
+            {% else %}
+                <i class="fas fa-times-circle"></i> Out of Stock
+            {% endif %}
+        </div>
+        
+        <div class="card-actions">
+            <button class="btn-add-cart" onclick="addToCart('{{ p.id }}', '{{ p.name }}')" {% if p.stock <= 0 %}disabled{% endif %}>
+                <i class="fas fa-shopping-cart"></i> Add
+            </button>
+            <button class="btn-buy-now" onclick="buyNow('{{ p.id }}', '{{ p.name }}')" {% if p.stock <= 0 %}disabled{% endif %}>
+                Buy Now
+            </button>
+        </div>
     </div>
+    
+    <script type="application/json" id="p-data-{{ p.id }}">
+    {
+        "id": "{{ p.id }}",
+        "name": "{{ p.name|escapejs }}",
+        "category": "{{ p.get_category_display }}",
+        "price": "{% if p.discount_price %}{{ p.discount_price }}{% else %}{{ p.price }}{% endif %}",
+        "oldPrice": "{% if p.discount_price %}{{ p.price }}{% else %}{% endif %}",
+        "rating": "{{ p.rating }}",
+        "stock": "{{ p.stock }}",
+        "desc": "{{ p.description|truncatechars:150|escapejs }}",
+        "image": "{% if p.image %}{{ p.image.url }}{% else %}https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=80{% endif %}"
+    }
+    </script>
 </div>
