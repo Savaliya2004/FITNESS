@@ -1,0 +1,177 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}FitX | {{ post.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/blog.css' %}">
+<style>
+    .blog-detail-hero {
+        position: relative;
+        padding: 120px 5% 60px;
+        text-align: center;
+        background: var(--bg-dark);
+        border-bottom: 1px solid var(--border);
+    }
+    .blog-detail-hero h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        margin: 20px auto;
+        max-width: 900px;
+        line-height: 1.2;
+    }
+    .blog-detail-meta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        flex-wrap: wrap;
+    }
+    .blog-detail-meta .author {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+    .blog-detail-meta .author i {
+        color: var(--primary);
+    }
+    .blog-detail-meta .separator {
+        width: 4px;
+        height: 4px;
+        background: var(--text-muted);
+        border-radius: 50%;
+    }
+    .blog-detail-image {
+        max-width: 1000px;
+        margin: -40px auto 40px;
+        position: relative;
+        z-index: 10;
+        padding: 0 20px;
+    }
+    .blog-detail-image img {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        border: 1px solid var(--border);
+    }
+    .blog-content-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px 80px;
+    }
+    .blog-content-body {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+    }
+    .blog-content-body p {
+        margin-bottom: 24px;
+    }
+    .blog-content-body h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 40px 0 20px;
+        color: var(--text-primary);
+    }
+    .blog-content-body h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 30px 0 16px;
+    }
+    .blog-content-body ul, .blog-content-body ol {
+        margin-bottom: 24px;
+        padding-left: 20px;
+    }
+    .blog-content-body li {
+        margin-bottom: 10px;
+    }
+    .blog-content-body blockquote {
+        border-left: 4px solid var(--primary);
+        padding-left: 20px;
+        margin: 30px 0;
+        font-style: italic;
+        color: var(--text-muted);
+        background: var(--glass);
+        padding: 20px;
+        border-radius: 0 12px 12px 0;
+    }
+    .blog-detail-footer {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 600;
+        padding: 12px 24px;
+        background: var(--glass);
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+    .back-btn:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateX(-5px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="blog-detail-hero">
+    <div class="container">
+        <span class="tag-label" style="display: inline-block; padding: 6px 16px; background: rgba(196,77,255,0.1); color: var(--primary); border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 20px;">
+            {% if post.category %}{{ post.category.name|upper }}{% else %}FITNESS TIPS{% endif %}
+        </span>
+        <h1>{{ post.title }}</h1>
+        <div class="blog-detail-meta">
+            <span class="author"><i class="fas fa-user-circle"></i> {% if post.author %}{{ post.author.username }}{% else %}FitX Editorial{% endif %}</span>
+            <div class="separator"></div>
+            <span><i class="far fa-calendar-alt"></i> {{ post.created_at|date:"M d, Y" }}</span>
+            <div class="separator"></div>
+            <span><i class="far fa-eye"></i> {{ post.views_count }} Views</span>
+        </div>
+    </div>
+</section>
+
+<div class="blog-detail-image">
+    {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+    {% else %}
+    <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=1200&q=80" alt="{{ post.title }}">
+    {% endif %}
+</div>
+
+<section class="blog-content-wrapper">
+    <div class="blog-content-body">
+        {{ post.content|safe|linebreaks }}
+    </div>
+    
+    <div class="blog-detail-footer">
+        <a href="{% url 'blog' %}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Articles
+        </a>
+        <div class="share-links" style="display: flex; gap: 15px; align-items: center;">
+            <span style="color: var(--text-muted); font-weight: 600;">Share:</span>
+            <a href="#" style="color: var(--text-primary); font-size: 1.2rem;"><i class="fab fa-twitter"></i></a>
+            <a href="#" style="color: var(--text-primary); font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+            <a href="#" style="color: var(--text-primary); font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+</section>
+{% endblock %}

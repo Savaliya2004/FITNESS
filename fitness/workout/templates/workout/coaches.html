@@ -50,7 +50,7 @@
                                 <h3>{{ trainer.name }}</h3>
                                 <span class="specialization">{{ trainer.specialty }}</span>
                             </div>
-                            <div class="trainer-rating"><i class="fas fa-star"></i> {{ trainer.rating }}</div>
+                            <div class="trainer-rating"><i class="fas fa-star"></i> {{ trainer.rating|floatformat:1 }}</div>
                         </div>
                         <div class="trainer-stats-row">
                             <div class="t-stat"><i class="fas fa-medal"></i><span>Expert</span></div>

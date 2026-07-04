@@ -107,6 +107,12 @@ def blog(request):
     posts = BlogPost.objects.all().order_by('-created_at')
     return render(request, 'core/blog.html', {'posts': posts})
 
+def blog_detail(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug)
+    post.views_count += 1
+    post.save()
+    return render(request, 'core/blog_detail.html', {'post': post})
+
 def community(request):
     challenges = Challenge.objects.all()
     return render(request, 'core/community.html', {'challenges': challenges})

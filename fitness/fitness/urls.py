@@ -18,6 +18,9 @@ urlpatterns = [
     path('community/', include('community.urls')),
     path('chat/', include('chat.urls')),
     path('coach/', include('ai_coach.urls')),
+    
+    # Allauth URLs
+    path('accounts/', include('allauth.urls')),
 
     # ─── REST API endpoints ───────────────────────────────────────────────────
     path('api/', api_views.api_root, name='api_root'),

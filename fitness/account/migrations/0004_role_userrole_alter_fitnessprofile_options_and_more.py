@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0003_otpverification'),
+        ('local_account', '0003_otpverification'),
         ('auth', '0012_alter_user_first_name_max_length'),
     ]
 
@@ -187,7 +187,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userrole',
             name='role',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.role'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='local_account.role'),
         ),
         migrations.AddField(
             model_name='userrole',

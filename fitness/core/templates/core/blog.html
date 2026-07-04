@@ -24,7 +24,7 @@
             <h2>Latest <span class="text-gradient">Articles</span></h2>
         </div>
         <div class="blog-grid" id="blogGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
-            {% for post in blog_posts %}
+            {% for post in posts %}
             <article class="blog-card" style="background: rgba(255,255,255,0.05); border-radius: 15px; overflow: hidden;">
                 <div class="blog-img-wrap">
                     {% if post.image %}
@@ -37,7 +37,7 @@
                     <h3>{{ post.title }}</h3>
                     <p>{{ post.content|truncatewords:20 }}</p>
                     <div class="blog-footer" style="margin-top: 20px;">
-                        <a href="#" class="blog-read-link" style="color: var(--accent); font-weight: bold; text-decoration: none;">Read More <i class="fas fa-arrow-right"></i></a>
+                        <a href="{% url 'blog_detail' post.slug %}" class="blog-read-link" style="color: var(--accent); font-weight: bold; text-decoration: none;">Read More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </article>

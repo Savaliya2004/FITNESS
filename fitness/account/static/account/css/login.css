@@ -225,6 +225,17 @@ body::after {
 .btn-social:hover {
   background: rgba(196,77,255,.1);
   border-color: rgba(196,77,255,.35);
+}
+.google-btn:hover {
+  background: rgba(219,68,55,.1);
+  border-color: rgba(219,68,55,.35);
+  color: #ea4335;
+}
+.facebook-btn:hover {
+  background: rgba(66,103,178,.1);
+  border-color: rgba(66,103,178,.35);
+  color: #4267B2;
+}
 
 /* Footer link */
 }

@@ -31,12 +31,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    # Core app must be above allauth so local templates take precedence
+    'account',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 
     # Third-party
     'rest_framework',
 
     # Core apps
-    'account',
     'core',
     'workout',
     'diet',
@@ -53,7 +62,7 @@ INSTALLED_APPS = [
     'ai_coach',
 ]
 
-AUTH_USER_MODEL = 'account.FitnessProfile'
+AUTH_USER_MODEL = 'local_account.FitnessProfile'
 
 # ─── Middleware ─────────────────────────────────────────────────────────────────
 MIDDLEWARE = [
@@ -66,6 +75,7 @@ MIDDLEWARE = [
     'core.middleware.RateLimitMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'fitness.urls'
@@ -214,4 +224,52 @@ LOGGING = {
             'propagate': False,
         },
     },
+}
+
+# ─── Allauth Configuration ───────────────────────────────────────────────────
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'none' # For prototyping
+SOCIALACCOUNT_LOGIN_ON_GET = True # Bypass intermediate page
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    },
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v13.0',
+    }
 }

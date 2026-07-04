@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0002_fitnessprofile_target_weight_and_more'),
+        ('local_account', '0002_fitnessprofile_target_weight_and_more'),
     ]
 
     operations = [
